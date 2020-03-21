@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="mt-auto mb-auto col-6">Groups</div>
                             <div class="col-6 text-right">
-                                <a class>
+                                <a v-on:click="addNewGroup()" class>
                                     <span class="fa fa-plus"></span>
                                 </a>
                             </div>
@@ -15,11 +15,14 @@
                     </div>
                     <div class="card-body">
                         <group-component
-                            v-for="group in groups"
+                            v-for="(group, index) in groups"
                             :key="group.id"
                             :id="group.id"
                             :name="group.name"
                             :subgroups="group.subgroups"
+                            :class="{'mt-3': index != 0}"
+                            v-on:remove="groups.splice(index, 1)"
+                            :editMode="group.id ? false : true"
                         />
                     </div>
                 </div>
@@ -73,6 +76,11 @@ export default {
                 }
             ]
         };
+    },
+    methods: {
+        addNewGroup() {
+            this.groups.unshift({ name: "Group name" });
+        }
     }
 };
 </script>

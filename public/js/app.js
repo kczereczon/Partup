@@ -1993,22 +1993,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["id", "name", "subgroups", "editMode"],
+  props: ["id", "name", "subgroups"],
   data: function data() {
     return {
-      shouldShowSubgroups: false
+      shouldShowSubgroups: false,
+      editMode: false
     };
+  },
+  created: function created() {
+    if (this.$attrs.editMode) this.editMode = this.$attrs.editMode;
   },
   methods: {
     edit: function edit() {
       this.editMode = true;
     },
     save: function save() {
+      this.close();
+    },
+    close: function close() {
       this.editMode = false;
     },
     showSubgroups: function showSubgroups() {
       this.shouldShowSubgroups = true;
+    },
+    removeGroup: function removeGroup() {
+      this.$emit("remove");
+    },
+    addNewGroup: function addNewGroup() {
+      this.groups.unshift({
+        name: "New subgroup."
+      });
     }
   }
 });
@@ -2024,6 +2046,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -2087,6 +2112,13 @@ __webpack_require__.r(__webpack_exports__);
         }]
       }]
     };
+  },
+  methods: {
+    addNewGroup: function addNewGroup() {
+      this.groups.unshift({
+        name: "Group name"
+      });
+    }
   }
 });
 
@@ -37546,7 +37578,7 @@ var render = function() {
         _c("div", { staticClass: "col-6 mt-auto mb-auto text-right" }, [
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col" }, [
-              !_vm.editMode && _vm.subgroups.length
+              !_vm.editMode && _vm.subgroups && _vm.subgroups.length
                 ? _c(
                     "a",
                     {
@@ -37569,15 +37601,34 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               !_vm.editMode
-                ? _c("a", { staticClass: "ml-1" }, [
-                    _c("span", { staticClass: "fa fa-plus" })
-                  ])
+                ? _c(
+                    "a",
+                    { staticClass: "ml-1", on: { click: _vm.addGroup } },
+                    [_c("span", { staticClass: "fa fa-plus" })]
+                  )
                 : _vm._e(),
               _vm._v(" "),
               !_vm.editMode
-                ? _c("a", { staticClass: "ml-1" }, [
-                    _c("span", { staticClass: "fa fa-minus" })
-                  ])
+                ? _c(
+                    "a",
+                    { staticClass: "ml-1", on: { click: _vm.removeGroup } },
+                    [_c("span", { staticClass: "fa fa-minus" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.editMode
+                ? _c(
+                    "a",
+                    {
+                      staticClass: "ml-1",
+                      on: {
+                        click: function($event) {
+                          _vm.id ? _vm.close() : _vm.removeGroup()
+                        }
+                      }
+                    },
+                    [_c("span", { staticClass: "fa fa-times" })]
+                  )
                 : _vm._e(),
               _vm._v(" "),
               _c(
@@ -37586,7 +37637,7 @@ var render = function() {
                   staticClass: "ml-1",
                   on: {
                     click: function($event) {
-                      _vm.editMode = !_vm.editMode
+                      _vm.editMode ? _vm.save() : _vm.edit()
                     }
                   }
                 },
@@ -37659,18 +37710,45 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8 col-sm-12" }, [
         _c("div", { staticClass: "card" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "mt-auto mb-auto col-6" }, [
+                _vm._v("Groups")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-6 text-right" }, [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.addNewGroup()
+                      }
+                    }
+                  },
+                  [_c("span", { staticClass: "fa fa-plus" })]
+                )
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "div",
             { staticClass: "card-body" },
-            _vm._l(_vm.groups, function(group) {
+            _vm._l(_vm.groups, function(group, index) {
               return _c("group-component", {
                 key: group.id,
+                class: { "mt-3": index != 0 },
                 attrs: {
                   id: group.id,
                   name: group.name,
-                  subgroups: group.subgroups
+                  subgroups: group.subgroups,
+                  editMode: group.id ? false : true
+                },
+                on: {
+                  remove: function($event) {
+                    return _vm.groups.splice(index, 1)
+                  }
                 }
               })
             }),
@@ -37681,22 +37759,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "mt-auto mb-auto col-6" }, [_vm._v("Groups")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-6 text-right" }, [
-          _c("a", {}, [_c("span", { staticClass: "fa fa-plus" })])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

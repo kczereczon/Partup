@@ -16,7 +16,7 @@
                     <div class="row">
                         <div class="col">
                             <a
-                                v-if="!editMode && subgroups.length"
+                                v-if="!editMode && subgroups && subgroups.length"
                                 v-on:click="shouldShowSubgroups = !shouldShowSubgroups"
                                 class="ml-1"
                             >
@@ -24,13 +24,20 @@
                                     :class="{'fa fa-caret-down': !shouldShowSubgroups, 'fa fa-caret-up': shouldShowSubgroups}"
                                 ></span>
                             </a>
-                            <a v-if="!editMode" class="ml-1">
+                            <a v-on:click="addGroup" v-if="!editMode" class="ml-1">
                                 <span class="fa fa-plus"></span>
                             </a>
-                            <a v-if="!editMode" class="ml-1">
+                            <a v-on:click="removeGroup" v-if="!editMode" class="ml-1">
                                 <span class="fa fa-minus"></span>
                             </a>
-                            <a v-on:click="editMode = !editMode" class="ml-1">
+                            <a
+                                v-on:click="id ? close() : removeGroup()"
+                                v-if="editMode"
+                                class="ml-1"
+                            >
+                                <span class="fa fa-times"></span>
+                            </a>
+                            <a v-on:click="editMode ? save() : edit()" class="ml-1">
                                 <span :class="{'fa fa-pen': !editMode, 'fa fa-save': editMode}"></span>
                             </a>
                         </div>
@@ -52,21 +59,34 @@
 
 <script>
 export default {
-    props: ["id", "name", "subgroups", "editMode"],
+    props: ["id", "name", "subgroups"],
     data() {
         return {
-            shouldShowSubgroups: false
+            shouldShowSubgroups: false,
+            editMode: false
         };
+    },
+    created() {
+        if (this.$attrs.editMode) this.editMode = this.$attrs.editMode;
     },
     methods: {
         edit() {
             this.editMode = true;
         },
         save() {
+            this.close();
+        },
+        close() {
             this.editMode = false;
         },
         showSubgroups() {
             this.shouldShowSubgroups = true;
+        },
+        removeGroup() {
+            this.$emit("remove");
+        },
+        addNewGroup() {
+            this.groups.unshift({ name: "New subgroup." });
         }
     }
 };
