@@ -2000,16 +2000,87 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["id", "name", "subgroups"],
+  props: ["id", "name"],
   data: function data() {
     return {
       shouldShowSubgroups: false,
-      editMode: false
+      editMode: false,
+      subgroups: this.$attrs.subgroups ? this.$attrs.subgroups : [],
+      homework_webhook: this.$attrs.homework_webhook ? this.$attrs.homework_webhook : "",
+      news_webhook: this.$attrs.news_webhook ? this.$attrs.news_webhook : "",
+      exam_webhook: this.$attrs.exam_webhook ? this.$attrs.exam_webhook : ""
     };
   },
   created: function created() {
-    if (this.$attrs.editMode) this.editMode = this.$attrs.editMode;
+    if (this.$attrs.editMode || !this.id) this.editMode = this.$attrs.editMode;
   },
   methods: {
     edit: function edit() {
@@ -2025,12 +2096,18 @@ __webpack_require__.r(__webpack_exports__);
       this.shouldShowSubgroups = true;
     },
     removeGroup: function removeGroup() {
-      this.$emit("remove");
+      if (confirm("Remove selected group?")) this.$emit("remove");
     },
-    addNewGroup: function addNewGroup() {
-      this.groups.unshift({
+    addGroup: function addGroup() {
+      this.showSubgroups();
+      this.subgroups.unshift({
         name: "New subgroup."
       });
+    },
+    clearWebhookModal: function clearWebhookModal() {
+      this.homework_webhook = this.$attrs.homework_webhook;
+      this.news_webhook = this.$attrs.news_webhook;
+      this.exam_webhook = this.$attrs.exam_webhook;
     }
   }
 });
@@ -37578,6 +37655,8 @@ var render = function() {
         _c("div", { staticClass: "col-6 mt-auto mb-auto text-right" }, [
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col" }, [
+              _vm._m(0),
+              _vm._v(" "),
               !_vm.editMode && _vm.subgroups && _vm.subgroups.length
                 ? _c(
                     "a",
@@ -37656,6 +37735,135 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "webHooksModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "webHooksModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "homework_webhook" } }, [
+                    _vm._v("Homework Webhook")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.homework_webhook,
+                        expression: "homework_webhook"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "homework_webhook", type: "text" },
+                    domProps: { value: _vm.homework_webhook },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.homework_webhook = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "news_webhook" } }, [
+                    _vm._v("News Webhook")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.news_webhook,
+                        expression: "news_webhook"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "news_webhook", type: "text" },
+                    domProps: { value: _vm.news_webhook },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.news_webhook = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "exam_webhook" } }, [
+                    _vm._v("Exam Webhook")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.exam_webhook,
+                        expression: "exam_webhook"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "exam_webhook", type: "text" },
+                    domProps: { value: _vm.exam_webhook },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.exam_webhook = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: { click: _vm.clearWebhookModal }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
+                  [_vm._v("Save changes")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
     _vm.shouldShowSubgroups
       ? _c(
           "ul",
@@ -37673,6 +37881,11 @@ var render = function() {
                     id: group.id,
                     name: group.name,
                     subgroups: group.subgroups
+                  },
+                  on: {
+                    remove: function($event) {
+                      return _vm.subgroups.splice(index, 1)
+                    }
                   }
                 })
               ],
@@ -37684,7 +37897,46 @@ var render = function() {
       : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "ml-1",
+        attrs: { "data-toggle": "modal", "data-target": "#webHooksModal" }
+      },
+      [_c("span", { staticClass: "fa fa-gear" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "webHooksModalLabel" } },
+        [_vm._v("Setting for the group.")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 

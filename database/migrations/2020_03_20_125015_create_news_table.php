@@ -21,8 +21,8 @@ class CreateNewsTable extends Migration
             $table->text('message');
             $table->timestamps();
 
-            $table->foreign('teacher_id')->references('id')->on('users');
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');;
         });
     }
 

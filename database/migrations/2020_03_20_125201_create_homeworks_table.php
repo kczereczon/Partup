@@ -24,8 +24,8 @@ class CreateHomeworksTable extends Migration
             $table->unsignedBigInteger('type_id');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses');
-            $table->foreign('type_id')->references('id')->on('types');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');;
+            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');;
         });
     }
 

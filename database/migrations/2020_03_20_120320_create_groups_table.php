@@ -15,17 +15,17 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('owner_id');
+            $table->unsignedBigInteger('owner_id')->nullable();
             $table->string('name');
-            $table->unsignedBigInteger('group_id');
-            $table->string('homework_webhook');
-            $table->string('news_webhook');
-            $table->string('exams_webhook');
-            $table->string('projects_webhook');
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->string('homework_webhook')->nullable();
+            $table->string('news_webhook')->nullable();
+            $table->string('exams_webhook')->nullable();
+            $table->string('projects_webhook')->nullable();
             $table->timestamps();
 
-            $table->foreign('owner_id')->references('id')->on('users');
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');;
         });
     }
 
