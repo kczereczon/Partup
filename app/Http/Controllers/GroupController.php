@@ -35,11 +35,22 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\GroupStoreRequest  $request
+     * @param  \Illuminate\Http\Re  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(GroupStoreRequest $request)
+    public function store(Request $request)
     {
+        $validated = $request->validate(
+            [
+                'name' => 'string|required',
+                'homework_webhook' => 'nullable|url',
+                'news_webhook' => 'nullable|url',
+                'exam_webhook' => 'nullable|url',
+                'owner_id' => 'exists:users,id',
+                'group_id' => 'exists:groups,id'
+            ]
+        );
+
         /** @var Group|Builder|JsonResponse $group */
         $group = new Group();
         $group->name = $request->get('name');
@@ -126,8 +137,9 @@ class GroupController extends Controller
             ->where('owner_id', $request->user()->id)
             ->whereNull('group_id')
             ->with('subgroups')
+            ->orderBy('id', 'desc')
             ->get();
 
-        return $groups;
+        return response()->json($groups, 200);
     }
 }

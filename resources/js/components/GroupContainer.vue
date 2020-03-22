@@ -20,9 +20,10 @@
                             :id="group.id"
                             :name="group.name"
                             :subgroups="group.subgroups"
-                            :class="{'mt-3': index != 0}"
-                            v-on:remove="groups.splice(index, 1)"
+                            :class="{ 'mt-3': index != 0 }"
+                            v-on:remove="remove(index)"
                             :editMode="group.id ? false : true"
+                            v-on:refresh="getGroups"
                         />
                     </div>
                 </div>
@@ -32,58 +33,57 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
-            groups: [
-                {
-                    id: 1,
-                    name: "Informatyk - 4 semestr",
-                    subgroups: [
-                        {
-                            id: 2,
-                            name: "Grupa 1",
-                            subgroups: [
-                                {
-                                    id: 3,
-                                    name: "Lab 1",
-                                    subgroups: []
-                                },
-                                {
-                                    id: 4,
-                                    name: "Lab 2",
-                                    subgroups: []
-                                }
-                            ]
-                        },
-                        {
-                            id: 5,
-                            name: "Grupa 2",
-                            subgroups: [
-                                {
-                                    id: 6,
-                                    name: "Lab 3",
-                                    subgroups: []
-                                },
-                                {
-                                    id: 7,
-                                    name: "Lab 4",
-                                    subgroups: []
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+            groups: []
         };
+    },
+    created() {
+        this.getGroups();
     },
     methods: {
         addNewGroup() {
-            this.groups.unshift({ name: "Group name" });
+            if (this.groups[0] == undefined || this.groups[0].id) {
+                this.groups.unshift({});
+            }
+        },
+        getGroups() {
+            axios
+                .get("/api/v1/groups", {
+                    headers: {
+                        Authorization:
+                            "Bearer " + window.localStorage.getItem("authToken")
+                    }
+                })
+                .then(results => {
+                    console.log(results.data);
+                    this.groups = results.data;
+                })
+                .catch(error => console.log(error.response));
+        },
+        remove(index) {
+            if (this.groups[index].id) {
+                axios
+                    .delete("/api/v1/groups/" + this.groups[index].id, {
+                        headers: {
+                            Authorization:
+                                "Bearer " +
+                                window.localStorage.getItem("authToken")
+                        }
+                    })
+                    .then(results => {
+                        this.groups.splice(index, 1);
+                        this.getGroups();
+                    })
+                    .catch(error => console.log(error.response));
+            } else {
+                this.groups.splice(index, 1);
+            }
         }
     }
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -25,9 +25,9 @@ class GroupStoreRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
-            'homework_webhook' => 'url',
-            'news_webhook' => 'url',
-            'exam_webhook' => 'url',
+            'homework_webhook' => 'string|url',
+            'news_webhook' => 'string|url',
+            'exam_webhook' => 'string|url',
             'owner_id' => 'exists:users,id',
             'group_id' => 'exists:groups,id',
         ];
