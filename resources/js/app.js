@@ -14,6 +14,7 @@ import Register from "./views/Register";
 import Home from "./views/Home";
 import VueAxios from "vue-axios";
 import axios from "axios";
+import API from "./api";
 
 Vue.use(VueRouter, VueAxios, axios);
 
@@ -38,6 +39,8 @@ files.keys().map(key =>
         files(key).default
     )
 );
+
+Vue.prototype.$http = API;
 
 const app = new Vue({
     router

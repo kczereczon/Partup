@@ -102,6 +102,10 @@ export default {
                         "authToken",
                         response.data.access_token
                     );
+
+                    axios.defaults.headers.common["Authorization"] =
+                        "Bearer " + response.data.access_token;
+
                     currentObj.output = response.data;
                     this.$router.push({ name: "Home" });
                 })

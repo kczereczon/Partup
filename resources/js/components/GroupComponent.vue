@@ -180,6 +180,9 @@
                     :subgroups="group.subgroups"
                     :editMode="group.id ? false : true"
                     :parent_id="id"
+                    :homework_webhook="group.homework_webhook"
+                    :exams_webhook="group.exams_webhook"
+                    :news_webhook="group.news_webhook"
                 />
             </li>
         </ul>

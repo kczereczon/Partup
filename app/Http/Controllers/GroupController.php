@@ -13,26 +13,6 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 class GroupController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Re  $request
@@ -65,28 +45,6 @@ class GroupController extends Controller
         }
 
         return response()->json(['created' => $group->save()], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Group $group)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Group $group)
-    {
-        //
     }
 
     /**
@@ -136,6 +94,20 @@ class GroupController extends Controller
         $groups = $groups
             ->where('owner_id', $request->user()->id)
             ->whereNull('group_id')
+            ->with('subgroups')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json($groups, 200);
+    }
+
+    public function getAllOwnedGroups(Request $request)
+    {
+        /** @var Group|Builder */
+        $groups = new Group();
+
+        $groups = $groups
+            ->where('owner_id', $request->user()->id)
             ->with('subgroups')
             ->orderBy('id', 'desc')
             ->get();

@@ -1,11 +1,32 @@
 <template>
-    <div>
+    <div class="container-fluid">
         <group-container />
+        <courses-container :groups="groups" />
     </div>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+    data() {
+        return {
+            groups: []
+        };
+    },
+    mounted() {
+        this.getGroups();
+    },
+    methods: {
+        getGroups() {
+            this.$http
+                .get("/v1/groups/all")
+                .then(results => {
+                    this.groups = results.data;
+                })
+                .catch(error => console.log(error.response));
+        }
+    }
+};
 </script>
 
 <style></style>

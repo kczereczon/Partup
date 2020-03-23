@@ -24,7 +24,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->postJson('/api/groups', ['name' => "group1"]);
+            ->postJson('/api/v1/groups/', ['name' => "group1"]);
 
         $response->assertStatus(200, $response->status())
             ->assertJson(['created' => true]);
@@ -41,7 +41,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->postJson('/api/groups', []);
+            ->postJson('/api/v1/groups/', []);
 
         $response->assertStatus(422, $response->status());
     }
@@ -59,7 +59,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->postJson('/api/groups', ['name' => "group1", 'group_id' => $group->id]);
+            ->postJson('/api/v1/groups/', ['name' => "group1", 'group_id' => $group->id]);
 
         $response->assertStatus(200, $response->status())
             ->assertJson(['created' => true]);
@@ -73,7 +73,7 @@ class CreatingGroupTest extends TestCase
     public function testCreatingGroupWithoutSessionTest()
     {
         /** @var TestResponse $response */
-        $response = $this->postJson('/api/groups', ['name' => "group1"]);
+        $response = $this->postJson('/api/v1/groups/', ['name' => "group1"]);
 
         $this->assertEquals(401, $response->status());
     }
@@ -87,7 +87,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->getJson("/api/groups");
+            ->getJson("/api/v1/groups/");
 
         $response->assertStatus(200, $response->status());
     }
@@ -100,7 +100,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->deleteJson("/api/groups/{$group->id}");
+            ->deleteJson("/api/v1/groups/{$group->id}");
 
         $response->assertStatus(200, $response->status())->assertJson([
             'destroyed' => true,
@@ -117,7 +117,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->deleteJson("/api/groups/{$group->id}");
+            ->deleteJson("/api/v1/groups/{$group->id}");
 
         $response->assertStatus(401, $response->status());
     }
@@ -129,7 +129,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->patchJson("/api/groups/{$group->id}", ['name' => "updated"]);
+            ->patchJson("/api/v1/groups/{$group->id}", ['name' => "updated"]);
 
         $response->assertStatus(200, $response->status())->assertJson(['updated' => true]);
 
@@ -146,7 +146,7 @@ class CreatingGroupTest extends TestCase
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->patchJson("/api/groups/{$group->id}", ['name' => "updated"]);
+            ->patchJson("/api/v1/groups/{$group->id}", ['name' => "updated"]);
 
         $response->assertStatus(401, $response->status());
     }
