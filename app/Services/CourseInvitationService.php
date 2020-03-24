@@ -1,14 +1,26 @@
 <?php
 
+namespace App\Services;
+
 use App\Course;
 use App\CourseInvitation;
+use App\Mail\CourseInvite;
 use App\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
-class CourseService
+class CourseInvitationService
 {
-    public function createNewInvitation($email, Course $course): CourseInvitation
+    /**
+     * This method is simple creates invitation for new user.
+     *
+     * @param mixed $email
+     * @param Course $course
+     * @return CourseInvitation
+     */
+    public function createInvitation($email, Course $course): CourseInvitation
     {
         /** @var CourseInvitation|Builder $invitation */
         $invitation = new CourseInvitation();
@@ -24,5 +36,7 @@ class CourseService
 
     public function sendInvite(CourseInvitation $courseInvitiation)
     {
-
+        $link = Request::getHost() . "/api/v1/course_invite?hash=" . $courseInvitiation->invite_hash;
+        Mail::to($courseInvitiation)->send(new CourseInvite($link, $courseInvitiation->course->group, $courseInvitiation->course));
+    }
 }

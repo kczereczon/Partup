@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Group extends Model
 {
+
+    protected $appends = ['full_name'];
+
     protected $fillable = [
         'name',
         'group_id',
@@ -30,5 +33,13 @@ class Group extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        if ($this->group)
+            return "{$this->group->full_name} - {$this->name}";
+        else
+            return $this->name;
     }
 }

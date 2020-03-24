@@ -3,7 +3,7 @@
         <div class="card-body bg-light">
             <div class="row no-gutters">
                 <div class="col-4 mt-auto mb-auto">
-                    <h1 v-if="!editMode">{{ name }}</h1>
+                    <h5 class="mb-0" v-if="!editMode">{{ name || "" }}</h5>
                     <input
                         v-if="editMode"
                         type="text"
@@ -14,7 +14,9 @@
                     />
                 </div>
                 <div class="col-6 mt-auto mb-auto">
-                    <h1 v-if="!editMode">{{ group.name || "" }}</h1>
+                    <h5 class="mb-0" v-if="!editMode">
+                        {{ group.full_name || "" }}
+                    </h5>
                     <select
                         v-if="editMode"
                         type="text"
@@ -28,11 +30,14 @@
                             :key="optionGroup.id"
                             :value="optionGroup.id"
                             :selected="optionGroup.id == group.id"
-                            >{{ optionGroup.name }}</option
+                            >{{ optionGroup.full_name }}</option
                         >
                     </select>
                 </div>
-                <div class="col-2 mt-auto mb-auto  text-right">
+                <div class="col-2 mt-auto mb-auto text-right">
+                    <a v-if="editMode" class="ml-1">
+                        <span class="fa fa-user-add"></span>
+                    </a>
                     <a v-on:click="close()" class="ml-1">
                         <span
                             :class="[
@@ -57,19 +62,54 @@
 
 <script>
 export default {
-    props: ["id", "name", "groups", "group"],
-    edit() {
-        this.editMode = true;
+    props: ["id", "name", "groups", "group", "new"],
+    created() {
+        console.log(this.new);
     },
-    save() {
-        this.editMode = false;
-    },
-    close() {
-        this.editMode = false;
+    methods: {
+        save() {
+            this.$http
+                .post("/v1/course", {
+                    name: this.newName,
+                    group_id: this.newGroupId
+                })
+                .then(result => {
+                    this.refreshCourses();
+                    this.editMode = false;
+                })
+                .catch(err => {});
+        },
+        close() {
+            if (!this.editMode) {
+                if (confirm("Are you sure, you want remove this course?"))
+                    this.$http
+                        .delete("/v1/course/" + this.id)
+                        .then(result => {
+                            this.removeCourseFromArray();
+                            this.refreshCourses();
+                        })
+                        .catch(err => {});
+            } else {
+                if (this.id) {
+                    this.editMode = false;
+                } else {
+                    this.removeCourseFromArray();
+                }
+            }
+        },
+        edit() {
+            this.editMode = true;
+        },
+        refreshCourses() {
+            this.$emit("refresh");
+        },
+        removeCourseFromArray() {
+            this.$emit("removeCourseFromArray", this.id);
+        }
     },
     data() {
         return {
-            editMode: this.$vnode.key == 0 && !this.id ? true : false,
+            editMode: this.new,
             newName: this.name,
             newGroupId: this.group.id || ""
         };

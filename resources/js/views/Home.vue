@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <group-container />
-        <courses-container :groups="groups" />
+        <courses-container v-on:refresh="getGroups" :groups="groups" />
     </div>
 </template>
 

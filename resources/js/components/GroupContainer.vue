@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
     data() {
         return {
@@ -51,8 +50,8 @@ export default {
             }
         },
         getGroups() {
-            axios
-                .get("/api/v1/groups", {
+            this.$http
+                .get("/v1/groups", {
                     headers: {
                         Authorization:
                             "Bearer " + window.localStorage.getItem("authToken")
@@ -66,8 +65,8 @@ export default {
         },
         remove(index) {
             if (this.groups[index].id) {
-                axios
-                    .delete("/api/v1/groups/" + this.groups[index].id, {
+                this.$http
+                    .delete("/v1/groups/" + this.groups[index].id, {
                         headers: {
                             Authorization:
                                 "Bearer " +

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Course;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -14,7 +18,16 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = new Course();
+        /** @var Course|Builder|QueryBuilder $courses */
+        $courses = $courses
+            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
+            ->where('groups.owner_id', '=', Auth::user()->id)
+            ->with('group')
+            ->orderBy('courses.id', 'desc')
+            ->get(['courses.*']);
+
+        return response()->json($courses, 200);
     }
 
     /**
@@ -28,7 +41,21 @@ class CourseController extends Controller
         $request->validate([
             'name' => 'string|required',
             'teacher_email' => 'email',
+            'group_id' => 'exists:groups,id'
         ]);
+
+        /** @var Course|Builder */
+        $course = new Course();
+        $course = $course->create([
+            'name' => $request->name,
+            'group_id' => $request->group_id,
+        ]);
+
+        // /** @var CourseInvitationService $service */
+        // $service = new CourseInvitationService();
+        // $service->createInvitation($request->teacher_email, $course);
+
+        return response()->json(['created' => $course], 200);
     }
 
     /**
@@ -62,6 +89,10 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        /** @var Course|Builder|QueryBuilder $course */
+        $course = Course::find($id);
+        $course = $course->delete();
+
+        return response()->json(['deleted' => $course], 200);
     }
 }

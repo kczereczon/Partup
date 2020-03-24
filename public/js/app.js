@@ -1965,20 +1965,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["id", "name", "groups", "group"],
-  edit: function edit() {
-    this.editMode = true;
+  props: ["id", "name", "groups", "group", "new"],
+  created: function created() {
+    console.log(this["new"]);
   },
-  save: function save() {
-    this.editMode = false;
-  },
-  close: function close() {
-    this.editMode = false;
+  methods: {
+    save: function save() {
+      var _this = this;
+
+      this.$http.post("/v1/course", {
+        name: this.newName,
+        group_id: this.newGroupId
+      }).then(function (result) {
+        _this.refreshCourses();
+
+        _this.editMode = false;
+      })["catch"](function (err) {});
+    },
+    close: function close() {
+      var _this2 = this;
+
+      if (!this.editMode) {
+        if (confirm("Are you sure, you want remove this course?")) this.$http["delete"]("/v1/course/" + this.id).then(function (result) {
+          _this2.removeCourseFromArray();
+
+          _this2.refreshCourses();
+        })["catch"](function (err) {});
+      } else {
+        if (this.id) {
+          this.editMode = false;
+        } else {
+          this.removeCourseFromArray();
+        }
+      }
+    },
+    edit: function edit() {
+      this.editMode = true;
+    },
+    refreshCourses: function refreshCourses() {
+      this.$emit("refresh");
+    },
+    removeCourseFromArray: function removeCourseFromArray() {
+      this.$emit("removeCourseFromArray", this.id);
+    }
   },
   data: function data() {
     return {
-      editMode: this.$vnode.key == 0 && !this.id ? true : false,
+      editMode: this["new"],
       newName: this.name,
       newGroupId: this.group.id || ""
     };
@@ -2024,6 +2063,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["groups"],
   data: function data() {
@@ -2031,9 +2075,28 @@ __webpack_require__.r(__webpack_exports__);
       courses: []
     };
   },
+  created: function created() {
+    this.getCourses();
+  },
   methods: {
+    getCourses: function getCourses() {
+      var _this = this;
+
+      this.$http.get("/v1/course").then(function (result) {
+        _this.courses = result.data;
+      })["catch"](function (err) {});
+    },
     addNew: function addNew() {
-      this.courses.unshift({});
+      if (!this.courses[0] || !this.courses[0]["new"]) this.courses.unshift({
+        name: "",
+        group: [],
+        "new": true,
+        id: 0
+      });
+    },
+    removeCourseFromArray: function removeCourseFromArray(course_id) {
+      console.log(course_id);
+      this.courses.splice(course_id, 1);
     }
   }
 });
@@ -2422,8 +2485,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2459,7 +2520,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2478,7 +2538,7 @@ __webpack_require__.r(__webpack_exports__);
     getGroups: function getGroups() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/v1/groups", {
+      this.$http.get("/v1/groups", {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("authToken")
         }
@@ -2493,7 +2553,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (this.groups[index].id) {
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/api/v1/groups/" + this.groups[index].id, {
+        this.$http["delete"]("/v1/groups/" + this.groups[index].id, {
           headers: {
             Authorization: "Bearer " + window.localStorage.getItem("authToken")
           }
@@ -39876,7 +39936,11 @@ var render = function() {
     _c("div", { staticClass: "card-body bg-light" }, [
       _c("div", { staticClass: "row no-gutters" }, [
         _c("div", { staticClass: "col-4 mt-auto mb-auto" }, [
-          !_vm.editMode ? _c("h1", [_vm._v(_vm._s(_vm.name))]) : _vm._e(),
+          !_vm.editMode
+            ? _c("h5", { staticClass: "mb-0" }, [
+                _vm._v(_vm._s(_vm.name || ""))
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _vm.editMode
             ? _c("input", {
@@ -39909,7 +39973,13 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "col-6 mt-auto mb-auto" }, [
           !_vm.editMode
-            ? _c("h1", [_vm._v(_vm._s(_vm.group.name || ""))])
+            ? _c("h5", { staticClass: "mb-0" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.group.full_name || "") +
+                    "\n                "
+                )
+              ])
             : _vm._e(),
           _vm._v(" "),
           _vm.editMode
@@ -39956,7 +40026,7 @@ var render = function() {
                         selected: optionGroup.id == _vm.group.id
                       }
                     },
-                    [_vm._v(_vm._s(optionGroup.name))]
+                    [_vm._v(_vm._s(optionGroup.full_name))]
                   )
                 }),
                 0
@@ -39964,7 +40034,13 @@ var render = function() {
             : _vm._e()
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-2 mt-auto mb-auto  text-right" }, [
+        _c("div", { staticClass: "col-2 mt-auto mb-auto text-right" }, [
+          _vm.editMode
+            ? _c("a", { staticClass: "ml-1" }, [
+                _c("span", { staticClass: "fa fa-user-add" })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "a",
             {
@@ -40061,11 +40137,18 @@ var render = function() {
           { staticClass: "card-body" },
           _vm._l(_vm.courses, function(course, index) {
             return _c("course-component", {
-              key: index,
+              key: course.id,
+              class: { "mt-3": index != 0 },
               attrs: {
+                group: course.group || {},
                 name: course.name,
                 groups: _vm.groups,
-                group: course.group || {}
+                id: course.id,
+                new: course.new
+              },
+              on: {
+                refresh: _vm.getCourses,
+                removeCourseFromArray: _vm.removeCourseFromArray
               }
             })
           }),
@@ -41850,7 +41933,10 @@ var render = function() {
     [
       _c("group-container"),
       _vm._v(" "),
-      _c("courses-container", { attrs: { groups: _vm.groups } })
+      _c("courses-container", {
+        attrs: { groups: _vm.groups },
+        on: { refresh: _vm.getGroups }
+      })
     ],
     1
   )
@@ -57359,6 +57445,9 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"], vue_axios__WEBPACK_I
 var routes = [{
   path: "/",
   name: "Home",
+  meta: {
+    requiresAuth: true
+  },
   component: _views_Home__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
   path: "/register",
@@ -57372,6 +57461,23 @@ var routes = [{
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: "history",
   routes: routes
+});
+router.beforeEach(function (to, from, next) {
+  if (to.matched.some(function (record) {
+    return record.meta.requiresAuth;
+  })) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!window.localStorage.getItem("authToken")) {
+      next({
+        name: "Login"
+      });
+    } else {
+      next(); // go to wherever I'm going
+    }
+  } else {
+    next(); // does not require auth, make sure to always call next()!
+  }
 });
 
 var files = __webpack_require__("./resources/js sync recursive \\.vue$/");

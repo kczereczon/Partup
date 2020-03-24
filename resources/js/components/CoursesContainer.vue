@@ -15,10 +15,15 @@
                 <div class="card-body">
                     <course-component
                         v-for="(course, index) in courses"
-                        :key="index"
+                        :key="course.id"
+                        :group="course.group || {}"
+                        :class="{ 'mt-3': index != 0 }"
                         :name="course.name"
                         :groups="groups"
-                        :group="course.group || {}"
+                        :id="course.id"
+                        :new="course.new"
+                        @refresh="getCourses"
+                        @removeCourseFromArray="removeCourseFromArray"
                     />
                 </div>
             </div>
@@ -32,9 +37,25 @@ export default {
     data() {
         return { courses: [] };
     },
+    created() {
+        this.getCourses();
+    },
     methods: {
+        getCourses() {
+            this.$http
+                .get("/v1/course")
+                .then(result => {
+                    this.courses = result.data;
+                })
+                .catch(err => {});
+        },
         addNew() {
-            this.courses.unshift({});
+            if (!this.courses[0] || !this.courses[0].new)
+                this.courses.unshift({ name: "", group: [], new: true, id: 0 });
+        },
+        removeCourseFromArray(course_id) {
+            console.log(course_id);
+            this.courses.splice(course_id, 1);
         }
     }
 };

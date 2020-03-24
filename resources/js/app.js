@@ -19,7 +19,14 @@ import API from "./api";
 Vue.use(VueRouter, VueAxios, axios);
 
 const routes = [
-    { path: "/", name: "Home", component: Home },
+    {
+        path: "/",
+        name: "Home",
+        meta: {
+            requiresAuth: true
+        },
+        component: Home
+    },
     { path: "/register", name: "Register", component: Register },
     { path: "/login", name: "Login", component: Login }
 ];
@@ -27,6 +34,20 @@ const routes = [
 const router = new VueRouter({
     mode: "history",
     routes
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (!window.localStorage.getItem("authToken")) {
+            next({ name: "Login" });
+        } else {
+            next(); // go to wherever I'm going
+        }
+    } else {
+        next(); // does not require auth, make sure to always call next()!
+    }
 });
 
 const files = require.context("./", true, /\.vue$/i);

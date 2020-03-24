@@ -2,13 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Course;
+use App\Group;
 use App\User;
-use PHPUnit\Framework\TestCase;
-use Faker\Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CourseTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic unit test example.
      *
@@ -21,13 +23,12 @@ class CourseTest extends TestCase
 
     public function testCreateCourse()
     {
-        $faker = new Generator();
-
         $user = factory(User::class)->create();
+        $group = factory(Group::class)->create(['owner_id' => $user->id]);
 
         /** @var TestResponse $response */
         $response = $this->actingAs($user, 'api')
-            ->post("/api/v1/course", ['teacher_email' => $faker->email, 'name' => $faker->name]);
+            ->post("/api/v1/course", ['teacher_email' => 'test@gmail.com', 'name' => "test name", 'group_id' => $group->id]);
 
         $response->assertStatus(200, $response->status())->assertJson([
             'created' => true,
