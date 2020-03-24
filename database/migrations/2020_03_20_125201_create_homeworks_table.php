@@ -17,15 +17,13 @@ class CreateHomeworksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('course_id');
             $table->string('name');
-            $table->text('descriptions');
+            $table->text('description');
             $table->text('requirements');
             $table->dateTime('deadline');
             $table->text('where_send');
-            $table->unsignedBigInteger('type_id');
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');;
-            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');;
         });
     }
 

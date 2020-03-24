@@ -9,7 +9,6 @@ use Faker\Generator as Faker;
 $factory->define(Course::class, function (Faker $faker) {
     return [
         'name' => $faker->colorName,
-        'owner_id' => '',
-        'group_id' => Group::all()->random(0)->id,
+        'group_id' => 1,
     ];
 });

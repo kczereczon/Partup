@@ -14,5 +14,7 @@ Route::middleware('auth:api')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");
 Route::middleware('auth:api')->delete('/course/{id}', "{$NS}CourseController@destroy");
 
+Route::middleware('auth:api')->post('/homeworks', "{$NS}HomeworkController@store");
+
 Route::post('/login', "{$NS}AuthController@login");
 Route::post('/register', "{$NS}AuthController@register");
