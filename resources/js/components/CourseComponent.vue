@@ -68,16 +68,37 @@ export default {
     },
     methods: {
         save() {
-            this.$http
-                .post("/v1/course", {
-                    name: this.newName,
-                    group_id: this.newGroupId
-                })
-                .then(result => {
-                    this.refreshCourses();
-                    this.editMode = false;
-                })
-                .catch(err => {});
+            if(!this.id)
+            {
+                this.$http
+                    .post("/v1/course", {
+                        name: this.newName,
+                        group_id: this.newGroupId
+                    }
+                    )
+                    .then(result => {
+                        this.editMode = false;
+                        this.refreshCourses();
+                    })
+                    .catch(err => {});
+            }else{
+                this.$http
+                    .patch(
+                        "/v1/course/"+this.id,
+                        {
+                            name:this.newName,
+                            group_id: this.newGroupId
+                        }
+                    )
+                    .then(result=>{
+                        this.editMode = false;
+                        this.refreshCourses();
+                    })
+                    .catch(error =>{
+                        this.error = error.response.data.errors;
+                    });
+            }
+
         },
         close() {
             if (!this.editMode) {

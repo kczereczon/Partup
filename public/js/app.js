@@ -1979,14 +1979,27 @@ __webpack_require__.r(__webpack_exports__);
     save: function save() {
       var _this = this;
 
-      this.$http.post("/v1/course", {
-        name: this.newName,
-        group_id: this.newGroupId
-      }).then(function (result) {
-        _this.refreshCourses();
+      if (!this.id) {
+        this.$http.post("/v1/course", {
+          name: this.newName,
+          group_id: this.newGroupId
+        }).then(function (result) {
+          _this.editMode = false;
 
-        _this.editMode = false;
-      })["catch"](function (err) {});
+          _this.refreshCourses();
+        })["catch"](function (err) {});
+      } else {
+        this.$http.patch("/v1/course/" + this.id, {
+          name: this.newName,
+          group_id: this.newGroupId
+        }).then(function (result) {
+          _this.editMode = false;
+
+          _this.refreshCourses();
+        })["catch"](function (error) {
+          _this.error = error.response.data.errors;
+        });
+      }
     },
     close: function close() {
       var _this2 = this;
@@ -8436,7 +8449,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\np {\n  margin: 0;\n}\n", ""]);
+exports.push([module.i, "\np {\r\n  margin: 0;\n}\r\n", ""]);
 
 // exports
 
@@ -40273,7 +40286,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row justify-content-center mt-3" }, [
+  return _c("div", { staticClass: "row justify-content-center mt-3 mb-4" }, [
     _c("div", { staticClass: "col-md-8 col-sm-12" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
@@ -59086,8 +59099,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/kczereczon/Dokumenty/Projekty/partup/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/kczereczon/Dokumenty/Projekty/partup/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\github\Partup\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\github\Partup\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

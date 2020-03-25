@@ -78,7 +78,9 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $course = Course::find($id);
+        $course = $course->update($request->all());
+        return response()->json(['updated' => $course], 200);
     }
 
     /**
