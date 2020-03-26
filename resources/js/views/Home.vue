@@ -2,11 +2,12 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-8 col-sm-12">
-                <homework-creator :courses="courses" />
+                <group-container />
+                <courses-container v-on:refresh="getGroups" :groups="groups" />
             </div>
+
+            <homework-creator :courses="courses" />
         </div>
-        <group-container />
-        <courses-container v-on:refresh="getGroups" :groups="groups" />
     </div>
 </template>
 

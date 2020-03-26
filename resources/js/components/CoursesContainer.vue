@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center mt-3 mb-4">
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-11 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">

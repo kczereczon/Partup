@@ -2407,16 +2407,12 @@ __webpack_require__.r(__webpack_exports__);
       this.name = this.newName;
 
       if (!this.id) {
-        axios.post("/api/v1/groups", {
+        this.$http.post("/v1/groups", {
           name: this.name,
           homework_webhook: this.homework_webhook,
           news_webhook: this.news_webhook,
           exams_webhook: this.exams_webhook,
           group_id: this.parent_id
-        }, {
-          headers: {
-            Authorization: "Bearer " + window.localStorage.getItem("authToken")
-          }
         }).then(function (results) {
           _this.$emit("refresh");
 
@@ -2425,16 +2421,12 @@ __webpack_require__.r(__webpack_exports__);
           _this.error = error.response.data.errors;
         });
       } else {
-        axios.patch("/api/v1/groups/" + this.id, {
+        this.$http.patch("/v1/groups/" + this.id, {
           name: this.name,
           homework_webhook: this.homework_webhook,
           news_webhook: this.news_webhook,
           exams_webhook: this.exams_webhook,
           group_id: this.parent_id
-        }, {
-          headers: {
-            Authorization: "Bearer " + window.localStorage.getItem("authToken")
-          }
         }).then(function (results) {
           _this.$emit("refresh");
 
@@ -3592,6 +3584,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
 //
 //
 //
@@ -40287,7 +40280,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row justify-content-center mt-3 mb-4" }, [
-    _c("div", { staticClass: "col-md-8 col-sm-12" }, [
+    _c("div", { staticClass: "col-md-11 col-sm-12" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("div", { staticClass: "row" }, [
@@ -40838,7 +40831,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row justify-content-center" }, [
-    _c("div", { staticClass: "col-md-8 col-sm-12" }, [
+    _c("div", { staticClass: "col-md-11 col-sm-12" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("div", { staticClass: "row" }, [
@@ -42405,28 +42398,30 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid" },
-    [
-      _c("div", { staticClass: "row justify-content-center" }, [
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "div",
+      { staticClass: "row justify-content-center" },
+      [
         _c(
           "div",
           { staticClass: "col-md-8 col-sm-12" },
-          [_c("homework-creator", { attrs: { courses: _vm.courses } })],
+          [
+            _c("group-container"),
+            _vm._v(" "),
+            _c("courses-container", {
+              attrs: { groups: _vm.groups },
+              on: { refresh: _vm.getGroups }
+            })
+          ],
           1
-        )
-      ]),
-      _vm._v(" "),
-      _c("group-container"),
-      _vm._v(" "),
-      _c("courses-container", {
-        attrs: { groups: _vm.groups },
-        on: { refresh: _vm.getGroups }
-      })
-    ],
-    1
-  )
+        ),
+        _vm._v(" "),
+        _c("homework-creator", { attrs: { courses: _vm.courses } })
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

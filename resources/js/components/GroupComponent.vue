@@ -225,22 +225,15 @@ export default {
             this.name = this.newName;
 
             if (!this.id) {
-                axios
+                this.$http
                     .post(
-                        "/api/v1/groups",
+                        "/v1/groups",
                         {
                             name: this.name,
                             homework_webhook: this.homework_webhook,
                             news_webhook: this.news_webhook,
                             exams_webhook: this.exams_webhook,
                             group_id: this.parent_id
-                        },
-                        {
-                            headers: {
-                                Authorization:
-                                    "Bearer " +
-                                    window.localStorage.getItem("authToken")
-                            }
                         }
                     )
                     .then(results => {
@@ -251,22 +244,15 @@ export default {
                         this.error = error.response.data.errors;
                     });
             } else {
-                axios
+                this.$http
                     .patch(
-                        "/api/v1/groups/" + this.id,
+                        "/v1/groups/" + this.id,
                         {
                             name: this.name,
                             homework_webhook: this.homework_webhook,
                             news_webhook: this.news_webhook,
                             exams_webhook: this.exams_webhook,
                             group_id: this.parent_id
-                        },
-                        {
-                            headers: {
-                                Authorization:
-                                    "Bearer " +
-                                    window.localStorage.getItem("authToken")
-                            }
                         }
                     )
                     .then(results => {
