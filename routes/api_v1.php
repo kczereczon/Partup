@@ -20,6 +20,7 @@ Route::middleware('auth:api')->delete('/course/{id}', "{$NS}CourseController@des
 Route::middleware('auth:api')->patch('/course/{id}', "{$NS}CourseController@update");
 
 Route::middleware('auth:api')->post('/homeworks', "{$NS}HomeworkController@store");
+Route::middleware('auth:api')->post('/news', "{$NS}NewsController@store");
 
 Route::post('/login', "{$NS}AuthController@login");
 Route::post('/register', "{$NS}AuthController@register");

@@ -23,7 +23,11 @@ class DiscordNotificationService
                     "type" => "rich",
 
                     // Embed Description
-                    "description" => "User just has been added you a new homework, see below for more details. ",
+                    //"description" => "User just has been added you a new homework, see below for more details. ",
+
+                    // Embed Description
+                    "description" => $homework->name,
+
 
                     // Embed left border color in HEX
                     "color" => hexdec("3366ff"),
@@ -73,6 +77,70 @@ class DiscordNotificationService
                         [
                             "name" => "Where send",
                             "value" => $homework->where_send,
+                            "inline" => false
+                        ]
+                    ]
+                ]
+            ]
+
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        $this->content = $message;
+
+        return $this;
+    }
+
+    public function generateNewsMessage(News $news)
+    {
+        $message = json_encode([
+            // Username
+            "username" => "Zadankowy BOT",
+
+            "embeds" => [
+                [
+                    // Embed Title
+                    "title" => "News",
+
+                    // Embed Type
+                    "type" => "rich",
+
+                    // Embed Description
+                    "description" => $news->title,
+
+
+                    // Embed left border color in HEX
+                    "color" => hexdec("3366ff"),
+
+                    // Footer
+                    // "footer" => [
+                    //     "text" => "GitHub.com/Mo45",
+                    //     "icon_url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=375"
+                    // ],
+
+                    // // Image to send
+                    // "image" => [
+                    //     "url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=600"
+                    // ],
+
+                    // Thumbnail
+                    //"thumbnail" => [
+                    //    "url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=400"
+                    //],
+
+                    // Author
+                    "author" => [
+                        "name" => "krzysztof.czereczon",
+                    ],
+                    // Additional Fields array
+                    "fields" => [
+                        [
+                            "name" => "Course",
+                            "value" => $news->course->name,
+                            "inline" => false
+                        ],
+                        [
+                            "name" => "Message",
+                            "value" => "$news->message",
                             "inline" => false
                         ]
                     ]

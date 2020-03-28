@@ -1,16 +1,17 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-sm-12">
+            <div class="col-lg-8 col-md-8 col-sm-12 pb-3 pt-3">
                 <group-container />
                 <courses-container v-on:refresh="getGroups" :groups="groups" />
             </div>
-
-            <homework-creator :courses="courses" />
+            <div class="col-lg-2 col-md-3 col-sm-12 pb-3 pt-3 justify-content-center text-center" style="background-color:grey;">
+                <homework-creator :courses="courses" />
+                <news-creator :courses="courses" />
+            </div>
         </div>
     </div>
 </template>
-
 <script>
 import axios from "axios";
 export default {
