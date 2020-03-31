@@ -39,11 +39,11 @@ class NewsController extends Controller
         );
 
         $news = new News();
-        $request->request->add(['teacher_id'=>Auth::user()->id]);
+        $request->request->add(['teacher_id' => Auth::user()->id]);
         $news = $news->create($request->all());
 
         $discordService = new DiscordNotificationService();
-        $discordService->generateNewsMessage($news)->send([$news->course->group->news_webhook]);
+        $discordService->generateNewsMessage($news)->send([$news->group->news_webhook]);
 
         return response()->json(['created' => true], 200);
     }

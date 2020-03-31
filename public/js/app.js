@@ -2335,11 +2335,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["courses"],
   date: function date() {
@@ -2939,7 +2934,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -41020,10 +41014,10 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-primary mx-1 my-3",
+        staticClass: "btn btn-primary w-100 my-3",
         attrs: { "data-toggle": "modal", "data-target": "#ExamsModal" }
       },
-      [_c("span", { staticClass: "fa fa-gear" }), _vm._v(" ADD EXAM\n        ")]
+      [_c("span", { staticClass: "fa fa-gear" }), _vm._v(" ADD EXAM\n    ")]
     )
   },
   function() {
@@ -41778,7 +41772,7 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-primary",
+        staticClass: "btn btn-primary w-100",
         attrs: { "data-toggle": "modal", "data-target": "#homeworkModal" }
       },
       [_c("span", { staticClass: "fa fa-gear" }), _vm._v(" ADD HOMEWORK\n    ")]
@@ -41931,12 +41925,7 @@ var render = function() {
                             selected: group.id == group.id
                           }
                         },
-                        [
-                          _vm._v(
-                            _vm._s(group.full_name) +
-                              "\n                                "
-                          )
-                        ]
+                        [_vm._v(_vm._s(group.full_name))]
                       )
                     }),
                     0
@@ -42008,10 +41997,10 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-primary mx-1 my-3",
+        staticClass: "btn btn-primary w-100",
         attrs: { "data-toggle": "modal", "data-target": "#newsModal" }
       },
-      [_c("span", { staticClass: "fa fa-gear" }), _vm._v(" ADD NEWS\n        ")]
+      [_c("span", { staticClass: "fa fa-gear" }), _vm._v(" ADD NEWS\n    ")]
     )
   },
   function() {

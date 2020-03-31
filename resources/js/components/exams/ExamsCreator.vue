@@ -1,6 +1,6 @@
 <template>
-<div>
-        <button class="btn btn-primary mx-1 my-3" data-toggle="modal" data-target="#ExamsModal">
+    <div>
+        <button class="btn btn-primary w-100 my-3" data-toggle="modal" data-target="#ExamsModal">
             <span class="fa fa-gear"></span> ADD EXAM
         </button>
         <!-- Modal -->
@@ -69,12 +69,7 @@
                         </div>
                         <div class="form-group">
                             <label for="time">Time</label>
-                            <textarea
-                                v-model="time"
-                                name="time"
-                                type="text"
-                                class="form-control"
-                            />
+                            <textarea v-model="time" name="time" type="text" class="form-control" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -128,12 +123,12 @@ export default {
                 .catch(err => {});
         },
         clearModal() {
-            this.name= "";
-            this.range_of_knowlage= "";
-            this.description= "";
-            this.place= "";
-            this.time= "";
-            this.course_id= "";
+            this.name = "";
+            this.range_of_knowlage = "";
+            this.description = "";
+            this.place = "";
+            this.time = "";
+            this.course_id = "";
         }
     }
 };

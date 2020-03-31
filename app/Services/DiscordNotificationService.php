@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Exam;
 use App\Homework;
+use App\News;
 
 class DiscordNotificationService
 {
@@ -217,7 +219,7 @@ class DiscordNotificationService
                     "fields" => [
                         [
                             "name" => "Course",
-                            "value" => $news->course->name,
+                            "value" => $news->group->name,
                             "inline" => false
                         ],
                         [

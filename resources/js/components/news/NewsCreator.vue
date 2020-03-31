@@ -1,6 +1,6 @@
 <template>
-<div>
-        <button class="btn btn-primary mx-1 my-3" data-toggle="modal" data-target="#newsModal">
+    <div>
+        <button class="btn btn-primary w-100" data-toggle="modal" data-target="#newsModal">
             <span class="fa fa-gear"></span> ADD NEWS
         </button>
         <!-- Modal -->
@@ -39,8 +39,7 @@
                                     :key="group.id"
                                     :value="group.id"
                                     :selected="group.id == group.id"
-                                    >{{ group.full_name }}
-                                </option>
+                                >{{ group.full_name }}</option>
                             </select>
                         </div>
                         <div class="form-group">

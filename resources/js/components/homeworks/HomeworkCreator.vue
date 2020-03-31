@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#homeworkModal">
+        <button class="btn btn-primary w-100" data-toggle="modal" data-target="#homeworkModal">
             <span class="fa fa-gear"></span> ADD HOMEWORK
         </button>
         <!-- Modal -->
