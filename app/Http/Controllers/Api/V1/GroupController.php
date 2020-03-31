@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Group;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupStoreRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
