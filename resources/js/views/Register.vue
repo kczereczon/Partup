@@ -56,18 +56,13 @@
                                             name="policy"
                                             id="policy"
                                         />
-                                        <label
-                                            class="form-check-label"
-                                            for="policy"
-                                        >
+                                        <label class="form-check-label" for="policy">
                                             Agreement of
                                             <a href>policy</a>.
                                         </label>
                                     </div>
                                     <div class="form-group mt-3">
-                                        <button class="custom-btn">
-                                            Register
-                                        </button>
+                                        <button class="custom-btn">Register</button>
                                     </div>
                                 </form>
                             </div>
@@ -108,6 +103,7 @@ export default {
                 })
                 .then(function(response) {
                     currentObj.output = response.data;
+                    currentObj.$router.push({ name: "Login" });
                 })
                 .catch(function(error) {
                     currentObj.output = error;

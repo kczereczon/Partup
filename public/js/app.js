@@ -4117,11 +4117,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4147,6 +4142,9 @@ __webpack_require__.r(__webpack_exports__);
         name: this.name
       }).then(function (response) {
         currentObj.output = response.data;
+        currentObj.$router.push({
+          name: "Login"
+        });
       })["catch"](function (error) {
         currentObj.output = error;
         currentObj.errors = error.response.data.errors;
@@ -43591,11 +43589,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group mt-3" }, [
-      _c("button", { staticClass: "custom-btn" }, [
-        _vm._v(
-          "\n                                        Register\n                                    "
-        )
-      ])
+      _c("button", { staticClass: "custom-btn" }, [_vm._v("Register")])
     ])
   }
 ]
