@@ -12,13 +12,17 @@ import VueRouter from "vue-router";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import Home from "./views/Home";
+import StudentZone from "./views/StudentZone";
+import TeacherZone from "./views/TeacherZone";
+import LeaderZone from "./views/LeaderZone";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import API from "./api";
 
 Vue.use(VueRouter, VueAxios, axios);
 
-const routes = [{
+const routes = [
+    {
         path: "/",
         name: "Home",
         meta: {
@@ -27,20 +31,23 @@ const routes = [{
         component: Home
     },
     { path: "/register", name: "Register", component: Register },
-    { path: "/login", name: "Login", component: Login }
+    { path: "/login", name: "Login", component: Login },
+    { path: "/student-zone", name: "StudentZone", component: StudentZone },
+    { path: "/teacher-zone", name: "TeacherZone", component: TeacherZone },
+    { path: "/leader-zone", name: "LeaderZone", component: LeaderZone }
 ];
 
-const router = new VueRouter({
-    mode: "history",
+const routerObject = new VueRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
+routerObject.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
         if (!window.localStorage.getItem("authToken")) {
             next({ name: "Login" });
+            $root.isLogged = false;
         } else {
             next(); // go to wherever I'm going
         }
@@ -53,9 +60,9 @@ const files = require.context("./", true, /\.vue$/i);
 files.keys().map(key =>
     Vue.component(
         key
-        .split("/")
-        .pop()
-        .split(".")[0],
+            .split("/")
+            .pop()
+            .split(".")[0],
         files(key).default
     )
 );
@@ -63,5 +70,17 @@ files.keys().map(key =>
 Vue.prototype.$http = API;
 
 const app = new Vue({
-    router
-}).$mount("#app");
+    el: "#app",
+    router: routerObject,
+    data: {
+        isLogged: window.localStorage.getItem("authToken")
+    },
+    methods: {
+        logout() {
+            this.isLogged = false;
+            window.localStorage.removeItem("authToken");
+            window.localStorage.removeItem("authUser");
+            this.$router.push({ name: "Login" });
+        }
+    }
+});

@@ -27,8 +27,16 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
+                    <ul v-if="isLogged" class="navbar-nav ml-auto">
+                        <router-link :to="{name: 'StudentZone'}" tag="button" class="btn btn-primary">Student Zone</router-link>
+                        <router-link :to="{name: 'TeacherZone'}" tag="button" class="btn btn-primary ml-1">Teacher Zone</router-link>
+                        <router-link :to="{name: 'LeaderZone'}" tag="button" class="btn btn-primary ml-1">Leader Zone</router-link>
+                        <li><button @click="logout" class="btn btn-light ml-1">Logout</button></li>
+                    </ul>
+
+                     <ul v-if="!isLogged" class="navbar-nav ml-auto">
+                        <router-link :to="{name: 'Register'}" tag="button" class="btn btn-primary">Register</router-link>
+                        <router-link :to="{name: 'Login'}" tag="button" class="btn btn-primary ml-1">Login</router-link>
                     </ul>
                 </div>
             </div>

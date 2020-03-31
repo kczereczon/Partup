@@ -33,17 +33,11 @@
                                     />
                                     <div class="row mt-3">
                                         <div class="col-6">
-                                            <button class="custom-btn w-100">
-                                                LOGIN
-                                            </button>
+                                            <button type="submit" class="custom-btn w-100">LOGIN</button>
                                         </div>
                                         <div class="col-6">
-                                            <router-link :to="'/register'">
-                                                <button
-                                                    class="custom-btn w-100"
-                                                >
-                                                    REGISTER
-                                                </button>
+                                            <router-link :to="{name: 'Register'}">
+                                                <button class="custom-btn w-100">REGISTER</button>
                                             </router-link>
                                         </div>
                                     </div>
@@ -88,30 +82,30 @@ export default {
             currentObj.errors = {};
             currentObj.message = "";
 
-            axios
-                .post("/api/v1/login", {
+            this.$http
+                .post("/v1/login", {
                     email: this.email,
                     password: this.password
                 })
                 .then(function(response) {
-                    window.localStorage.setItem(
-                        "authUser",
-                        JSON.stringify(response.data.user)
-                    );
-                    window.localStorage.setItem(
-                        "authToken",
-                        response.data.access_token
-                    );
-
-                    axios.defaults.headers.common["Authorization"] =
-                        "Bearer " + response.data.access_token;
-
-                    currentObj.output = response.data;
-                    this.$router.push({ name: "Home" });
+                    try {
+                        window.localStorage.setItem(
+                            "authUser",
+                            JSON.stringify(response.data.user)
+                        );
+                        window.localStorage.setItem(
+                            "authToken",
+                            response.data.access_token
+                        );
+                        currentObj.$root.isLogged = true;
+                        currentObj.$router.push({ name: "Home" });
+                    } catch (error) {
+                        console.log(error);
+                    }
                 })
                 .catch(function(error) {
                     currentObj.output = error;
-                    currentObj.errors = error.response.data.errors
+                    currentObj.errors = error.response.data
                         ? error.response.data.errors
                         : {};
                     currentObj.message = error.response.data.message;
