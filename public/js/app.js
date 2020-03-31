@@ -2861,13 +2861,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["courses"],
+  props: ["groups"],
   date: function date() {
     return {
       title: "",
       message: "",
-      course_id: ""
+      group_id: ""
     };
   },
   methods: {
@@ -2877,7 +2880,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.post("/v1/news", {
         title: this.title,
         message: this.message,
-        course_id: this.course_id
+        group_id: this.group_id
       }).then(function (result) {
         _this.refreshCourses();
 
@@ -2887,7 +2890,7 @@ __webpack_require__.r(__webpack_exports__);
     clearModal: function clearModal() {
       this.title = "";
       this.message = "";
-      this.course_id = "";
+      this.group_id = "";
     }
   }
 });
@@ -41434,8 +41437,8 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "course_id" } }, [
-                    _vm._v("Course")
+                  _c("label", { attrs: { for: "group_id" } }, [
+                    _vm._v("Group")
                   ]),
                   _vm._v(" "),
                   _c(
@@ -41445,12 +41448,16 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.course_id,
-                          expression: "course_id"
+                          value: _vm.group_id,
+                          expression: "group_id"
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { name: "course_id", type: "text" },
+                      attrs: {
+                        type: "text",
+                        name: "name",
+                        placeholder: "Group name."
+                      },
                       on: {
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter
@@ -41461,17 +41468,28 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.course_id = $event.target.multiple
+                          _vm.group_id = $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
                         }
                       }
                     },
-                    _vm._l(_vm.courses, function(course) {
+                    _vm._l(_vm.groups, function(group) {
                       return _c(
                         "option",
-                        { key: course.id, domProps: { value: course.id } },
-                        [_vm._v(_vm._s(course.name))]
+                        {
+                          key: group.id,
+                          domProps: {
+                            value: group.id,
+                            selected: group.id == group.id
+                          }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(group.full_name) +
+                              "\n                                "
+                          )
+                        ]
                       )
                     }),
                     0
@@ -42754,7 +42772,7 @@ var render = function() {
         [
           _c("homework-creator", { attrs: { courses: _vm.courses } }),
           _vm._v(" "),
-          _c("news-creator", { attrs: { courses: _vm.courses } })
+          _c("news-creator", { attrs: { groups: _vm.groups } })
         ],
         1
       )

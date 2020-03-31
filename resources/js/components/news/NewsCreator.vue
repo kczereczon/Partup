@@ -26,18 +26,21 @@
                             <input v-model="title" name="title" type="text" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <label for="course_id">Course</label>
+                            <label for="group_id">Group</label>
                             <select
-                                v-model="course_id"
-                                name="course_id"
                                 type="text"
+                                name="name"
                                 class="form-control"
+                                placeholder="Group name."
+                                v-model="group_id"
                             >
                                 <option
-                                    v-for="(course) in courses"
-                                    :key="course.id"
-                                    :value="course.id"
-                                >{{course.name}}</option>
+                                    v-for="group in groups"
+                                    :key="group.id"
+                                    :value="group.id"
+                                    :selected="group.id == group.id"
+                                    >{{ group.full_name }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -72,12 +75,12 @@
 
 <script>
 export default {
-    props: ["courses"],
+    props: ["groups"],
     date() {
         return {
             title: "",
             message: "",
-            course_id: ""
+            group_id: ""
         };
     },
     methods: {
@@ -86,7 +89,7 @@ export default {
                 .post("/v1/news", {
                     title: this.title,
                     message: this.message,
-                    course_id: this.course_id
+                    group_id: this.group_id
                 })
                 .then(result => {
                     this.refreshCourses();
@@ -97,7 +100,7 @@ export default {
         clearModal() {
             this.title = "";
             this.message = "";
-            this.course_id = "";
+            this.group_id = "";
         }
     }
 };

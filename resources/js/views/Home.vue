@@ -7,7 +7,7 @@
             </div>
             <div class="col-lg-2 col-md-3 col-sm-12 pb-3 pt-3 justify-content-center text-center" style="background-color:grey;">
                 <homework-creator :courses="courses" />
-                <news-creator :courses="courses" />
+                <news-creator :groups="groups" />
             </div>
         </div>
     </div>

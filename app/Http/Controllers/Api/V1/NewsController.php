@@ -6,6 +6,7 @@ use App\News;
 use App\Http\Controllers\Controller;
 use App\Services\DiscordNotificationService as DiscordNotificationService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 
@@ -33,11 +34,12 @@ class NewsController extends Controller
             [
                 'title' => 'required|string',
                 'message' => 'required|string',
-                'course_id' => 'required|exists:courses,id'
+                'group_id' => 'required|exists:groups,id'
             ]
         );
 
         $news = new News();
+        $request->request->add(['teacher_id'=>Auth::user()->id]);
         $news = $news->create($request->all());
 
         $discordService = new DiscordNotificationService();

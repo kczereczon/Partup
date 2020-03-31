@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    protected $fillable = ['title','message','group_id'];
+    protected $fillable = ['title','message','group_id','teacher_id'];
 
     public function course()
     {
