@@ -19,7 +19,11 @@ Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");
 Route::middleware('auth:api')->delete('/course/{id}', "{$NS}CourseController@destroy");
 Route::middleware('auth:api')->patch('/course/{id}', "{$NS}CourseController@update");
 
+//courses
 Route::middleware('auth:api')->post('/homeworks', "{$NS}HomeworkController@store");
+Route::middleware('auth:api')->post('/exam', "{$NS}ExamController@store");
+
+//groups
 Route::middleware('auth:api')->post('/news', "{$NS}NewsController@store");
 
 Route::post('/login', "{$NS}AuthController@login");

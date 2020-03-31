@@ -90,11 +90,93 @@ class DiscordNotificationService
         return $this;
     }
 
+    public function generateExamMessage(Exam $exam)
+    {
+        $message = json_encode([
+            // Username
+            "username" => "Egzaminowy BOT",
+
+            "embeds" => [
+                [
+                    // Embed Title
+                    "title" => "Exam",
+
+                    // Embed Type
+                    "type" => "rich",
+
+                    // Embed Description
+                    //"description" => "User just has been added you a new homework, see below for more details. ",
+
+                    // Embed Description
+                    "description" => $exam->name,
+
+
+                    // Embed left border color in HEX
+                    "color" => hexdec("3366ff"),
+
+                    // Footer
+                    // "footer" => [
+                    //     "text" => "GitHub.com/Mo45",
+                    //     "icon_url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=375"
+                    // ],
+
+                    // // Image to send
+                    // "image" => [
+                    //     "url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=600"
+                    // ],
+
+                    // Thumbnail
+                    //"thumbnail" => [
+                    //    "url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=400"
+                    //],
+
+                    // Author
+                    "author" => [
+                        "name" => "krzysztof.czereczon",
+                    ],
+                    // Additional Fields array
+                    "fields" => [
+                        [
+                            "name" => "Course",
+                            "value" => $exam->course->name,
+                            "inline" => false
+                        ],
+                        [
+                            "name" => "Description",
+                            "value" => "$exam->description",
+                            "inline" => true
+                        ],
+                        [
+                            "name" => "Range of knowlage",
+                            "value" => "$exam->range_of_knowlage",
+                            "inline" => true
+                        ],
+                        [
+                            "name" => "Place",
+                            "value" => $exam->place,
+                            "inline" => true
+                        ],
+                        [
+                            "name" => "Time",
+                            "value" => $exam->time,
+                            "inline" => true
+                        ]
+                    ]
+                ]
+            ]
+
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        $this->content = $message;
+
+        return $this;
+    }
+
     public function generateNewsMessage(News $news)
     {
         $message = json_encode([
             // Username
-            "username" => "Zadankowy BOT",
+            "username" => "Wiadomościowy BOT",
 
             "embeds" => [
                 [

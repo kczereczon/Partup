@@ -5,8 +5,12 @@
                 <group-container />
                 <courses-container v-on:refresh="getGroups" :groups="groups" />
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-12 pb-3 pt-3 justify-content-center text-center" style="background-color:grey;">
+            <div class="col-lg-2 col-md-3 col-sm-12 pb-3 pt-3 justify-content-center text-center">
+                <h4>Courses</h4>
                 <homework-creator :courses="courses" />
+                <exams-creator :courses="courses"/>
+                <hr>
+                <h4>Groups</h4>
                 <news-creator :groups="groups" />
             </div>
         </div>
