@@ -1,12 +1,12 @@
 <template>
 <div>
-        <button class="btn btn-primary mx-1 my-3" data-toggle="modal" data-target="#newsModal">
+        <button class="btn btn-primary mx-1 my-3" data-toggle="modal" data-target="#ExamsModal">
             <span class="fa fa-gear"></span> ADD EXAM
         </button>
         <!-- Modal -->
         <div
             class="modal fade"
-            id="newsModal"
+            id="ExamsModal"
             tabindex="-1"
             role="dialog"
             aria-labelledby="webHooksModalLabel"

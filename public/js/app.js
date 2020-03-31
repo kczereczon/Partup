@@ -41247,7 +41247,7 @@ var render = function() {
       {
         staticClass: "modal fade",
         attrs: {
-          id: "newsModal",
+          id: "ExamsModal",
           tabindex: "-1",
           role: "dialog",
           "aria-labelledby": "webHooksModalLabel",
@@ -41480,7 +41480,7 @@ var staticRenderFns = [
       "button",
       {
         staticClass: "btn btn-primary mx-1 my-3",
-        attrs: { "data-toggle": "modal", "data-target": "#newsModal" }
+        attrs: { "data-toggle": "modal", "data-target": "#ExamsModal" }
       },
       [_c("span", { staticClass: "fa fa-gear" }), _vm._v(" ADD EXAM\n        ")]
     )
