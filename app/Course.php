@@ -10,7 +10,7 @@ class Course extends Model
 
     public function users()
     {
-        return $this->belongsToMany(Users::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function group()

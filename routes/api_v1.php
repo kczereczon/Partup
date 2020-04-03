@@ -13,6 +13,7 @@ Route::middleware('auth:api')->get('/groups', "{$NS}GroupController@getForUsers"
 Route::middleware('auth:api')->get('/groups/all', "{$NS}GroupController@getAllOwnedGroups");
 Route::middleware('auth:api')->delete('/groups/{group}', "{$NS}GroupController@destroy");
 Route::middleware('auth:api')->patch('/groups/{group}', "{$NS}GroupController@update");
+Route::middleware('auth:api')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
 
 Route::middleware('auth:api')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");

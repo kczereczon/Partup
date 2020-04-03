@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupStoreRequest;
+use App\Services\GroupInvitationService;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -104,7 +106,7 @@ class GroupController extends Controller
 
     public function getAllOwnedGroups(Request $request)
     {
-        /** @var Group|Builder */
+        /** @var Group|Builder $groups*/
         $groups = new Group();
 
         $groups = $groups
@@ -114,5 +116,25 @@ class GroupController extends Controller
             ->get();
 
         return response()->json($groups, 200);
+    }
+
+    public function inviteUser($id, Request $request)
+    {
+        $validated = $request->validate(['email' => 'required|email']);
+
+        /** @var Group|Builder $group */
+        $group = new Group();
+        $group = $group->findOrFail($id);
+
+        //checking that group is created by user
+        if ($group->owner_id != Auth::user()->id)
+            throw new Exception("User tried to invite person, to group that he don't own.", 401);
+
+        $groupInvitationService = new GroupInvitationService();
+        $invitation = $groupInvitationService->createInvitation($validated['email'], $group);
+
+        $sent = $groupInvitationService->sendInvite($invitation);
+
+        return response()->json(["sent" => $sent], 200);
     }
 }
