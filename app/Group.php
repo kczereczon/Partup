@@ -17,7 +17,7 @@ class Group extends Model
         'owner_id',
         'homework_webhook',
         'news_webhook',
-        'exam_webhook',
+        'exams_webhook',
     ];
 
     public function subgroups(): HasMany

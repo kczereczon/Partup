@@ -45,7 +45,7 @@ class ExamController extends Controller
         $exam = $exam->create($request->all());
 
         $discordService = new DiscordNotificationService();
-        $discordService->generateExamMessage($exam)->send([$exam->course->group->exam_webhook]);
+        $discordService->generateExamMessage($exam)->send([$exam->course->group->exams_webhook]);
 
         return response()->json(['created' => true], 200);
     }
