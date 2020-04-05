@@ -1,5 +1,6 @@
 <template>
     <div class="col-12">
-        oreach test test test test test test foreach test test test test test test
+        <h5>{{title}}</h5>
+        {{message}}
     </div>
 </template>

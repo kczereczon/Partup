@@ -8,6 +8,16 @@
                 <student-groups-news-component/>
             </div>
         </div>
+        <div class="card-body bg-light">
+            <div class="row no-gutters">
+                <student-groups-exams-component/>
+            </div>
+        </div>
+        <div class="card-body bg-light">
+            <div class="row no-gutters">
+                <student-groups-homework-component/>
+            </div>
+        </div>
     </div>
 
 </template>
