@@ -69,7 +69,7 @@
                         </div>
                         <div class="form-group">
                             <label for="time">Time</label>
-                            <textarea v-model="time" name="time" type="text" class="form-control" />
+                            <datetime v-model="time" type="datetime" input-class="form-control" minute-step="5"></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -93,6 +93,11 @@
 </template>
 
 <script>
+import moment from 'moment'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.use(Datetime);
+
 export default {
     props: ["courses"],
     date() {
@@ -113,7 +118,7 @@ export default {
                     range_of_knowlage: this.range_of_knowlage,
                     description: this.description,
                     place: this.place,
-                    time: this.time,
+                    time: moment(this.time).format('YYYY:MM:DD HH:mm:ss'),
                     course_id: this.course_id
                 })
                 .then(result => {
