@@ -33,11 +33,22 @@
                                     />
                                     <div class="row mt-3">
                                         <div class="col-6">
-                                            <button type="submit" class="custom-btn w-100">LOGIN</button>
+                                            <button
+                                                type="submit"
+                                                class="custom-btn w-100"
+                                            >
+                                                LOGIN
+                                            </button>
                                         </div>
                                         <div class="col-6">
-                                            <router-link :to="{name: 'Register'}">
-                                                <button class="custom-btn w-100">REGISTER</button>
+                                            <router-link
+                                                :to="{ name: 'Register' }"
+                                            >
+                                                <button
+                                                    class="custom-btn w-100"
+                                                >
+                                                    REGISTER
+                                                </button>
                                             </router-link>
                                         </div>
                                     </div>
@@ -57,7 +68,7 @@ import Error from "../components/Error.vue";
 
 export default {
     components: {
-        Error
+        Error,
     },
     data() {
         return {
@@ -66,11 +77,11 @@ export default {
             output: "",
             hideAlert: true,
             errors: {},
-            message: null
+            message: null,
         };
     },
     created() {},
-    ready: function() {
+    ready: function () {
         if (window.localStorage.getItem("authToken"))
             this.$router.push({ name: "Home" });
     },
@@ -83,11 +94,11 @@ export default {
             currentObj.message = "";
 
             this.$http
-                .post("/v1/login", {
+                .post("/api/v1/login", {
                     email: this.email,
-                    password: this.password
+                    password: this.password,
                 })
-                .then(function(response) {
+                .then(function (response) {
                     try {
                         window.localStorage.setItem(
                             "authUser",
@@ -103,15 +114,15 @@ export default {
                         console.log(error);
                     }
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     currentObj.output = error;
                     currentObj.errors = error.response.data
                         ? error.response.data.errors
                         : {};
                     currentObj.message = error.response.data.message;
                 });
-        }
-    }
+        },
+    },
 };
 </script>
 <style lang="scss">
