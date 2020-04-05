@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Group;
 use App\GroupInvitation;
 use App\Mail\GroupInvite;
+use App\User;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -43,5 +44,20 @@ class GroupInvitationService
             return false;
         }
         return true;
+    }
+
+    public function acceptInvite(GroupInvitation $groupInvitation, User $user)
+    {
+        try {
+            $user->groups()->sync([$groupInvitation->group->id]);
+
+            $groupInvitation->accepted = true;
+            $groupInvitation->save();
+
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return false;
+        }
     }
 }

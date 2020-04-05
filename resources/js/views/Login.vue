@@ -65,6 +65,7 @@
 <script>
 import axios from "axios";
 import Error from "../components/Error.vue";
+import API from "../api";
 
 export default {
     components: {
@@ -80,8 +81,7 @@ export default {
             message: null,
         };
     },
-    created() {},
-    ready: function () {
+    created() {
         if (window.localStorage.getItem("authToken"))
             this.$router.push({ name: "Home" });
     },
@@ -108,8 +108,16 @@ export default {
                             "authToken",
                             response.data.access_token
                         );
+
                         currentObj.$root.isLogged = true;
-                        currentObj.$router.push({ name: "Home" });
+                        if (currentObj.$route.query.inviteHash)
+                            currentObj.$router.push({
+                                name: "GroupInvite",
+                                query: {
+                                    hash: currentObj.$route.query.inviteHash,
+                                },
+                            });
+                        else currentObj.$router.push({ name: "Home" });
                     } catch (error) {
                         console.log(error);
                     }
@@ -121,6 +129,9 @@ export default {
                         : {};
                     currentObj.message = error.response.data.message;
                 });
+
+            //reload header api after login
+            this.$http = API;
         },
     },
 };

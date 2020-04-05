@@ -15,6 +15,7 @@ import Home from "./views/Home";
 import StudentZone from "./views/StudentZone";
 import TeacherZone from "./views/TeacherZone";
 import LeaderZone from "./views/LeaderZone";
+import GroupInvite from "./views/GroupInvite";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import API from "./api";
@@ -35,6 +36,7 @@ const routes = [
     { path: "/student-zone", name: "StudentZone", component: StudentZone },
     { path: "/teacher-zone", name: "TeacherZone", component: TeacherZone },
     { path: "/leader-zone", name: "LeaderZone", component: LeaderZone },
+    { path: "/group-invite", name: "GroupInvite", component: GroupInvite },
 ];
 
 const routerObject = new VueRouter({

@@ -15,10 +15,14 @@ Route::middleware('auth:api')->delete('/groups/{group}', "{$NS}GroupController@d
 Route::middleware('auth:api')->patch('/groups/{group}', "{$NS}GroupController@update");
 Route::middleware('auth:api')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
 
+
 Route::middleware('auth:api')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");
 Route::middleware('auth:api')->delete('/course/{id}', "{$NS}CourseController@destroy");
 Route::middleware('auth:api')->patch('/course/{id}', "{$NS}CourseController@update");
+
+Route::get('/group-invitations', "{$NS}GroupInvitationController@show");
+Route::middleware('auth:api')->post('/group-invitations/accept', "{$NS}GroupInvitationController@accept");
 
 //courses
 Route::middleware('auth:api')->post('/homeworks', "{$NS}HomeworkController@store");

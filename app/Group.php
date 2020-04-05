@@ -42,4 +42,9 @@ class Group extends Model
         else
             return $this->name;
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(Group::class);
+    }
 }
