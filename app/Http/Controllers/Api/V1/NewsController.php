@@ -42,6 +42,9 @@ class NewsController extends Controller
         $request->request->add(['teacher_id' => Auth::user()->id]);
         $news = $news->create($request->all());
 
+        $news->owner()->associate($request->teacher_id());
+        $news->group()->associate($request->group_id());
+
         $discordService = new DiscordNotificationService();
         $discordService->generateNewsMessage($news)->send([$news->group->news_webhook]);
 

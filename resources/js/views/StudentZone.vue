@@ -1,6 +1,12 @@
 <template>
     <div>
-        <h1>Test</h1>
+        <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-8 col-sm-12 pb-3 pt-3">
+                <student-groups-container/>
+            </div>
+        </div>
+    </div>
     </div>
 </template>
 
