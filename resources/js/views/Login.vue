@@ -94,7 +94,7 @@ export default {
             currentObj.message = "";
 
             this.$http
-                .post("/api/v1/login", {
+                .post("/v1/login", {
                     email: this.email,
                     password: this.password,
                 })
