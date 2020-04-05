@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Laravel Vue Router Message Example From Scratch - ItSolutionStuff.com</title>
-        <link href="{{secure_asset('css/app.css')}}" rel="stylesheet" type="text/css">
+        <link href="css/app.css" rel="stylesheet" type="text/css">
         <script src="https://kit.fontawesome.com/fb57c0e906.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -43,6 +43,6 @@
             </nav>
             <router-view></router-view>
         </div>
-        <script src="{{secure_asset('js/app.js')}}" ></script>
+        <script src="js/app.js" ></script>
     </body>
 </html>
