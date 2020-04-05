@@ -56,13 +56,18 @@
                                             name="policy"
                                             id="policy"
                                         />
-                                        <label class="form-check-label" for="policy">
+                                        <label
+                                            class="form-check-label"
+                                            for="policy"
+                                        >
                                             Agreement of
                                             <a href>policy</a>.
                                         </label>
                                     </div>
                                     <div class="form-group mt-3">
-                                        <button class="custom-btn">Register</button>
+                                        <button class="custom-btn">
+                                            Register
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -84,7 +89,7 @@ export default {
             re_password: "",
             agreement: "",
             output: null,
-            errors: []
+            errors: [],
         };
     },
     methods: {
@@ -94,24 +99,24 @@ export default {
             currentObj.errors = {};
             currentObj.message = "";
 
-            axios
-                .post("/api/v1/register", {
+            this.$http
+                .post("/v1/register", {
                     email: this.email,
                     password: this.password,
                     re_password: this.re_password,
-                    name: this.name
+                    name: this.name,
                 })
-                .then(function(response) {
+                .then(function (response) {
                     currentObj.output = response.data;
                     currentObj.$router.push({ name: "Login" });
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     currentObj.output = error;
                     currentObj.errors = error.response.data.errors;
                     currentObj.message = error.response.data.message;
                 });
-        }
-    }
+        },
+    },
 };
 </script>
 
