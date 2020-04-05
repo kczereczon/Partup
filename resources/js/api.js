@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "https://partup.herokuapp.com/api",
+    baseURL: process.env.APP_URL,
     headers: {
         Authorization: "Bearer " + window.localStorage.getItem("authToken"),
     },
