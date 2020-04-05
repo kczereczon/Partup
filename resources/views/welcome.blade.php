@@ -12,32 +12,23 @@
     <body>
         <div id="app">
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mb-3">
-            <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul v-if="isLogged" class="navbar-nav ml-auto">
-                        <router-link :to="{name: 'StudentZone'}" tag="button" class="btn btn-primary">Student Zone</router-link>
-                        <router-link :to="{name: 'TeacherZone'}" tag="button" class="btn btn-primary ml-1">Teacher Zone</router-link>
-                        <router-link :to="{name: 'LeaderZone'}" tag="button" class="btn btn-primary ml-1">Leader Zone</router-link>
-                        <li><button @click="logout" class="btn btn-light ml-1">Logout</button></li>
-                    </ul>
-
-                     <ul v-if="!isLogged" class="navbar-nav ml-auto">
-                        <router-link :to="{name: 'Register'}" tag="button" class="btn btn-primary">Register</router-link>
-                        <router-link :to="{name: 'Login'}" tag="button" class="btn btn-primary ml-1">Login</router-link>
-                    </ul>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div v-if="isLogged" class="ml-auto navbar-nav">
+                    <li class="nav-item"><router-link :to="{name: 'StudentZone'}" tag="a" :class="['nav-link']">Student Zone</router-link></li>
+                    <li class="nav-item"><router-link :to="{name: 'TeacherZone'}" tag="a" :class="['nav-link']">Teacher Zone</router-link></li>
+                    <li class="nav-item"><router-link :to="{name: 'LeaderZone'}" tag="a" :class="['nav-link']">Leader Zone</router-link></li>
+                    <li class="nav-item"><a href="#" @click="logout" :class="['nav-link']">Logout</a></li>
+                </div>
+                <div v-if="!isLogged" class="ml-auto navbar-nav">
+                    <li class="nav-item"><router-link :to="{name: 'Register'}" tag="a" :class="['nav-link']">Register</router-link></li>
+                    <li class="nav-item"><router-link :to="{name: 'Login'}" tag="a" :class="['nav-link', '']">Login</router-link></li>
                 </div>
             </div>
             </nav>

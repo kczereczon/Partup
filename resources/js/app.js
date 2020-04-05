@@ -26,23 +26,24 @@ const routes = [
         path: "/",
         name: "Home",
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
         },
-        component: Home
+        component: Home,
     },
     { path: "/register", name: "Register", component: Register },
     { path: "/login", name: "Login", component: Login },
     { path: "/student-zone", name: "StudentZone", component: StudentZone },
     { path: "/teacher-zone", name: "TeacherZone", component: TeacherZone },
-    { path: "/leader-zone", name: "LeaderZone", component: LeaderZone }
+    { path: "/leader-zone", name: "LeaderZone", component: LeaderZone },
 ];
 
 const routerObject = new VueRouter({
-    routes
+    routes,
+    linkActiveClass: "active",
 });
 
 routerObject.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
         if (!window.localStorage.getItem("authToken")) {
@@ -57,15 +58,11 @@ routerObject.beforeEach((to, from, next) => {
 });
 
 const files = require.context("./", true, /\.vue$/i);
-files.keys().map(key =>
-    Vue.component(
-        key
-            .split("/")
-            .pop()
-            .split(".")[0],
-        files(key).default
-    )
-);
+files
+    .keys()
+    .map((key) =>
+        Vue.component(key.split("/").pop().split(".")[0], files(key).default)
+    );
 
 Vue.prototype.$http = API;
 
@@ -73,7 +70,7 @@ const app = new Vue({
     el: "#app",
     router: routerObject,
     data: {
-        isLogged: window.localStorage.getItem("authToken")
+        isLogged: window.localStorage.getItem("authToken"),
     },
     methods: {
         logout() {
@@ -81,6 +78,6 @@ const app = new Vue({
             window.localStorage.removeItem("authToken");
             window.localStorage.removeItem("authUser");
             this.$router.push({ name: "Login" });
-        }
-    }
+        },
+    },
 });
