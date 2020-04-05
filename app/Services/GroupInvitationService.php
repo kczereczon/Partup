@@ -36,7 +36,7 @@ class GroupInvitationService
 
     public function sendInvite(GroupInvitation $groupInvitation)
     {
-        $link = Request::getHost() . "/api/v1/group_invite?hash=" . $groupInvitation->invite_hash;
+        $link = env("APP_URL") . "/#/group-invite?hash=" . $groupInvitation->invite_hash;
         try {
             Mail::to($groupInvitation)->send(new GroupInvite($link, $groupInvitation->group));
         } catch (Exception $e) {
