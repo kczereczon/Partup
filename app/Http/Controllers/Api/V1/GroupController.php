@@ -144,8 +144,7 @@ class GroupController extends Controller
         //check if user is in group
         if(true)
         {
-            $news = new News();
-            $news = $news;
+            $news = News::where('group_id',$id)->get();
 
             return response()->json($news,200);
         }

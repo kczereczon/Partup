@@ -1,21 +1,17 @@
 <template>
     <div class="card">
-        <div class="card-header">
+        <div class="card-header bg-success">
             <h5 class="mb-0">{{name}}</h5>
         </div>
         <div class="card-body bg-light">
             <div class="row no-gutters">
-                <student-groups-news-component/>
-            </div>
-        </div>
-        <div class="card-body bg-light">
-            <div class="row no-gutters">
-                <student-groups-exams-component/>
-            </div>
-        </div>
-        <div class="card-body bg-light">
-            <div class="row no-gutters">
-                <student-groups-homework-component/>
+                <student-groups-news-component
+                    v-for="(news) in newses"
+                    :key="news.id"
+                    :id="news.id"
+                    :title="news.title"
+                    :message="news.message"
+                />
             </div>
         </div>
     </div>
@@ -26,18 +22,18 @@ export default {
     props: ["id", "name"],
     data() {
         return {
-            news: []
+            newses: []
         };
     },
     created() {
-        this.getNews();
+        this.getNewses();
     },
     methods: {
-        getNews() {
+        getNewses() {
             this.$http
                 .get("v1/groups/{id}/news/".replace('{id}',this.id))
                 .then(result=>{
-                    this.news=result.data;
+                    this.newses=result.data;
                 })
                 .catch(error => console.log(error.response));
         }

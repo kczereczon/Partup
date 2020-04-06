@@ -4,3 +4,10 @@
         {{message}}
     </div>
 </template>
+<script>
+export default {
+    props: ["id", "title", "message"],
+};
+</script>
+
+<style></style>

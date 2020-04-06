@@ -3,18 +3,16 @@
         <div class="col-md-11 col-sm-12">
             <div class="card my-3">
                 <div class="card-header">
-                    Groups
+                    Courses
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4">
-                            <student-groups-component
-                                v-for="(group) in groups"
-                                :key="group.id"
-                                :id="group.id"
-                                :name="group.name"
+                            <student-courses-component
+                                v-for="(course) in courses"
+                                :key="course.id"
+                                :id="course.id"
+                                :name="course.name"
                             />
-                        </div>
                     </div>
                 </div>
             </div>
@@ -25,19 +23,18 @@
 export default {
     data() {
         return {
-            groups: []
+            courses: []
         };
     },
     created() {
-        this.getGroups();
+        this.getCourses();
     },
     methods: {
-        getGroups() {
+        getCourses() {
             this.$http
-                .get("/v1/groups")
+                .get("/v1/course")
                 .then(results => {
-                    console.log(results.data);
-                    this.groups = results.data;
+                    this.courses = results.data;
                 })
                 .catch(error => console.log(error.response));
         }
