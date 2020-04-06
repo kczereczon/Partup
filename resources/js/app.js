@@ -22,8 +22,7 @@ import API from "./api";
 
 Vue.use(VueRouter, VueAxios, axios);
 
-const routes = [
-    {
+const routes = [{
         path: "/",
         name: "Home",
         meta: {

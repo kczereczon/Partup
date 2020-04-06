@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Course;
+use App\Exam;
+use App\Homework;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -96,5 +98,26 @@ class CourseController extends Controller
         $course = $course->delete();
 
         return response()->json(['deleted' => $course], 200);
+    }
+
+    public function getExamsList($id)
+    {
+        //check if user is in group
+        if(true)
+        {
+            $exams = Exam::where('course_id',$id)->get();
+
+            return response()->json($exams,200);
+        }
+    }
+    public function getHomeworksList($id)
+    {
+        //check if user is in group
+        if(true)
+        {
+            $homework = Homework::where('course_id',$id)->get();
+
+            return response()->json($homework,200);
+        }
     }
 }

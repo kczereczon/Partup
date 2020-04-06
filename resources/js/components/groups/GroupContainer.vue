@@ -51,12 +51,7 @@ export default {
         },
         getGroups() {
             this.$http
-                .get("/v1/groups", {
-                    headers: {
-                        Authorization:
-                            "Bearer " + window.localStorage.getItem("authToken")
-                    }
-                })
+                .get("/v1/groups")
                 .then(results => {
                     console.log(results.data);
                     this.groups = results.data;
@@ -66,13 +61,7 @@ export default {
         remove(index) {
             if (this.groups[index].id) {
                 this.$http
-                    .delete("/v1/groups/" + this.groups[index].id, {
-                        headers: {
-                            Authorization:
-                                "Bearer " +
-                                window.localStorage.getItem("authToken")
-                        }
-                    })
+                    .delete("/v1/groups/" + this.groups[index].id)
                     .then(results => {
                         this.groups.splice(index, 1);
                         this.getGroups();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Group;
+use App\News;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupStoreRequest;
 use App\Services\GroupInvitationService;
@@ -136,5 +137,16 @@ class GroupController extends Controller
         $sent = $groupInvitationService->sendInvite($invitation);
 
         return response()->json(["sent" => $sent], 200);
+    }
+    //returns array of news from group
+    public function getNewsList($id)
+    {
+        //check if user is in group
+        if(true)
+        {
+            $news = News::where('group_id',$id)->get();
+
+            return response()->json($news,200);
+        }
     }
 }

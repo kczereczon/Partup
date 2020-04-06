@@ -69,12 +69,7 @@
                         </div>
                         <div class="form-group">
                             <label for="deadline">Deadline</label>
-                            <input
-                                v-model="deadline"
-                                name="deadline"
-                                type="text"
-                                class="form-control"
-                            />
+                            <datetime v-model="deadline" type="datetime" input-class="form-control" minute-step="5"></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -98,6 +93,12 @@
 </template>
 
 <script>
+//date time picker
+import moment from 'moment'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.use(Datetime);
+
 export default {
     props: ["courses"],
     date() {
@@ -114,7 +115,7 @@ export default {
         createHomework() {
             this.$http
                 .post("/v1/homeworks", {
-                    deadline: this.deadline,
+                    deadline: moment(this.deadline).format('YYYY:MM:DD HH:mm:ss'),
                     name: this.name,
                     description: this.description,
                     requirements: this.requirements,
