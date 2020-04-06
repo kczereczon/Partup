@@ -1,7 +1,15 @@
 <template>
     <div class="col-12">
-        <h5>{{title}}</h5>
-        {{message}}
+        <div class="card">
+            <div class="card-header bg-success">
+                <h5 class="mb-0">{{title}}</h5>
+            </div>
+            <div class="card-body">
+                {{message}}
+            </div>
+        </div>
+
+
     </div>
 </template>
 <script>
