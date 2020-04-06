@@ -19,8 +19,7 @@ class DiscordNotificationService
             "embeds" => [
                 [
                     // Embed Title
-                    "title" => "Homework",
-
+                    "title" => "Homework ".$homework->course->name,
                     // Embed Type
                     "type" => "rich",
 
@@ -51,16 +50,11 @@ class DiscordNotificationService
                     //],
 
                     // Author
-                    "author" => [
-                        "name" => "krzysztof.czereczon",
-                    ],
+                    //"author" => [
+                    //    "name" => "krzysztof.czereczon",
+                    //],
                     // Additional Fields array
                     "fields" => [
-                        [
-                            "name" => "Course",
-                            "value" => $homework->course->name,
-                            "inline" => false
-                        ],
                         [
                             "name" => "Description",
                             "value" => "$homework->description",
@@ -101,7 +95,7 @@ class DiscordNotificationService
             "embeds" => [
                 [
                     // Embed Title
-                    "title" => "Exam",
+                    "title" => "Exam ".$exam->course->name,
 
                     // Embed Type
                     "type" => "rich",
@@ -133,16 +127,11 @@ class DiscordNotificationService
                     //],
 
                     // Author
-                    "author" => [
-                        "name" => "krzysztof.czereczon",
-                    ],
+                    //"author" => [
+                    //    "name" => "krzysztof.czereczon",
+                    //],
                     // Additional Fields array
                     "fields" => [
-                        [
-                            "name" => "Course",
-                            "value" => $exam->course->name,
-                            "inline" => false
-                        ],
                         [
                             "name" => "Description",
                             "value" => "$exam->description",
@@ -183,7 +172,7 @@ class DiscordNotificationService
             "embeds" => [
                 [
                     // Embed Title
-                    "title" => "News",
+                    "title" => "News ".$news->group->name,
 
                     // Embed Type
                     "type" => "rich",
@@ -212,16 +201,11 @@ class DiscordNotificationService
                     //],
 
                     // Author
-                    "author" => [
-                        "name" => "krzysztof.czereczon",
-                    ],
+                    //"author" => [
+                    //    "name" => "krzysztof.czereczon",
+                    //],
                     // Additional Fields array
                     "fields" => [
-                        [
-                            "name" => "Course",
-                            "value" => $news->group->name,
-                            "inline" => false
-                        ],
                         [
                             "name" => "Message",
                             "value" => "$news->message",
