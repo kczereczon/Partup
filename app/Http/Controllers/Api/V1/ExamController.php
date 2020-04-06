@@ -39,7 +39,7 @@ class ExamController extends Controller
                 'course_id' => 'required|exists:courses,id'
             ]
         );
-
+        try{
         /** @var Homework|Builder|QueryBuilder */
         $exam = new Exam();
         $exam = $exam->create($request->all());
@@ -48,6 +48,11 @@ class ExamController extends Controller
         $discordService->generateExamMessage($exam)->send([$exam->course->group->exams_webhook]);
 
         return response()->json(['created' => true], 200);
+        }catch(Exception $exception)
+        {
+            Log::error($exception);
+        }
+
     }
 
     /**

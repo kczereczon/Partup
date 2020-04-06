@@ -37,18 +37,23 @@ class NewsController extends Controller
                 'group_id' => 'required|exists:groups,id'
             ]
         );
+        try{
+            $news = new News();
+            $request->request->add(['teacher_id' => Auth::user()->id]);
+            $news = $news->create($request->all());
 
-        $news = new News();
-        $request->request->add(['teacher_id' => Auth::user()->id]);
-        $news = $news->create($request->all());
+            $news->owner()->associate($request->teacher_id());
+            $news->group()->associate($request->group_id());
 
-        $news->owner()->associate($request->teacher_id());
-        $news->group()->associate($request->group_id());
+            $discordService = new DiscordNotificationService();
+            $discordService->generateNewsMessage($news)->send([$news->group->news_webhook]);
 
-        $discordService = new DiscordNotificationService();
-        $discordService->generateNewsMessage($news)->send([$news->group->news_webhook]);
+            return response()->json(['created' => true], 200);
+        }catch(Exception $exception)
+        {
+            Log::error($exception);
+        }
 
-        return response()->json(['created' => true], 200);
     }
 
     /**

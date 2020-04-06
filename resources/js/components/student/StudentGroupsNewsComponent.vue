@@ -1,6 +1,6 @@
 <template>
     <div class="col-12">
-        <div class="card">
+        <div class="card  my-1">
             <div class="card-header bg-success">
                 <h5 class="mb-0">{{title}}</h5>
             </div>
