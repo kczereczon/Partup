@@ -113,7 +113,7 @@ export default {
     methods: {
         createExam() {
             this.$http
-                .post("/v1/exam/", {
+                .post("/v1/exam", {
                     name: this.name,
                     range_of_knowlage: this.range_of_knowlage,
                     description: this.description,
