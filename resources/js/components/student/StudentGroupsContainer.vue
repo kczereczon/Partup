@@ -33,7 +33,7 @@ export default {
     methods: {
         getGroups() {
             this.$http
-                .get("v1/user/{id}/groups".replace('{id}',11))
+                .get("v1/user/groups")
                 .then(results => {
                     console.log(results.data);
                     this.groups = results.data;
