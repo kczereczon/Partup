@@ -7,14 +7,13 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4">
-                            <student-groups-component
-                                v-for="(group) in groups"
-                                :key="group.id"
-                                :id="group.id"
-                                :name="group.name"
-                            />
-                        </div>
+                        <student-groups-component
+                            v-for="(group) in groups"
+                            :key="group.id"
+                            :id="group.id"
+                            :subgroups="group.subgroups"
+                            :name="group.name"
+                        />
                     </div>
                 </div>
             </div>
@@ -34,7 +33,7 @@ export default {
     methods: {
         getGroups() {
             this.$http
-                .get("/v1/groups")
+                .get("v1/user/{id}/groups".replace('{id}',11))
                 .then(results => {
                     console.log(results.data);
                     this.groups = results.data;
