@@ -16,12 +16,6 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class GroupController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Re  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validated = $request->validate(
@@ -98,7 +92,7 @@ class GroupController extends Controller
         $groups = $groups
             ->where('owner_id', $request->user()->id)
             ->whereNull('group_id')
-            ->with('subgroups')
+            ->with(['subgroups','newses'])
             ->orderBy('id', 'desc')
             ->get();
 
