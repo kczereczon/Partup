@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Group;
 use App\News;
+use App\GroupUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupStoreRequest;
 use App\Services\GroupInvitationService;
@@ -92,7 +93,7 @@ class GroupController extends Controller
         $groups = $groups
             ->where('owner_id', $request->user()->id)
             ->whereNull('group_id')
-            ->with(['subgroups','newses'])
+            ->with(['subgroups'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -100,8 +101,12 @@ class GroupController extends Controller
     }
     public function getForStudent()
     {
-        /** @var Group|Builder */
-        $groups = Auth::user()->groups;
+        $groups = new Group();
+        $groups =$groups
+            ->leftJoin('group_user','group_user.group_id','=','groups.id')
+            ->where('group_user.user_id',Auth::user()->id)
+            ->with('newses')
+            ->get();
         return response()->json($groups, 200);
     }
     public function getAllOwnedGroups(Request $request)
