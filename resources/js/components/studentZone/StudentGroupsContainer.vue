@@ -31,7 +31,7 @@ export default {
     methods: {
         getGroups() {
             this.$http
-                .get("v1/groups")
+                .get("v1/groups/student")
                 .then(results => {
                     console.log(results.data);
                     this.groups = results.data;
