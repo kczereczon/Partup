@@ -17,14 +17,4 @@ class Course extends Model
     {
         return $this->belongsTo(Group::class);
     }
-
-    public function exams()
-    {
-        return $this->hasMany(Exam::class);
-    }
-
-    public function homeworks()
-    {
-        return $this->hasMany(Homework::class);
-    }
 }

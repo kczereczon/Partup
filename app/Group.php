@@ -47,9 +47,4 @@ class Group extends Model
     {
         return $this->belongsToMany(Group::class);
     }
-
-    public function newses()
-    {
-        return $this->hasMany(News::class);
-    }
 }

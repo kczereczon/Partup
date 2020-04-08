@@ -25,7 +25,7 @@ class CourseController extends Controller
         $courses = $courses
             ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
             ->where('groups.owner_id', '=', Auth::user()->id)
-            ->with(['group','exams','homeworks'])
+            ->with('group')
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
 
