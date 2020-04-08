@@ -98,12 +98,7 @@ class GroupController extends Controller
 
         return response()->json($groups, 200);
     }
-    public function getForStudent()
-    {
-        /** @var Group|Builder */
-        $groups = Auth::user()->groups;
-        return response()->json($groups, 200);
-    }
+
     public function getAllOwnedGroups(Request $request)
     {
         /** @var Group|Builder $groups*/
