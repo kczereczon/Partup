@@ -9,9 +9,8 @@
                     <div class="row">
                             <student-courses-component
                                 v-for="(course) in courses"
+                                v-bind:course="course"
                                 :key="course.id"
-                                :id="course.id"
-                                :name="course.name"
                             />
                     </div>
                 </div>
