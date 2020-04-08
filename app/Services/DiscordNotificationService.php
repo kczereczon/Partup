@@ -19,7 +19,7 @@ class DiscordNotificationService
             "embeds" => [
                 [
                     // Embed Title
-                    "title" => "Homework - ".$homework->course->name,
+                    "title" => "Homework ".$homework->course->name,
                     // Embed Type
                     "type" => "rich",
 
@@ -95,7 +95,7 @@ class DiscordNotificationService
             "embeds" => [
                 [
                     // Embed Title
-                    "title" => "Exam -".$exam->course->name,
+                    "title" => "Exam ".$exam->course->name,
 
                     // Embed Type
                     "type" => "rich",
@@ -172,7 +172,7 @@ class DiscordNotificationService
             "embeds" => [
                 [
                     // Embed Title
-                    "title" => "News -".$news->group->name,
+                    "title" => "News ".$news->group->name,
 
                     // Embed Type
                     "type" => "rich",

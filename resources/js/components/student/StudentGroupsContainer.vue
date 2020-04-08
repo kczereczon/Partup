@@ -9,8 +9,10 @@
                     <div class="row">
                         <student-groups-component
                             v-for="(group) in groups"
-                            v-bind:group="group"
                             :key="group.id"
+                            :id="group.id"
+                            :subgroups="group.subgroups"
+                            :name="group.name"
                         />
                     </div>
                 </div>
@@ -31,7 +33,7 @@ export default {
     methods: {
         getGroups() {
             this.$http
-                .get("v1/groups")
+                .get("v1/user/groups")
                 .then(results => {
                     console.log(results.data);
                     this.groups = results.data;
