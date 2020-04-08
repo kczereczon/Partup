@@ -37,7 +37,7 @@ export default {
                     this.groups = results.data;
                 })
                 .catch(error => console.log(error.response));
-        }
+        },
     }
 };
 </script>
