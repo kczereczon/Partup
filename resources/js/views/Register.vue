@@ -118,9 +118,7 @@ export default {
                     currentObj.message = error.response.data.message;
                 });
         },
-    },
-    mounted() {
-    },
+    }
 };
 </script>
 

@@ -33,6 +33,11 @@
                         v-bind:homework="homework"
                         :key="homework.id"
                     />
+                    <student-groups-news-component
+                        v-for="(news) in newses"
+                        v-bind:news="news"
+                        :key="news.id"
+                    />
                 </div>
             </div>
         </div>
@@ -45,7 +50,8 @@ export default {
         return {
             shouldShowCourse: true,
             exams: this.course.exams,
-            homeworks: this.course.homeworks
+            homeworks: this.course.homeworks,
+            newses: this.course.newses
         };
     },
     created() {
@@ -54,7 +60,7 @@ export default {
     methods: {
         closeCourse() {
             //closing course if there is no exmas/homeworks
-            if(!(Array.isArray(this.course.exams) && this.course.exams.length || Array.isArray(this.course.homeworks) && this.course.homeworks.length))
+            if(!(Array.isArray(this.course.exams) && this.course.exams.length || Array.isArray(this.course.homeworks) && this.course.homeworks.length || Array.isArray(this.course.newses) && this.course.newses.length))
             {
                 this.shouldShowCourse=false;
             }

@@ -1,12 +1,12 @@
 <template>
     <div>
-        <button class="btn btn-primary w-100 my-3" data-toggle="modal" data-target="#ExamsModal">
-            <span class="fa fa-gear"></span> ADD EXAM
+        <button class="btn btn-primary w-100 my-2" data-toggle="modal" data-target="#courseHomeworkModal">
+            <span class="fa fa-gear"></span> ADD HOMEWORK
         </button>
         <!-- Modal -->
         <div
             class="modal fade"
-            id="ExamsModal"
+            id="courseHomeworkModal"
             tabindex="-1"
             role="dialog"
             aria-labelledby="webHooksModalLabel"
@@ -15,14 +15,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="webHooksModalLabel">Setting for the course.</h5>
+                        <h5 class="modal-title" id="webHooksModalLabel">Setting for the group.</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">Name of homework</label>
                             <input v-model="name" name="name" type="text" class="form-control" />
                         </div>
                         <div class="form-group">
@@ -41,15 +41,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="range_of_knowlage">Range of knowlage</label>
-                            <textarea
-                                v-model="range_of_knowlage"
-                                name="range_of_knowlage"
-                                type="text"
-                                class="form-control"
-                            />
-                        </div>
-                        <div class="form-group">
                             <label for="description">Description</label>
                             <textarea
                                 v-model="description"
@@ -59,17 +50,26 @@
                             />
                         </div>
                         <div class="form-group">
-                            <label for="place">Place</label>
+                            <label for="requirements">Requirements</label>
                             <textarea
-                                v-model="place"
-                                name="place"
+                                v-model="requirements"
+                                name="exams_webhook"
                                 type="text"
                                 class="form-control"
                             />
                         </div>
                         <div class="form-group">
-                            <label for="time">Time</label>
-                            <datetime v-model="time" type="datetime" input-class="form-control" minute-step="5"></datetime>
+                            <label for="where_send">Where send homework</label>
+                            <textarea
+                                v-model="where_send"
+                                name="where_send"
+                                type="text"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline">Deadline</label>
+                            <datetime v-model="deadline" type="datetime" input-class="form-control text-center" minute-step="5"></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -82,7 +82,7 @@
                         <button
                             type="button"
                             class="btn btn-primary"
-                            @click="createExam"
+                            @click="createHomework"
                             data-dismiss="modal"
                         >Apply</button>
                     </div>
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+//date time picker
 import moment from 'moment'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
@@ -102,23 +103,23 @@ export default {
     props: ["courses"],
     date() {
         return {
+            deadline: "",
             name: "",
-            range_of_knowlage: "",
             description: "",
-            place: "",
-            time: "",
+            requirements: "",
+            where_send: "",
             course_id: ""
         };
     },
     methods: {
-        createExam() {
+        createHomework() {
             this.$http
-                .post("/v1/exam", {
+                .post("/v1/homeworks", {
+                    deadline: moment(this.deadline).format('YYYY:MM:DD HH:mm:ss'),
                     name: this.name,
-                    range_of_knowlage: this.range_of_knowlage,
                     description: this.description,
-                    place: this.place,
-                    time: moment(this.time).format('YYYY:MM:DD HH:mm:ss'),
+                    requirements: this.requirements,
+                    where_send: this.where_send,
                     course_id: this.course_id
                 })
                 .then(result => {
@@ -128,11 +129,11 @@ export default {
                 .catch(err => {});
         },
         clearModal() {
+            this.deadline = "";
             this.name = "";
-            this.range_of_knowlage = "";
             this.description = "";
-            this.place = "";
-            this.time = "";
+            this.requirements = "";
+            this.where_send = "";
             this.course_id = "";
         }
     }

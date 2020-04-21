@@ -28,31 +28,44 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeGroup(Request $request)
     {
         $input = $request->validate(
             [
                 'title' => 'required|string',
                 'message' => 'required|string',
-                'group_id' => 'required|exists:groups,id'
+                'group_id' => 'required|exists:groups,id',
             ]
         );
-        try{
-            $news = new News();
-            $request->request->add(['teacher_id' => Auth::user()->id]);
-            $news = $news->create($request->all());
 
-            $discordService = new DiscordNotificationService();
-            $discordService->generateNewsMessage($news)->send([$news->group->news_webhook]);
+        $news = new News();
+        $request->request->add(['teacher_id' => Auth::user()->id]);
+        $news = $news->create($request->all());
 
-            return response()->json(['created' => true], 200);
-        }catch(Exception $exception)
-        {
-            Log::error($exception);
-        }
+        $discordService = new DiscordNotificationService();
+        $discordService->generateGroupNewsMessage($news)->send([$news->group->news_webhook]);
 
+        return response()->json(['created' => true], 200);
     }
+    public function storeCourse(Request $request)
+    {
+        $input = $request->validate(
+            [
+                'title' => 'required|string',
+                'message' => 'required|string',
+                'course_id' => 'required|exists:courses,id'
+            ]
+        );
 
+        $news = new News();
+        $request->request->add(['teacher_id' => Auth::user()->id]);
+        $news = $news->create($request->all());
+
+        $discordService = new DiscordNotificationService();
+        $discordService->generateCourseNewsMessage($news)->send([$news->course->group->news_webhook]);
+
+        return response()->json(['created' => true], 200);
+    }
     /**
      * Display the specified resource.
      *

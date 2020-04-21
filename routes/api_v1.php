@@ -25,9 +25,11 @@ Route::middleware('auth:api')->post('/group-invitations/accept', "{$NS}GroupInvi
 //courses
 Route::middleware('auth:api')->post('/homeworks', "{$NS}HomeworkController@store");
 Route::middleware('auth:api')->post('/exam', "{$NS}ExamController@store");
+Route::middleware('auth:api')->post('course/news', "{$NS}NewsController@storeCourse");
 
 //groups
-Route::middleware('auth:api')->post('/news', "{$NS}NewsController@store");
+Route::middleware('auth:api')->post('group/news', "{$NS}NewsController@storeGroup");
+
 
 Route::post('/login', "{$NS}AuthController@login");
 Route::post('/register', "{$NS}AuthController@register");

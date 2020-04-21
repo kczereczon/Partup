@@ -18,6 +18,11 @@ class Course extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function newses()
+    {
+        return $this->hasMany(News::class);
+    }
+
     public function exams()
     {
         return $this->hasMany(Exam::class);

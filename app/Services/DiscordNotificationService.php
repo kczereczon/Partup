@@ -163,7 +163,7 @@ class DiscordNotificationService
         return $this;
     }
 
-    public function generateNewsMessage(News $news)
+    public function generateGroupNewsMessage(News $news)
     {
         $message = json_encode([
             // Username
@@ -221,7 +221,64 @@ class DiscordNotificationService
 
         return $this;
     }
+    public function generateCourseNewsMessage(News $news)
+    {
+        $message = json_encode([
+            // Username
+            "username" => "Wiadomościowy BOT",
 
+            "embeds" => [
+                [
+                    // Embed Title
+                    "title" => "News -".$news->course->name,
+
+                    // Embed Type
+                    "type" => "rich",
+
+                    // Embed Description
+                    "description" => $news->title,
+
+
+                    // Embed left border color in HEX
+                    "color" => hexdec("3366ff"),
+
+                    // Footer
+                    // "footer" => [
+                    //     "text" => "GitHub.com/Mo45",
+                    //     "icon_url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=375"
+                    // ],
+
+                    // // Image to send
+                    // "image" => [
+                    //     "url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=600"
+                    // ],
+
+                    // Thumbnail
+                    //"thumbnail" => [
+                    //    "url" => "https://ru.gravatar.com/userimage/28503754/1168e2bddca84fec2a63addb348c571d.jpg?size=400"
+                    //],
+
+                    // Author
+                    //"author" => [
+                    //    "name" => "krzysztof.czereczon",
+                    //],
+                    // Additional Fields array
+                    "fields" => [
+                        [
+                            "name" => "Message",
+                            "value" => "$news->message",
+                            "inline" => false
+                        ]
+                    ]
+                ]
+            ]
+
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        $this->content = $message;
+
+        return $this;
+    }
     public function send(array $webhooks)
     {
         foreach ($webhooks as $key => $webhookurl) {

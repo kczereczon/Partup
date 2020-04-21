@@ -16,13 +16,16 @@ class CreateNewsTable extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('teacher_id');
-            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->unsignedBigInteger('course_id')->nullable();
             $table->string('title');
             $table->text('message');
+            $table->dateTime('until_when_to_show');
             $table->timestamps();
 
-            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');;
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');;
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }
 

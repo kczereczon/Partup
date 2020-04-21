@@ -7,12 +7,13 @@
                 <courses-container v-on:refresh="getGroups" :groups="groups"/>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-12 pb-3 pt-3 justify-content-center text-center">
-                <h4>Courses</h4>
-                <homework-creator :courses="courses" />
-                <exams-creator :courses="courses"/>
-                <hr>
                 <h4>Groups</h4>
-                <news-creator :groups="groups" />
+                <group-news-creator :groups="groups" />
+                <hr>
+                <h4>Courses</h4>
+                <course-news-creator :courses="courses"/>
+                <course-homework-creator :courses="courses" />
+                <course-exam-creator :courses="courses"/>
             </div>
         </div>
     </div>

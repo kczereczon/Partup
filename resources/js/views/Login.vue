@@ -135,9 +135,7 @@ export default {
             //reload header api after login
             this.$http = API;
         },
-    },
-    mounted() {
-    },
+    }
 };
 </script>
 <style lang="scss">
