@@ -1,12 +1,12 @@
 <template>
-    <div class="col-4 my-2">
+    <div class="col-md-12 col-xl-6 my-2">
         <div class="card">
             <div class="card-header">
-                <div class="row">
+                <div class="row no-gutters">
                     <div class="col-10">
                         <h5 class="mb-0">{{group.name}}</h5>
                     </div>
-                    <div class="col-2" v-if="Array.isArray(this.group.newses) && this.group.newses.length">
+                    <div class="col-2 text-right" v-if="Array.isArray(this.group.newses) && this.group.newses.length">
                         <a
                             v-on:click="shouldShowGroup = !shouldShowGroup"
                             class="ml-1"

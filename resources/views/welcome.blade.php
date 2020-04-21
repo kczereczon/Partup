@@ -34,6 +34,7 @@
             </nav>
             <router-view></router-view>
         </div>
-        <script src="js/app.js" ></script>
+        <script src="js/app.js">
+        </script>
     </body>
 </html>

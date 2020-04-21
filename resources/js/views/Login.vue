@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="container-fluid h-100">
         <div class="row h-100 align-items-center">
             <div
@@ -60,6 +61,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -133,6 +135,8 @@ export default {
             //reload header api after login
             this.$http = API;
         },
+    },
+    mounted() {
     },
 };
 </script>

@@ -1,7 +1,15 @@
-<template></template>
+<template>
+    <div>
+        <!-- content -->
+
+    </div>
+</template>
 
 <script>
-export default {};
+export default {
+    mounted() {
+    },
+};
 </script>
 
 <style>

@@ -25,6 +25,7 @@
                         @refresh="getCourses"
                         @removeCourseFromArray="removeCourseFromArray"
                     />
+                    <loader ref="loader" id="course-component" />
                 </div>
             </div>
         </div>
@@ -47,7 +48,12 @@ export default {
                 .then(result => {
                     this.courses = result.data;
                 })
-                .catch(err => {});
+                .catch(err => {})
+                .finally(() => {
+                    // The whole view is rendered, so I can safely access or query
+                    // the DOM. ¯\_(ツ)_/¯
+                    this.$refs["loader"].hide();
+                });
         },
         addNew() {
             if (!this.courses[0] || !this.courses[0].new)

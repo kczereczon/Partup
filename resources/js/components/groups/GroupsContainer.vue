@@ -27,6 +27,7 @@
                         :editMode="group.id ? false : true"
                         v-on:refresh="getGroups"
                     />
+                    <loader ref="loader" id="group-component" />
                 </div>
             </div>
         </div>
@@ -56,7 +57,12 @@ export default {
                     console.log(results.data);
                     this.groups = results.data;
                 })
-                .catch(error => console.log(error.response));
+                .catch(error => console.log(error.response))
+                .finally(() => {
+                    // The whole view is rendered, so I can safely access or query
+                    // the DOM. ¯\_(ツ)_/¯
+                    this.$refs["loader"].hide();
+                });
         },
         remove(index) {
             if (this.groups[index].id) {

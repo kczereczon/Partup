@@ -13,6 +13,7 @@
                             :key="group.id"
                         />
                     </div>
+                    <loader ref="loader" id="student-group-component" />
                 </div>
             </div>
         </div>
@@ -33,10 +34,14 @@ export default {
             this.$http
                 .get("v1/user/groups")
                 .then(results => {
-                    console.log(results.data);
                     this.groups = results.data;
                 })
-                .catch(error => console.log(error.response));
+                .catch(error => console.log(error.response))
+                .finally(() => {
+                    // The whole view is rendered, so I can safely access or query
+                    // the DOM. ¯\_(ツ)_/¯
+                    this.$refs["loader"].hide();
+                });
         },
     }
 };

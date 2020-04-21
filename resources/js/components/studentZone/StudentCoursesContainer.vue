@@ -12,6 +12,7 @@
                                 v-bind:course="course"
                                 :key="course.id"
                             />
+                            <loader ref="loader" id="student-courses-component" />
                     </div>
                 </div>
             </div>
@@ -35,7 +36,11 @@ export default {
                 .then(results => {
                     this.courses = results.data;
                 })
-                .catch(error => console.log(error.response));
+                .catch(error => console.log(error.response)).finally(() => {
+                    // The whole view is rendered, so I can safely access or query
+                    // the DOM. ¯\_(ツ)_/¯
+                    this.$refs["loader"].hide();
+                });
         }
     }
 };

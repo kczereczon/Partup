@@ -22,14 +22,8 @@ import API from "./api";
 
 Vue.use(VueRouter, VueAxios, axios);
 
-const routes = [{
-        path: "/",
-        name: "Home",
-        meta: {
-            requiresAuth: true,
-        },
-        component: Home,
-    },
+const routes = [
+    { path: "/", name: "Home", meta: { requiresAuth: true, }, component: Home, },
     { path: "/register", name: "Register", component: Register },
     { path: "/login", name: "Login", component: Login },
     { path: "/student-zone", name: "StudentZone", component: StudentZone },
@@ -51,9 +45,15 @@ routerObject.beforeEach((to, from, next) => {
             next({ name: "Login" });
             $root.isLogged = false;
         } else {
+            $("#loader").fadeIn("slow", function() {
+                $("#loader").css("display", "flex");
+            });
             next(); // go to wherever I'm going
         }
     } else {
+        $("#loader").fadeIn("slow", function() {
+            $("#loader").css("display", "flex");
+        });
         next(); // does not require auth, make sure to always call next()!
     }
 });
@@ -72,6 +72,8 @@ const app = new Vue({
     router: routerObject,
     data: {
         isLogged: window.localStorage.getItem("authToken"),
+        loadingText: "Loading",
+        loadingDots: "",
     },
     methods: {
         logout() {

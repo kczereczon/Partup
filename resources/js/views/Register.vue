@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="container-fluid h-100">
         <div class="row h-100 align-items-center">
             <div
@@ -77,6 +78,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -116,6 +118,8 @@ export default {
                     currentObj.message = error.response.data.message;
                 });
         },
+    },
+    mounted() {
     },
 };
 </script>

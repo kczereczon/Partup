@@ -1,12 +1,12 @@
 <template>
-    <div class="col-4">
+    <div class="col-md-12 col-xl-6 my-2">
         <div class="card">
             <div class="card-header">
                 <div class="row">
                     <div class="col-10">
                         <h5 class="mb-0">{{course.name}}</h5>
                     </div>
-                    <div class="col-2" v-if="(Array.isArray(this.course.exams) && this.course.exams.length || Array.isArray(this.course.homeworks) && this.course.homeworks.length)">
+                    <div class="col-2 text-right" v-if="(Array.isArray(this.course.exams) && this.course.exams.length || Array.isArray(this.course.homeworks) && this.course.homeworks.length)">
                         <a
                             v-on:click="shouldShowCourse = !shouldShowCourse"
                             class="ml-1"
