@@ -8,6 +8,7 @@ use App\GroupUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupStoreRequest;
 use App\Services\GroupInvitationService;
+use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -99,6 +100,9 @@ class GroupController extends Controller
 
         return response()->json($groups, 200);
     }
+
+    //returns a array of groups for students
+    //with all newses
     public function getForStudent()
     {
         $groups = new Group();
@@ -106,6 +110,22 @@ class GroupController extends Controller
             ->leftJoin('group_user','group_user.group_id','=','groups.id')
             ->where('group_user.user_id',Auth::user()->id)
             ->with('newses')
+            ->get();
+        return response()->json($groups, 200);
+    }
+
+    //returns a array of groups for students
+    //with newses, valid for that date
+    public function getForStudentDate($date)
+    {
+        $date=str_replace("__","  ",$date);
+        $groups = new Group();
+        $groups =$groups
+            ->leftJoin('group_user','group_user.group_id','=','groups.id')
+            ->where('group_user.user_id',Auth::user()->id)
+            ->with(['newses' => function ($query) use ($date){
+                $query->where('until_when_to_show','>', $date);
+            }])
             ->get();
         return response()->json($groups, 200);
     }

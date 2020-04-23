@@ -20,6 +20,7 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
 export default {
     data() {
         return {
@@ -32,11 +33,12 @@ export default {
     methods: {
         getCourses() {
             this.$http
-                .get("/v1/course")
+                .get("/v1/user/course/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss'))
                 .then(results => {
                     this.courses = results.data;
                 })
-                .catch(error => console.log(error.response)).finally(() => {
+                .catch(error => console.log(error.response))
+                .finally(() => {
                     // The whole view is rendered, so I can safely access or query
                     // the DOM. ¯\_(ツ)_/¯
                     this.$refs["loader"].hide();

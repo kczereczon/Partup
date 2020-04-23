@@ -20,7 +20,9 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
 export default {
+
     data() {
         return {
             groups: []
@@ -32,7 +34,7 @@ export default {
     methods: {
         getGroups() {
             this.$http
-                .get("v1/user/groups")
+                .get("v1/user/groups/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss'))
                 .then(results => {
                     this.groups = results.data;
                 })

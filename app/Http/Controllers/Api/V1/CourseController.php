@@ -32,6 +32,48 @@ class CourseController extends Controller
         return response()->json($courses, 200);
     }
 
+    //returns a list of courses for students
+    //with newses, exams, homeworks valid for that date
+    public function getForStudent($date)
+    {
+        $courses = new Course();
+        /** @var Course|Builder|QueryBuilder $courses */
+        $courses = $courses
+            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
+            ->where('groups.owner_id', '=', Auth::user()->id)
+            ->with(['group','exams','homeworks','newses'])
+            ->orderBy('courses.id', 'desc')
+            ->get(['courses.*']);
+
+        return response()->json($courses, 200);
+    }
+    public function getForStudentDate($date)
+    {
+        $courses = new Course();
+        $date=str_replace("__","  ",$date);
+        /** @var Course|Builder|QueryBuilder $courses */
+        $courses = $courses
+            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
+            ->where('groups.owner_id', '=', Auth::user()->id)
+            ->with(['group',
+            'exams' => function ($query) use ($date){
+                $query->where('time','>', $date);
+            },
+            'homeworks' => function ($query) use ($date){
+                $query->where('deadline','>', $date);
+            },
+            'newses' => function ($query) use ($date){
+                $query->where('until_when_to_show','>', $date);
+            }])
+            ->orderBy('courses.id', 'desc')
+            ->get(['courses.*']);
+
+        return response()->json($courses, 200);
+    }
+
+
+
+
     /**
      * Store a newly created resource in storage.
      *

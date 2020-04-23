@@ -21,6 +21,7 @@
 </template>
 <script>
 import axios from "axios";
+import {logout} from "./../app.js";
 export default {
     data() {
         return {
@@ -40,8 +41,8 @@ export default {
                 .then(results => {
                     this.groups = results.data;
                 })
-                .catch(error => console.log(error.response)).finally(()=>{
-                    this.$refs['groupContainer'].$refs['loader'].hide()
+                .catch(error => {
+                    console.log(error.response);
                 });
         },
         getCourses() {

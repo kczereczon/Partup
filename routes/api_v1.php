@@ -10,9 +10,14 @@ Route::middleware('auth:api')->get('/groups/all', "{$NS}GroupController@getAllOw
 Route::middleware('auth:api')->delete('/groups/{group}', "{$NS}GroupController@destroy");
 Route::middleware('auth:api')->patch('/groups/{group}', "{$NS}GroupController@update");
 Route::middleware('auth:api')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
+
 //student view
 Route::middleware('auth:api')->get('/user/groups', "{$NS}GroupController@getForStudent");
+Route::middleware('auth:api')->get('/user/groups/{date}', "{$NS}GroupController@getForStudentDate");
 
+Route::middleware('auth:api')->get('/user/course', "{$NS}CourseController@getForStudent");
+Route::middleware('auth:api')->get('/user/course/{date}', "{$NS}CourseController@getForStudentDate");
+//student view
 
 Route::middleware('auth:api')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");
