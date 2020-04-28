@@ -7,14 +7,26 @@
                         <h5 class="mb-0 font-weight-bold">{{news.title}}</h5>
                     </div>
                     <div class="col-2 text-right">
-                        <a v-on:click="shouldShowNews = !shouldShowNews" class="ml-1">
-                            <span
-                                :class="{
+                        <div class="row">
+                            <div class="col">
+                                <a v-if="shouldShowNews" v-on:click="editMode ? save() : edit()" class="ml-1">
+                                    <span
+                                        :class="{
+                                        'fa fa-pen': !editMode,
+                                        'fa fa-save': editMode
+                                    }"
+                                    ></span>
+                                </a>
+                                <a v-on:click="shouldShowNews = !shouldShowNews" class="ml-1">
+                                    <span
+                                        :class="{
                                         'fa fa-caret-down': !shouldShowNews,
                                         'fa fa-caret-up': shouldShowNews
                                     }"
-                            ></span>
-                        </a>
+                                    ></span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

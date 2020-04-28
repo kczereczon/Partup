@@ -21,7 +21,6 @@
 </template>
 <script>
 import axios from "axios";
-import {logout} from "./../app.js";
 export default {
     data() {
         return {
@@ -30,7 +29,6 @@ export default {
         };
     },
     mounted() {
-
         this.getGroups();
         this.getCourses();
     },

@@ -19,6 +19,11 @@ Route::middleware('auth:api')->get('/user/course', "{$NS}CourseController@getFor
 Route::middleware('auth:api')->get('/user/course/{date}', "{$NS}CourseController@getForStudentDate");
 //student view
 
+//teacher view
+Route::middleware('auth:api')->get('/teacher/course/{date}', "{$NS}CourseController@getForTeacherDate");
+//teacher view
+
+
 Route::middleware('auth:api')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");
 Route::middleware('auth:api')->delete('/course/{id}', "{$NS}CourseController@destroy");

@@ -1,12 +1,16 @@
 <template>
-    <div>
-        <button class="btn btn-primary w-100 my-2" data-toggle="modal" data-target="#courseNewsModal">
-            <span class="fa fa-gear"></span> ADD NEWS
-        </button>
+    <div style="display:inline;">
+        <a
+            data-toggle="modal"
+            data-target="#NewsModal"
+            class="ml-1 bg-success px-2 py-1 rounded-circle"
+        >
+            <span class="fa fa-plus"></span>
+        </a>
         <!-- Modal -->
         <div
-            class="modal fade"
-            id="courseNewsModal"
+            class="modal fade text-center"
+            id="NewsModal"
             tabindex="-1"
             role="dialog"
             aria-labelledby="webHooksModalLabel"
@@ -15,7 +19,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="webHooksModalLabel">Setting for the course.</h5>
+                        <h5 class="modal-title" id="webHooksModalLabel">Setting up News for {{course.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -24,21 +28,6 @@
                         <div class="form-group">
                             <label for="title">Name of News</label>
                             <input v-model="title" name="title" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="course_id">Course</label>
-                            <select
-                                v-model="course_id"
-                                name="course_id"
-                                type="text"
-                                class="form-control"
-                            >
-                                <option
-                                    v-for="(course) in courses"
-                                    :key="course.id"
-                                    :value="course.id"
-                                >{{course.name}}</option>
-                            </select>
                         </div>
                         <div class="form-group">
                             <label for="message">Description</label>
@@ -51,7 +40,12 @@
                         </div>
                         <div class="form-group">
                             <label for="until_when_to_show">Until when to show</label>
-                            <datetime v-model="until_when_to_show" type="datetime" input-class="form-control text-center" minute-step="5"></datetime>
+                            <datetime
+                                v-model="until_when_to_show"
+                                type="datetime"
+                                input-class="form-control text-center"
+                                minute-step="5"
+                            ></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -73,21 +67,17 @@
         </div>
     </div>
 </template>
-
 <script>
-//date time picker
 import moment from 'moment'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 Vue.use(Datetime);
-
 export default {
-    props: ["courses"],
+    props: ["course"],
     date() {
         return {
             title: "",
             message: "",
-            course_id: "",
             until_when_to_show: ""
         };
     },
@@ -97,7 +87,7 @@ export default {
                 .post("/v1/course/news", {
                     title: this.title,
                     message: this.message,
-                    course_id: this.course_id,
+                    course_id: this.course.id,
                     until_when_to_show: moment(this.until_when_to_show).format('YYYY:MM:DD HH:mm:ss'),
                 })
                 .then(result => {
@@ -109,12 +99,8 @@ export default {
         clearModal() {
             this.title = "";
             this.message = "";
-            this.course_id = "";
             this.until_when_to_show = "";
         }
     }
-};
+}
 </script>
-
-<style>
-</style>

@@ -3,37 +3,54 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-10">
-                        <h5 class="mb-0">{{course.name}}</h5>
+                    <div class="col-12 col-sm-6">
+                        <h5 class="mb-0">{{course.group.name}} | {{course.name}}</h5>
                     </div>
-                    <div
-                        class="col-2 text-right"
-                        v-if="(Array.isArray(this.course.exams) && this.course.exams.length || Array.isArray(this.course.homeworks) && this.course.homeworks.length)"
-                    >
-                        <a v-on:click="shouldShowCourse = !shouldShowCourse" class="ml-1">
-                            <span
-                                :class="{
+                    <div class="col-12 col-sm-6 mt-1 text-right">
+                        <div class="row">
+                            <div class="col">
+                                <teacher-course-news-creator
+                                    v-if="shouldShowCourse"
+                                    :course="course"
+                                />
+                                <teacher-course-homework-creator
+                                    v-if="shouldShowCourse"
+                                    :course="course"
+                                />
+                                <teacher-course-exam-creator
+                                    v-if="shouldShowCourse"
+                                    :course="course"
+                                />
+                                <a
+                                    v-on:click="shouldShowCourse = !shouldShowCourse"
+                                    v-if="(Array.isArray(this.course.exams))"
+                                    class="px-1"
+                                >
+                                    <span
+                                        :class="{
                                         'fa fa-caret-down': !shouldShowCourse,
                                         'fa fa-caret-up': shouldShowCourse
                                     }"
-                            ></span>
-                        </a>
+                                    ></span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="card-body bg-light" v-if="shouldShowCourse">
                 <div class="row no-gutters">
-                    <student-courses-exams-component
+                    <teacher-courses-exams-component
                         v-for="(exam) in exams"
                         v-bind:exam="exam"
                         :key="exam.id"
                     />
-                    <student-courses-homework-component
+                    <teacher-courses-homework-component
                         v-for="(homework) in homeworks"
                         v-bind:homework="homework"
                         :key="homework.id"
                     />
-                    <student-courses-news-component
+                    <teacher-courses-news-component
                         v-for="(news) in newses"
                         v-bind:news="news"
                         :key="news.id"

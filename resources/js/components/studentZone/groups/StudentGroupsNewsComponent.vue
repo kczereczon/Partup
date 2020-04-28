@@ -21,6 +21,8 @@
             <div class="card-body" v-if="shouldShowNews">
                 <p class="font-weight-bold">Message</p>
                 <p>{{news.message}}</p>
+                <p class="font-weight-bold text-center">Until when to show</p>
+                <p class="text-center">{{news.until_when_to_show}}</p>
             </div>
         </div>
     </div>
