@@ -3,24 +3,24 @@
         <div class="card my-2">
             <div class="card-header bg-danger text-white">
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-9">
                         <h5 class="mb-0 font-weight-bold">{{exam.name}}</h5>
                     </div>
-                    <div class="col-2 text-right">
+                    <div class="col-3 text-right">
                         <div class="row">
                             <div class="col">
+                                <a v-on:click="removeExam" v-if="shouldShowExams" class="ml-1">
+                                    <span class="fa fa-minus"></span>
+                                </a>
                                 <a
                                     v-if="shouldShowExams"
-                                    v-on:click="editMode ? save() : edit()"
+                                    data-toggle="modal"
+                                    :data-target="'#examEditorModal'+exam.id"
                                     class="ml-1"
                                 >
-                                    <span
-                                        :class="{
-                                        'fa fa-pen': !editMode,
-                                        'fa fa-save': editMode
-                                    }"
-                                    ></span>
+                                    <span class="fa fa-pen"></span>
                                 </a>
+                                <teacher-course-exam-editor :exam="exam" @refresh="refresh" />
                                 <a v-on:click="shouldShowExams = !shouldShowExams" class="ml-1">
                                     <span
                                         :class="{
@@ -66,21 +66,20 @@ export default {
     methods: {
         show() {
             this.shouldShowExams = true;
+        },
+        removeExam() {
+            this.$http
+                .delete("/v1/teacher/course/exam/" + this.exam.id)
+                .then(result => {
+                    this.removeCourseFromArray();
+                    this.refresh();
+                })
+                .catch(err => {});
+            this.refresh();
+        },
+        refresh() {
+            this.$emit("refresh");
         }
     }
 };
 </script>
-
-<style>
-table {
-    width: 100%;
-}
-th {
-    width: 50%;
-    text-align: center;
-}
-tr {
-    width: 50%;
-    text-align: center;
-}
-</style>

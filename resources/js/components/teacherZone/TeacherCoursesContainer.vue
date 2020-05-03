@@ -4,6 +4,7 @@
             v-for="(course) in courses"
             v-bind:course="course"
             :key="course.id"
+            @refresh="refresh"
         />
     </div>
 </template>
@@ -11,10 +12,11 @@
 import moment from "moment";
 export default {
     props: ["courses"],
-    data() {
-        return {
-            courses: []
-        };
+    methods: {
+        refresh(){
+            this.$emit("refresh");
+            this.course.id+=1;
+        }
     }
 };
 </script>

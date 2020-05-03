@@ -20,7 +20,7 @@ class CreateExamsTable extends Migration
             $table->text('range_of_knowlage');
             $table->text('description');
             $table->string('place');
-            $table->dateTime('time');
+            $table->timestamp('time');
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');;

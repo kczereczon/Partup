@@ -2,7 +2,7 @@
     <div style="display:inline;">
         <a
             data-toggle="modal"
-            data-target="#ExamModal"
+            :data-target="'#examModal'+course.id"
             class="ml-1 bg-danger text-white px-2 py-1 rounded-circle"
         >
             <span class="fa fa-plus"></span>
@@ -10,7 +10,7 @@
         <!-- Modal -->
         <div
             class="modal fade text-center"
-            id="ExamModal"
+            :id="'examModal'+course.id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="webHooksModalLabel"
@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <label for="time">Time</label>
-                            <datetime v-model="time" type="datetime" input-class="form-control text-center" minute-step="5"></datetime>
+                            <datetime v-model="time" type="datetime" input-class="form-control text-center" :minute-step="5"></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -108,7 +108,7 @@ export default {
                     course_id: this.course.id
                 })
                 .then(result => {
-                    this.refreshCourses();
+                    this.refresh();
                     this.clearModal();
                 })
                 .catch(err => {});
@@ -119,6 +119,9 @@ export default {
             this.description = "";
             this.place = "";
             this.time = "";
+        },
+        refresh() {
+            this.$emit("refresh");
         }
     }
 }

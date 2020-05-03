@@ -69,7 +69,7 @@
                         </div>
                         <div class="form-group">
                             <label for="time">Time</label>
-                            <datetime v-model="time" type="datetime" input-class="form-control text-center" minute-step="5"></datetime>
+                            <datetime v-model="time" type="datetime" input-class="form-control text-center" :minute-step="5"></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">

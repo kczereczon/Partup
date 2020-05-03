@@ -2,7 +2,7 @@
     <div style="display:inline;">
         <a
             data-toggle="modal"
-            data-target="#NewsModal"
+            :data-target="'#newsModal'+course.id"
             class="ml-1 bg-success px-2 py-1 rounded-circle"
         >
             <span class="fa fa-plus"></span>
@@ -10,7 +10,7 @@
         <!-- Modal -->
         <div
             class="modal fade text-center"
-            id="NewsModal"
+            :id="'newsModal'+course.id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="webHooksModalLabel"
@@ -44,7 +44,7 @@
                                 v-model="until_when_to_show"
                                 type="datetime"
                                 input-class="form-control text-center"
-                                minute-step="5"
+                                :minute-step="5"
                             ></datetime>
                         </div>
                     </div>
@@ -91,7 +91,7 @@ export default {
                     until_when_to_show: moment(this.until_when_to_show).format('YYYY:MM:DD HH:mm:ss'),
                 })
                 .then(result => {
-                    this.refreshCourses();
+                    // this.refreshCourses();
                     this.clearModal();
                 })
                 .catch(err => {});

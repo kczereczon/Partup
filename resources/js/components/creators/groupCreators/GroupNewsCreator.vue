@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group">
                             <label for="until_when_to_show" >Until when to show</label>
-                            <datetime v-model="until_when_to_show" type="datetime" input-class="form-control text-center" minute-step="5"></datetime>
+                            <datetime v-model="until_when_to_show" type="datetime" input-class="form-control text-center" :minute-step="5"></datetime>
                         </div>
                     </div>
                     <div class="modal-footer">

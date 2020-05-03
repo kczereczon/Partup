@@ -10,16 +10,16 @@
                         <div class="row">
                             <div class="col">
                                 <teacher-course-news-creator
-                                    v-if="shouldShowCourse"
                                     :course="course"
+                                    @refresh="refresh"
                                 />
                                 <teacher-course-homework-creator
-                                    v-if="shouldShowCourse"
                                     :course="course"
+                                    @refresh="refresh"
                                 />
                                 <teacher-course-exam-creator
-                                    v-if="shouldShowCourse"
                                     :course="course"
+                                    @refresh="refresh"
                                 />
                                 <a
                                     v-on:click="shouldShowCourse = !shouldShowCourse"
@@ -44,16 +44,19 @@
                         v-for="(exam) in exams"
                         v-bind:exam="exam"
                         :key="exam.id"
+                        @refresh="refreshExams"
                     />
                     <teacher-courses-homework-component
                         v-for="(homework) in homeworks"
                         v-bind:homework="homework"
                         :key="homework.id"
+                        @refresh="refreshHomeworks"
                     />
                     <teacher-courses-news-component
                         v-for="(news) in newses"
                         v-bind:news="news"
                         :key="news.id"
+                        @refresh="refreshNews"
                     />
                 </div>
             </div>
@@ -71,24 +74,18 @@ export default {
             newses: this.course.newses
         };
     },
-    created() {
-        this.closeCourse();
-    },
     methods: {
-        closeCourse() {
-            //closing course if there is no exmas/homeworks
-            if (
-                !(
-                    (Array.isArray(this.course.exams) &&
-                        this.course.exams.length) ||
-                    (Array.isArray(this.course.homeworks) &&
-                        this.course.homeworks.length) ||
-                    (Array.isArray(this.course.newses) &&
-                        this.course.newses.length)
-                )
-            ) {
-                this.shouldShowCourse = false;
-            }
+        refreshExams() {
+            this.$emit("refresh");
+            this.exam.id+=1;
+        },
+        refreshHomeworks() {
+            this.$emit("refresh");
+            this.homework.id+=1;
+        },
+        refreshNews() {
+            this.$emit("refresh");
+            this.news.id+=1;
         }
     }
 };

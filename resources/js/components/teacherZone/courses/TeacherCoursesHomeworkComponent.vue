@@ -11,16 +11,15 @@
                             <div class="col">
                                 <a
                                     v-if="shouldShowHomework"
-                                    v-on:click="editMode ? save() : edit()"
+                                    data-toggle="modal"
+                                    :data-target="'#homeworkEditorModal'+homework.id"
                                     class="ml-1"
                                 >
                                     <span
-                                        :class="{
-                                        'fa fa-pen': !editMode,
-                                        'fa fa-save': editMode
-                                    }"
+                                        class="fa fa-pen"
                                     ></span>
                                 </a>
+                                <teacher-course-homework-editor :homework="homework" />
                                 <a
                                     v-on:click="shouldShowHomework = !shouldShowHomework"
                                     class="ml-1"

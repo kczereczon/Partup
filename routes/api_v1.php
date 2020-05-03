@@ -19,10 +19,20 @@ Route::middleware('auth:api')->get('/user/course', "{$NS}CourseController@getFor
 Route::middleware('auth:api')->get('/user/course/{date}', "{$NS}CourseController@getForStudentDate");
 //student view
 
+//
 //teacher view
-Route::middleware('auth:api')->get('/teacher/course/{date}', "{$NS}CourseController@getForTeacherDate");
-//teacher view
+//
 
+//get teacher info with courses that he is signed in and all followed data
+Route::middleware('auth:api')->get('/teacher/course/{date}', "{$NS}CourseController@getForTeacherDate");
+
+//update,delete Exam
+Route::middleware('auth:api')->patch('/teacher/course/exam/{exam}', "{$NS}ExamController@update");
+Route::middleware('auth:api')->delete('/teacher/course/exam/{id}', "{$NS}ExamController@delete");
+
+//
+//teacher view
+//
 
 Route::middleware('auth:api')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:api')->get('/course', "{$NS}CourseController@index");
