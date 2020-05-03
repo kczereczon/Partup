@@ -42,22 +42,30 @@ class ExamController extends Controller
                 'course_id' => 'required|exists:courses,id'
             ]
         );
+
         $course = Course::find($request->course_id);
-        $group = Group::find($course->group_id);
+        $create = false;
 
-        if ($course->teacher_id == Auth::user()->id || $group->owner_id == Auth::user()->id) {
+        if ($course->teacher_id == Auth::user()->id) {
+            $create = true;
+        } else {
+            $group = Group::find($course->group_id);
+            if ($group->owner_id == Auth::user()->id) {
+                $create = true;
+            }
+        }
 
-            /** @var Homework|Builder|QueryBuilder */
+        if ($create) {
             $exam = new Exam();
+            $request->request->add(['teacher_id' => Auth::user()->id]);
             $exam = $exam->create($request->all());
 
             $discordService = new DiscordNotificationService();
             $discordService->generateExamMessage($exam)->send([$exam->course->group->exams_webhook]);
 
             return response()->json(['created' => true], 200);
-        }else
-        {
-            return response()->json('Unauthorized to create Exam',401);
+        } else {
+            return response()->json('Unauthorized. Only course Teachers and Group Leaders can create Exams.', 401);
         }
     }
 
@@ -92,17 +100,24 @@ class ExamController extends Controller
                 'id' => 'required|exists:exams,id'
             ]
         );
+        $exam = Exam::find($request->id);
+        $course = Course::find($exam->course_id);
+        $update = false;
 
-        $course = Course::find($request->course_id);
-        $group = Group::find($course->group_id);
+        if ($course->teacher_id == Auth::user()->id) {
+            $update = true;
+        } else {
+            $group = Group::find($course->group_id);
+            if ($group->owner_id == Auth::user()->id) {
+                $update = true;
+            }
+        }
 
-        if ($course->teacher_id == Auth::user()->id || $group->owner_id == Auth::user()->id) {
-            $exam = Exam::find($request->id);
+        if ($update) {
             $exam = $exam->update($request->all());
             return response()->json(['updated' => $exam], 200);
-        }else
-        {
-            return response()->json('Unauthorized to edit Exam',401);
+        } else {
+            return response()->json('Unauthorized. Only course Teachers and Group Leaders can edit Exams.', 401);
         }
     }
 
@@ -112,18 +127,27 @@ class ExamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $course = Course::find($id);
-        $group = Group::find($course->group_id);
+        $exam = Exam::find($request->id);
+        $course = Course::find($exam->course_id);
 
-        if ($course->teacher_id == Auth::user()->id || $group->owner_id == Auth::user()->id) {
-            $exam = Exam::find($id);
+        $delete = false;
+
+        if ($course->teacher_id == Auth::user()->id) {
+            $delete = true;
+        } else {
+            $group = Group::find($course->group_id);
+            if ($group->owner_id == Auth::user()->id) {
+                $delete = true;
+            }
+        }
+
+        if ($delete) {
             $exam = $exam->delete();
             return response()->json(['deleted' => $exam], 200);
-        }else
-        {
-            return response()->json('Unauthorized to delete Exam',401);
+        } else {
+            return response()->json('Unauthorized. Only course Teachers and Group Leaders can delete Exams.', 401);
         }
     }
 }

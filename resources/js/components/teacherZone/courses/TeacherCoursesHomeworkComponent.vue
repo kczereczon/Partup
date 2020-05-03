@@ -3,23 +3,31 @@
         <div class="card my-2">
             <div class="card-header bg-primary text-white">
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-9">
                         <h5 class="mb-0 font-weight-bold">{{homework.name}}</h5>
                     </div>
-                    <div class="col-2 text-right">
+                    <div class="col-3 text-right">
                         <div class="row">
                             <div class="col">
+                                <a
+                                    v-on:click="removeHomework"
+                                    v-if="shouldShowHomework"
+                                    class="ml-1"
+                                >
+                                    <span class="fa fa-minus"></span>
+                                </a>
                                 <a
                                     v-if="shouldShowHomework"
                                     data-toggle="modal"
                                     :data-target="'#homeworkEditorModal'+homework.id"
                                     class="ml-1"
                                 >
-                                    <span
-                                        class="fa fa-pen"
-                                    ></span>
+                                    <span class="fa fa-pen"></span>
                                 </a>
-                                <teacher-course-homework-editor :homework="homework" />
+                                <teacher-course-homework-editor
+                                    :homework="homework"
+                                    @refresh="refresh"
+                                />
                                 <a
                                     v-on:click="shouldShowHomework = !shouldShowHomework"
                                     class="ml-1"
@@ -54,6 +62,23 @@ export default {
         return {
             shouldShowHomework: false
         };
+    },
+    methods: {
+        removeHomework() {
+            if (confirm("Remove selected Homework?")) {
+                this.$http
+                    .delete("/v1/teacher/course/homework/", {
+                        id: this.homework.id
+                    })
+                    .then(result => {
+                        this.refresh();
+                    })
+                    .catch(err => {});
+            }
+        },
+        refresh() {
+            this.$emit("refresh");
+        }
     }
 };
 </script>

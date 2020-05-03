@@ -16,6 +16,7 @@ class CreateExamsTable extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('teacher_id');
             $table->string('name');
             $table->text('range_of_knowlage');
             $table->text('description');
@@ -23,7 +24,8 @@ class CreateExamsTable extends Migration
             $table->timestamp('time');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');;
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -19,7 +19,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="webHooksModalLabel">Setting up News for {{course.name}}</h5>
+                        <h5
+                            class="modal-title"
+                            id="webHooksModalLabel"
+                        >Setting up News for {{course.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -58,7 +61,7 @@
                         <button
                             type="button"
                             class="btn btn-primary"
-                            @click="createHomework"
+                            @click="createNews"
                             data-dismiss="modal"
                         >Apply</button>
                     </div>
@@ -68,9 +71,9 @@
     </div>
 </template>
 <script>
-import moment from 'moment'
-import { Datetime } from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
+import moment from "moment";
+import { Datetime } from "vue-datetime";
+import "vue-datetime/dist/vue-datetime.css";
 Vue.use(Datetime);
 export default {
     props: ["course"],
@@ -82,13 +85,15 @@ export default {
         };
     },
     methods: {
-        createHomework() {
+        createNews() {
             this.$http
                 .post("/v1/course/news", {
                     title: this.title,
                     message: this.message,
                     course_id: this.course.id,
-                    until_when_to_show: moment(this.until_when_to_show).format('YYYY:MM:DD HH:mm:ss'),
+                    until_when_to_show: moment(this.until_when_to_show).format(
+                        "YYYY:MM:DD HH:mm:ss"
+                    )
                 })
                 .then(result => {
                     // this.refreshCourses();
@@ -102,5 +107,5 @@ export default {
             this.until_when_to_show = "";
         }
     }
-}
+};
 </script>

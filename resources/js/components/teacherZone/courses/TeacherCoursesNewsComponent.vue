@@ -3,20 +3,24 @@
         <div class="card my-1">
             <div class="card-header bg-success">
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-9">
                         <h5 class="mb-0 font-weight-bold">{{news.title}}</h5>
                     </div>
-                    <div class="col-2 text-right">
+                    <div class="col-3 text-right">
                         <div class="row">
                             <div class="col">
-                                <a v-if="shouldShowNews" v-on:click="editMode ? save() : edit()" class="ml-1">
-                                    <span
-                                        :class="{
-                                        'fa fa-pen': !editMode,
-                                        'fa fa-save': editMode
-                                    }"
-                                    ></span>
+                                <a v-on:click="removeNews" v-if="shouldShowNews" class="ml-1">
+                                    <span class="fa fa-minus"></span>
                                 </a>
+                                <a
+                                    v-if="shouldShowNews"
+                                    data-toggle="modal"
+                                    :data-target="'#newsEditorModal'+news.id"
+                                    class="ml-1"
+                                >
+                                    <span class="fa fa-pen"></span>
+                                </a>
+                                <teacher-course-news-editor :news="news" @refresh="refresh" />
                                 <a v-on:click="shouldShowNews = !shouldShowNews" class="ml-1">
                                     <span
                                         :class="{
@@ -46,6 +50,23 @@ export default {
         return {
             shouldShowNews: false
         };
+    },
+    methods: {
+        removeNews() {
+            if (confirm("Remove selected News?")) {
+                this.$http
+                    .delete("/v1/teacher/course/news/", {
+                        id: this.news.id
+                    })
+                    .then(result => {
+                        this.refresh();
+                    })
+                    .catch(err => {});
+            }
+        },
+        refresh() {
+            this.$emit("refresh");
+        }
     }
 };
 </script>

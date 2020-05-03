@@ -86,6 +86,9 @@ export default {
         refreshNews() {
             this.$emit("refresh");
             this.news.id+=1;
+        },
+        refresh(){
+            this.$emit("refresh");
         }
     }
 };

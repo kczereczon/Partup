@@ -28,7 +28,13 @@ Route::middleware('auth:api')->get('/teacher/course/{date}', "{$NS}CourseControl
 
 //update,delete Exam
 Route::middleware('auth:api')->patch('/teacher/course/exam/{exam}', "{$NS}ExamController@update");
-Route::middleware('auth:api')->delete('/teacher/course/exam/{id}', "{$NS}ExamController@delete");
+Route::middleware('auth:api')->delete('/teacher/course/exam/{id}', "{$NS}ExamController@destroy");
+//update,delete Homework
+Route::middleware('auth:api')->patch('/teacher/course/homework/{homework}', "{$NS}HomeworkController@update");
+Route::middleware('auth:api')->delete('/teacher/course/homework/{id}', "{$NS}HomeworkController@destroy");
+//update,delete News
+Route::middleware('auth:api')->patch('/teacher/course/news/{news}', "{$NS}NewsController@updateCourse");
+Route::middleware('auth:api')->delete('/teacher/course/news/{id}', "{$NS}NewsController@destroyCourse");
 
 //
 //teacher view

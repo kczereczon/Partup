@@ -64,18 +64,17 @@ export default {
         };
     },
     methods: {
-        show() {
-            this.shouldShowExams = true;
-        },
         removeExam() {
-            this.$http
-                .delete("/v1/teacher/course/exam/" + this.exam.id)
-                .then(result => {
-                    this.removeCourseFromArray();
-                    this.refresh();
-                })
-                .catch(err => {});
-            this.refresh();
+            if (confirm("Remove selected Exam?")) {
+                this.$http
+                    .delete("/v1/teacher/course/exam/", {
+                        id: this.exam.id
+                    })
+                    .then(result => {
+                        this.refresh();
+                    })
+                    .catch(err => {});
+            }
         },
         refresh() {
             this.$emit("refresh");

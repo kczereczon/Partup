@@ -41,8 +41,6 @@ export default {
                 })
                 .catch(error => console.log(error.response))
                 .finally(() => {
-                    // The whole view is rendered, so I can safely access or query
-                    // the DOM. ¯\_(ツ)_/¯
                     this.$refs["loader"].hide();
                 });
         }
