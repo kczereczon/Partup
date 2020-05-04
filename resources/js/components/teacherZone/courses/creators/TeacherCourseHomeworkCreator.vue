@@ -108,7 +108,7 @@ export default {
                     course_id: this.course.id
                 })
                 .then(result => {
-                    // this.refreshCourses();
+                    this.refresh();
                     this.clearModal();
                 })
                 .catch(err => {});
@@ -119,6 +119,9 @@ export default {
             this.description = "";
             this.requirements = "";
             this.where_send = "";
+        },
+        refresh() {
+            this.$emit("refresh");
         }
     }
 }

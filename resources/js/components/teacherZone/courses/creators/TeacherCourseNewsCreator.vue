@@ -96,7 +96,7 @@ export default {
                     )
                 })
                 .then(result => {
-                    // this.refreshCourses();
+                    this.refresh();
                     this.clearModal();
                 })
                 .catch(err => {});
@@ -105,6 +105,9 @@ export default {
             this.title = "";
             this.message = "";
             this.until_when_to_show = "";
+        },
+        refresh() {
+            this.$emit("refresh");
         }
     }
 };

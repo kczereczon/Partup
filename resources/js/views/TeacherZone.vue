@@ -11,7 +11,7 @@
                                     :courses="courses"
                                     @refresh="getCourses"
                                 />
-                                <loader ref="loader" id="teacher-courses-component" />
+                                <loader v-if="loading"/>
                             </div>
                         </div>
                     </div>
@@ -26,7 +26,8 @@ import moment from "moment";
 export default {
     data() {
         return {
-            courses: []
+            courses: [],
+            loading: true,
         };
     },
     created() {
@@ -34,6 +35,7 @@ export default {
     },
     methods: {
         getCourses() {
+            this.loading = true;
             this.courses = null;
             this.$http
                 .get("/v1/teacher/course/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss'))
@@ -42,7 +44,7 @@ export default {
                 })
                 .catch(error => console.log(error.response))
                 .finally(() => {
-                    this.$refs["loader"].hide();
+                    this.loading = false;
                 });
         },
         refresh() {

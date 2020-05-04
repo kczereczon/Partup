@@ -76,15 +76,15 @@ export default {
     },
     methods: {
         refreshExams() {
-            this.$emit("refresh");
+            this.refresh();
             this.exam.id+=1;
         },
         refreshHomeworks() {
-            this.$emit("refresh");
+            this.refresh();
             this.homework.id+=1;
         },
         refreshNews() {
-            this.$emit("refresh");
+            this.refresh();
             this.news.id+=1;
         },
         refresh(){

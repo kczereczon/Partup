@@ -25,7 +25,7 @@
                         @refresh="getCourses"
                         @removeCourseFromArray="removeCourseFromArray"
                     />
-                    <loader ref="loader" id="course-component" />
+                    <loader v-if="loading" />
                 </div>
             </div>
         </div>
@@ -36,13 +36,14 @@
 export default {
     props: ["groups"],
     data() {
-        return { courses: [] };
+        return { courses: [], loading: true };
     },
     created() {
         this.getCourses();
     },
     methods: {
         getCourses() {
+            this.loading=true;
             this.$http
                 .get("/v1/course")
                 .then(result => {
@@ -50,9 +51,7 @@ export default {
                 })
                 .catch(err => {})
                 .finally(() => {
-                    // The whole view is rendered, so I can safely access or query
-                    // the DOM. ¯\_(ツ)_/¯
-                    this.$refs["loader"].hide();
+                    this.loading=false;
                 });
         },
         addNew() {

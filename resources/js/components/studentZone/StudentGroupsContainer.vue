@@ -13,7 +13,7 @@
                             :key="group.id"
                         />
                     </div>
-                    <loader ref="loader" id="student-group-component" />
+                    <loader v-if="loading"/>
                 </div>
             </div>
         </div>
@@ -25,7 +25,8 @@ export default {
 
     data() {
         return {
-            groups: []
+            groups: [],
+            loading: true,
         };
     },
     created() {
@@ -33,6 +34,7 @@ export default {
     },
     methods: {
         getGroups() {
+            this.loading=true;
             this.$http
                 .get("v1/user/groups/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss'))
                 .then(results => {
@@ -40,9 +42,7 @@ export default {
                 })
                 .catch(error => console.log(error.response))
                 .finally(() => {
-                    // The whole view is rendered, so I can safely access or query
-                    // the DOM. ¯\_(ツ)_/¯
-                    this.$refs["loader"].hide();
+                    this.loading=false;
                 });
         },
     }
