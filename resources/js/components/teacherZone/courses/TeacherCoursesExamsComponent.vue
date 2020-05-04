@@ -67,7 +67,7 @@ export default {
         removeExam() {
             if (confirm("Remove selected Exam?")) {
                 this.$http
-                    .delete("/v1/teacher/course/exam/", {
+                    .delete("/v1/teacher/course/exam/"+this.exam.id, {
                         id: this.exam.id
                     })
                     .then(result => {

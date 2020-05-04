@@ -85,12 +85,13 @@ export default {
             description: this.exam.description,
             place: this.exam.place,
             time: new Date(this.exam.time).toISOString(),
+            course_id: this.exam.course_id
         }
     },
     methods: {
         editExam() {
             this.$http
-                .patch("/v1/teacher/course/exam/", {
+                .patch("/v1/teacher/course/exam/"+this.exam.id, {
                     id: this.exam.id,
                     name: this.name,
                     range_of_knowlage: this.range_of_knowlage,

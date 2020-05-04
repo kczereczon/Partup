@@ -76,7 +76,7 @@ export default {
     methods: {
         editNews() {
             this.$http
-                .patch("/v1/course/news", {
+                .patch("/v1/course/news/"+this.news.id, {
                     id: this.news.id,
                     title: this.title,
                     message: this.message,

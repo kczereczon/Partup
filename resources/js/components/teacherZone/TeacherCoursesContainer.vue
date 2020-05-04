@@ -15,7 +15,6 @@ export default {
     methods: {
         refresh(){
             this.$emit("refresh");
-            this.course.id+=1;
         }
     }
 };

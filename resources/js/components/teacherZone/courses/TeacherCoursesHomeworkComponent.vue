@@ -67,7 +67,7 @@ export default {
         removeHomework() {
             if (confirm("Remove selected Homework?")) {
                 this.$http
-                    .delete("/v1/teacher/course/homework/", {
+                    .delete("/v1/teacher/course/homework/"+this.homework.id, {
                         id: this.homework.id
                     })
                     .then(result => {

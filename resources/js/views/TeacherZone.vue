@@ -34,8 +34,9 @@ export default {
     },
     methods: {
         getCourses() {
+            this.courses = null;
             this.$http
-                .get("/v1/teacher/course/2020:05:02__12:22:20")
+                .get("/v1/teacher/course/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss'))
                 .then(results => {
                     this.courses = results.data;
                 })
@@ -43,6 +44,9 @@ export default {
                 .finally(() => {
                     this.$refs["loader"].hide();
                 });
+        },
+        refresh() {
+            this.getCourses();
         }
     }
 };

@@ -55,7 +55,7 @@ export default {
         removeNews() {
             if (confirm("Remove selected News?")) {
                 this.$http
-                    .delete("/v1/teacher/course/news/", {
+                    .delete("/v1/teacher/course/news/"+this.news.id, {
                         id: this.news.id
                     })
                     .then(result => {

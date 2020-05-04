@@ -98,7 +98,7 @@ export default {
     methods: {
         editHomework() {
             this.$http
-                .patch("/v1/teacher/course/homework/", {
+                .patch("/v1/teacher/course/homework/"+this.homework.id, {
                     id: this.homework.id,
                     name: this.name,
                     description: this.description,
