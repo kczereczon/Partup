@@ -51,10 +51,12 @@ export default {
             }
         },
         getGroups() {
+            this.groups = null;
             this.$http
                 .get("/v1/groups")
                 .then(results => {
                     console.log(results.data);
+                    console.log('zeruje tabelke');
                     this.groups = results.data;
                 })
                 .catch(error => console.log(error.response))

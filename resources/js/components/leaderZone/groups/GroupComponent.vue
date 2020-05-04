@@ -174,7 +174,7 @@
             >
                 <group-component
                     v-on:remove="subgroups.splice(index, 1)"
-                    v-on:refresh="$emit('refresh')"
+                    v-on:refresh="refresh"
                     :id="group.id"
                     :name="group.name"
                     :subgroups="group.subgroups"
@@ -237,7 +237,7 @@ export default {
                         }
                     )
                     .then(results => {
-                        this.$emit("refresh");
+                        this.refresh();
                         this.close();
                     })
                     .catch(error => {
@@ -302,6 +302,9 @@ export default {
             } else {
                 this.groups.splice(index, 1);
             }
+        },
+        refresh() {
+            this.$emit("refresh");
         }
     }
 };
