@@ -52,4 +52,8 @@ class Group extends Model
     {
         return $this->hasMany(News::class);
     }
+    public function groupInvitation()
+    {
+        return $this->hasMany(GroupInvitation::class);
+    }
 }

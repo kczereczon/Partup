@@ -23,6 +23,7 @@
                         :homework_webhook="group.homework_webhook"
                         :exams_webhook="group.exams_webhook"
                         :news_webhook="group.news_webhook"
+                        :invites="group.group_invitation"
                         v-on:remove="remove(index)"
                         :editMode="group.id ? false : true"
                         v-on:refresh="getGroups"

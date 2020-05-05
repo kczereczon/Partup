@@ -92,9 +92,9 @@ class GroupController extends Controller
         $groups = new Group();
 
         $groups = $groups
-            ->where('owner_id', $request->user()->id)
+            ->where('owner_id', Auth::user()->id)
             ->whereNull('group_id')
-            ->with(['subgroups'])
+            ->with(['subgroups','groupInvitation'])
             ->orderBy('id', 'desc')
             ->get();
 
