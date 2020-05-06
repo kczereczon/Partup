@@ -117,14 +117,10 @@ class NewsController extends Controller
                 'group_id' => 'required|exists:groups,id',
             ]
         );
+        $news = News::find($request->id);
 
-        $group = Group::find($request->group_id);
-
-        if ($group->owner_id == Auth::user()->id) {
-
-            $news = News::find($request->id);
+        if ($news->teacher_id == Auth::user()->id) {
             $news = $news->update($request->all());
-
             return response()->json(['updated' => true], 200);
         } else {
             return response()->json('Unauthorized. Only Leaders can edit News for group.', 401);
@@ -142,21 +138,10 @@ class NewsController extends Controller
                 'course_id' => 'required|exists:courses,id'
             ]
         );
-        $update = false;
-        $course = Course::find($request->course_id);
+        $news = News::find($request->id);
 
-        if ($course->teacher_id == Auth::user()->id) {
-            $update = true;
-        } else {
-            $group = Group::find($course->group_id);
-            if ($group->owner_id == Auth::user()->id) {
-                $update = true;
-            }
-        }
-        if ($update) {
-            $news = News::find($request->id);
+        if ($news->teacher_id == Auth::user()->id) {
             $news = $news->update($request->all());
-
             return response()->json(['created' => true], 200);
         } else {
             return response()->json('Unauthorized. Only Leaders and Teachers can create News for course.', 401);
@@ -169,48 +154,14 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroyGroup(Request $request)
+    public function destroy($id)
     {
-        $input = $request->validate(
-            [
-                'id' => 'required|exists:news,id',
-            ]
-        );
-        $news = News::find($request->id);
-        $group = Group::find($news->group_id);
-        if ($group->owner_id == Auth::user()->id) {
-
+        $news = News::find($id);
+        if ($news->teacher_id == Auth::user()->id) {
             $news = $news->delete();
             return response()->json(['deleted' => true], 200);
         } else {
             return response()->json('Unauthorized. Only Leaders can delete News for group.', 401);
-        }
-    }
-
-    public function destroyCourse(Request $request)
-    {
-        $input = $request->validate(
-            [
-                'id' => 'required|exists:news,id',
-            ]
-        );
-        $news = News::find($request->id);
-        $course = Course::find($news->course_id);
-        $delete = false;
-        if ($course->teacher_id == Auth::user()->id) {
-            $delete = true;
-        } else {
-            $group = Group::find($news->group_id);
-            if ($group->owner_id == Auth::user()->id) {
-                $delete = true;
-            }
-        }
-
-        if ($delete) {
-            $news = $news->delete();
-            return response()->json(['deleted' => true], 200);
-        } else {
-            return response()->json('Unauthorized. Only Leaders and Teachers can delete News for course.', 401);
         }
     }
 }

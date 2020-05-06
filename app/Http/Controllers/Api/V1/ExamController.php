@@ -101,19 +101,8 @@ class ExamController extends Controller
             ]
         );
         $exam = Exam::find($request->id);
-        $course = Course::find($exam->course_id);
-        $update = false;
 
-        if ($course->teacher_id == Auth::user()->id) {
-            $update = true;
-        } else {
-            $group = Group::find($course->group_id);
-            if ($group->owner_id == Auth::user()->id) {
-                $update = true;
-            }
-        }
-
-        if ($update) {
+        if ($exam->teacher_id == Auth::user()->id) {
             $exam = $exam->update($request->all());
             return response()->json(['updated' => $exam], 200);
         } else {
@@ -127,23 +116,10 @@ class ExamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $exam = Exam::find($request->id);
-        $course = Course::find($exam->course_id);
-
-        $delete = false;
-
-        if ($course->teacher_id == Auth::user()->id) {
-            $delete = true;
-        } else {
-            $group = Group::find($course->group_id);
-            if ($group->owner_id == Auth::user()->id) {
-                $delete = true;
-            }
-        }
-
-        if ($delete) {
+        $exam = Exam::find($id);
+        if ($exam->teacher_id == Auth::user()->id) {
             $exam = $exam->delete();
             return response()->json(['deleted' => $exam], 200);
         } else {

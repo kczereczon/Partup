@@ -100,20 +100,8 @@ class HomeworkController extends Controller
             ]
         );
         $homework = Homework::find($request->id);
-        $course = Course::find($homework->course_id);
 
-        $update = false;
-
-        if ($course->teacher_id == Auth::user()->id) {
-            $update = true;
-        } else {
-            $group = Group::find($course->group_id);
-            if ($group->owner_id == Auth::user()->id) {
-                $update = true;
-            }
-        }
-
-        if ($update) {
+        if ($homework->teacher_id == Auth::user()->id) {
             $homework = $homework->update($request->all());
             return response()->json(['updated' => $homework], 200);
         } else {
@@ -130,19 +118,7 @@ class HomeworkController extends Controller
     public function destroy($id)
     {
         $homework = Homework::find($id);
-        $course = Course::find($homework->course_id);
-
-        $delete = false;
-        if ($course->teacher_id == Auth::user()->id) {
-            $delete = true;
-        } else {
-            $group = Group::find($course->group_id);
-            if ($group->owner_id == Auth::user()->id) {
-                $delete = true;
-            }
-        }
-
-        if ($delete) {
+        if ($homework->teacher_id == Auth::user()->id) {
             $homework = $homework->delete();
             return response()->json(['deleted' => $homework], 200);
         } else {

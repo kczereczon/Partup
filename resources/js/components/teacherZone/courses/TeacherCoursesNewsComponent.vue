@@ -131,16 +131,15 @@ export default {
     },
     methods: {
         removeNews() {
-            if (confirm("Remove selected News?")) {
+            if (confirm("Remove selected News ?"+ this.news.id))
                 this.$http
                     .delete("/v1/teacher/course/news/" + this.news.id, {
-                        id: this.news.id
+                        id: this.news.id,
                     })
                     .then(result => {
                         this.refresh();
                     })
                     .catch(err => {});
-            }
         },
         editNews() {
             this.$http
