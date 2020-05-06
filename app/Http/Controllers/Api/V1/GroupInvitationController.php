@@ -59,7 +59,7 @@ class GroupInvitationController extends Controller
 
         /** @var User|Builder $invitedUser */
         $invitedUser = new User();
-        $invitedUser = $invitedUser->where('email', $groupInvitation->email)->firstOrFail();
+        $invitedUser = $invitedUser->where('email', $groupInvitation->email)->first();
 
         if ($invitedUser) {
             $groupInvitation->user_have_account = true;

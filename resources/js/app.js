@@ -66,6 +66,14 @@ files
 
 Vue.prototype.$http = API;
 
+API.interceptors.response.use(null, function (error) {
+    if (error.response.status === 401) {
+        console.log('Failed to login')
+        routerObject.push('/login')
+    }
+    return Promise.reject(error)
+    })
+
 const app = new Vue({
     el: "#app",
     router: routerObject,

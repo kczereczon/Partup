@@ -105,7 +105,7 @@ export default {
                 .post("/v1/register", {
                     email: this.email,
                     password: this.password,
-                    re_password: this.re_password,
+                    password_confirmation: this.re_password,
                     name: this.name,
                 })
                 .then(function (response) {

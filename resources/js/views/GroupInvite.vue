@@ -66,7 +66,7 @@
 export default {
     data() {
         return {
-            isLoggedIn: window.localStorage.getItem("authUser"),
+            isLoggedIn: window.sessionStorage.getItem("authUser"),
             inviteHash: this.$route.query.hash,
             data: null,
         };

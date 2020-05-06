@@ -46,8 +46,8 @@ Route::middleware('auth:web')->get('/course', "{$NS}CourseController@index");
 Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");
 Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@update");
 
-Route::get('/group-invitations', "{$NS}GroupInvitationController@show");
 Route::middleware('auth:web')->post('/group-invitations/accept', "{$NS}GroupInvitationController@accept");
+Route::middleware('api')->get('/group-invitations', "{$NS}GroupInvitationController@show");
 
 //courses
 Route::middleware('auth:web')->post('/homeworks', "{$NS}HomeworkController@store");

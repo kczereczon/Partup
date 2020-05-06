@@ -90,6 +90,7 @@
         <div
             class="modal fade text-center"
             :id="'groupInvitations'+id"
+            :ref="'groupInvitations'+id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="groupInvitationsLabel"
@@ -170,6 +171,7 @@
         <div
             class="modal fade text-center"
             :id="'invite'+id"
+            :ref="'invite'+id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="groupInviteLabel"
@@ -186,6 +188,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="title">E-mail of Student</label>
+                            <div v-if="error.email" class="alert alert-danger"><p
+                                class="mb-2"
+                                v-for="(message, index) in error.email"
+                                :key="index"
+                            >{{ message }}</p></div>
                             <input
                                 v-model="invitationEmail"
                                 name="title"
@@ -205,7 +212,6 @@
                             type="button"
                             class="btn btn-primary"
                             @click="groupInvite"
-                            data-dismiss="modal"
                         >Invite</button>
                     </div>
                 </div>
@@ -391,12 +397,13 @@ export default {
         },
         groupInvite() {
             this.$http
-                .post("/v1/groups", {
+                .post("/v1/groups/"+this.id+"/invite", {
                     email: this.invitationEmail
                 })
                 .then(results => {
                     this.refresh();
                     this.clearInviteModal();
+                    this.$refs['invite'+this.id].modal('hide');
                 })
                 .catch(error => {
                     this.error = error.response.data.errors;

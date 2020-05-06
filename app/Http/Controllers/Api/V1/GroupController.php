@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Group;
+use App\GroupInvitation;
 use App\News;
 use App\GroupUser;
 use App\Http\Controllers\Controller;
@@ -145,11 +146,15 @@ class GroupController extends Controller
 
     public function inviteUser($id, Request $request)
     {
-        $validated = $request->validate(['email' => 'required|email']);
+        $validated = $request->validate(['email' => 'required|email|unique:group_invitations,email']);
 
         /** @var Group|Builder $group */
         $group = new Group();
         $group = $group->findOrFail($id);
+
+        /** @var GroupInvitation|Builder $groupInvitation */
+        $groupInvitation = new GroupInvitation();
+        $groupInvitation = $groupInvitation->where('email','=', $validated['email'])->first();
 
         //checking that group is created by user
         if ($group->owner_id != Auth::user()->id)
