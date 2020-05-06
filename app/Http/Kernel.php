@@ -40,7 +40,9 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         ],
     ];
 

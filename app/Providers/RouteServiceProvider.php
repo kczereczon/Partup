@@ -16,6 +16,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Http\Controllers';
 
+    const HOME = '/home';
+
     /**
      * The path to the "home" route for your application.
      *
@@ -73,7 +75,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api/v1')
-            ->middleware('api')
+            ->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/api_v1.php'));
     }
