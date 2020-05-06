@@ -11,13 +11,13 @@
                             <div class="col">
                                 <a
                                     v-on:click="removeHomework"
-                                    v-if="shouldShowHomework"
+                                    v-if="shouldShowHomework && canEdit"
                                     class="ml-1"
                                 >
                                     <span class="fa fa-minus"></span>
                                 </a>
                                 <a
-                                    v-if="shouldShowHomework"
+                                    v-if="shouldShowHomework && canEdit"
                                     data-toggle="modal"
                                     :data-target="'#homeworkEditorModal'+homework.id"
                                     class="ml-1"
@@ -150,12 +150,21 @@ export default {
     data() {
         return {
             shouldShowHomework: false,
+            canEdit: false,
             name: this.homework.name,
             description: this.homework.description,
             requirements: this.homework.requirements,
             where_send: this.homework.where_send,
             deadline: new Date(this.homework.deadline).toISOString()
         };
+    },
+    mounted() {
+        if (localStorage.getItem("authUser")) {
+            this.todos = JSON.parse(localStorage.getItem("authUser"));
+            if (this.news.teacher_id == this.todos.id) {
+                this.canEdit = true;
+            }
+        }
     },
     methods: {
         removeHomework() {

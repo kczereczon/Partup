@@ -9,11 +9,15 @@
                     <div class="col-3 text-right">
                         <div class="row">
                             <div class="col">
-                                <a v-on:click="removeNews" v-if="shouldShowNews" class="ml-1">
+                                <a
+                                    v-on:click="removeNews"
+                                    v-if="shouldShowNews && canEdit"
+                                    class="ml-1"
+                                >
                                     <span class="fa fa-minus"></span>
                                 </a>
                                 <a
-                                    v-if="shouldShowNews"
+                                    v-if="shouldShowNews && canEdit"
                                     data-toggle="modal"
                                     :data-target="'#newsEditorModal'+news.id"
                                     class="ml-1"
@@ -124,17 +128,29 @@ export default {
     data() {
         return {
             shouldShowNews: false,
+            canEdit: false,
             title: this.news.title,
             message: this.news.message,
-            until_when_to_show: new Date(this.news.until_when_to_show).toISOString()
+            until_when_to_show: new Date(
+                this.news.until_when_to_show
+            ).toISOString()
         };
+    },
+    mounted() {
+        if (localStorage.getItem("authUser")) {
+            this.todos = JSON.parse(localStorage.getItem("authUser"));
+            if(this.news.teacher_id==this.todos.id)
+            {
+                this.canEdit=true;
+            }
+        }
     },
     methods: {
         removeNews() {
-            if (confirm("Remove selected News ?"+ this.news.id))
+            if (confirm("Remove selected News ?" + this.news.id))
                 this.$http
                     .delete("/v1/teacher/course/news/" + this.news.id, {
-                        id: this.news.id,
+                        id: this.news.id
                     })
                     .then(result => {
                         this.refresh();
@@ -147,7 +163,9 @@ export default {
                     id: this.news.id,
                     title: this.title,
                     message: this.message,
-                    until_when_to_show: moment(this.until_when_to_show).format("YYYY:MM:DD HH:mm:ss"),
+                    until_when_to_show: moment(this.until_when_to_show).format(
+                        "YYYY:MM:DD HH:mm:ss"
+                    ),
                     course_id: this.news.course_id
                 })
                 .then(result => {
@@ -159,7 +177,9 @@ export default {
         clearModal() {
             this.title = this.news.title;
             this.message = this.news.message;
-            this.until_when_to_show = new Date(this.news.until_when_to_show).toISOString();
+            this.until_when_to_show = new Date(
+                this.news.until_when_to_show
+            ).toISOString();
         },
         refresh() {
             this.$emit("refresh");

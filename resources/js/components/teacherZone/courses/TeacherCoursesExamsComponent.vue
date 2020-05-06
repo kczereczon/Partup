@@ -9,11 +9,15 @@
                     <div class="col-3 text-right">
                         <div class="row">
                             <div class="col">
-                                <a v-on:click="removeExam" v-if="shouldShowExams" class="ml-1">
+                                <a
+                                    v-on:click="removeExam"
+                                    v-if="shouldShowExams && canEdit"
+                                    class="ml-1"
+                                >
                                     <span class="fa fa-minus"></span>
                                 </a>
                                 <a
-                                    v-if="shouldShowExams"
+                                    v-if="shouldShowExams && canEdit"
                                     data-toggle="modal"
                                     :data-target="'#examEditorModal'+exam.id"
                                     class="ml-1"
@@ -153,6 +157,7 @@ export default {
     data() {
         return {
             shouldShowExams: false,
+            canEdit: false,
             name: this.exam.name,
             range_of_knowlage: this.exam.range_of_knowlage,
             description: this.exam.description,
@@ -160,6 +165,14 @@ export default {
             time: new Date(this.exam.time).toISOString(),
             course_id: this.exam.course_id
         };
+    },
+    mounted() {
+        if (localStorage.getItem("authUser")) {
+            this.todos = JSON.parse(localStorage.getItem("authUser"));
+            if (this.news.teacher_id == this.todos.id) {
+                this.canEdit = true;
+            }
+        }
     },
     methods: {
         removeExam() {

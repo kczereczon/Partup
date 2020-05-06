@@ -125,8 +125,8 @@
                             </div>
                             <div
                                 class="col-12 py-1"
-                                v-for="(invite,index2) in invites"
-                                :key="invite.index2"
+                                v-for="invite in invites"
+                                :key="invite.id"
                             >
                                 <div class="row text-center">
                                     <div class="col-8 col-lg-4">{{invite.email}}</div>
@@ -204,7 +204,7 @@
                         <button
                             type="button"
                             class="btn btn-primary"
-                            @click="invite"
+                            @click="groupInvite"
                             data-dismiss="modal"
                         >Invite</button>
                     </div>
@@ -389,13 +389,14 @@ export default {
         clearInviteModal() {
             this.invitationEmail = "";
         },
-        invite() {
+        groupInvite() {
             this.$http
                 .post("/v1/groups", {
                     email: this.invitationEmail
                 })
                 .then(results => {
                     this.refresh();
+                    this.clearInviteModal();
                 })
                 .catch(error => {
                     this.error = error.response.data.errors;
