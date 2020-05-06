@@ -137,8 +137,8 @@ export default {
         };
     },
     mounted() {
-        if (localStorage.getItem("authUser")) {
-            this.todos = JSON.parse(localStorage.getItem("authUser"));
+        if (sessionStorage.getItem("authUser")) {
+            this.todos = JSON.parse(sessionStorage.getItem("authUser"));
             if(this.news.teacher_id==this.todos.id)
             {
                 this.canEdit=true;

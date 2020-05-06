@@ -87,7 +87,7 @@ const app = new Vue({
             this.$http
             .post("/v1/logout").then(response => {
                 this.isLogged = false;
-                window.localStorage.removeItem("authUser");
+                window.sessionStorage.removeItem("authUser");
                 this.$router.push({ name: "Login" });
             })
         },
