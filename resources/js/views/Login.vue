@@ -84,7 +84,7 @@ export default {
         };
     },
     created() {
-        if (window.localStorage.getItem("authToken"))
+        if (window.sessionStorage.getItem("authToken"))
             this.$router.push({ name: "Home" });
     },
     methods: {
@@ -102,15 +102,6 @@ export default {
                 })
                 .then(function (response) {
                     try {
-                        window.localStorage.setItem(
-                            "authUser",
-                            JSON.stringify(response.data.user)
-                        );
-                        window.localStorage.setItem(
-                            "authToken",
-                            response.data.access_token
-                        );
-
                         currentObj.$root.isLogged = true;
                         if (currentObj.$route.query.inviteHash)
                             currentObj.$router.push({
@@ -119,7 +110,7 @@ export default {
                                     hash: currentObj.$route.query.inviteHash,
                                 },
                             });
-                        else currentObj.$router.push({ name: "Home" });
+                        else currentObj.$router.push({ name: "StudentZone" });
                     } catch (error) {
                         console.log(error);
                     }

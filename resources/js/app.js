@@ -41,9 +41,8 @@ routerObject.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
-        if (!window.localStorage.getItem("authToken")) {
+        if (!window.sessionStorage.getItem("authUser")) {
             next({ name: "Login" });
-            $root.isLogged = false;
         } else {
             $("#loader").fadeIn("slow", function() {
                 $("#loader").css("display", "flex");
@@ -71,16 +70,18 @@ const app = new Vue({
     el: "#app",
     router: routerObject,
     data: {
-        isLogged: window.localStorage.getItem("authToken"),
+        isLogged: window.sessionStorage.getItem("authUser"),
         loadingText: "Loading",
         loadingDots: "",
     },
     methods: {
         logout() {
-            this.isLogged = false;
-            window.localStorage.removeItem("authToken");
-            window.localStorage.removeItem("authUser");
-            this.$router.push({ name: "Login" });
+            this.$http
+            .post("/v1/logout").then(response => {
+                this.isLogged = false;
+                window.localStorage.removeItem("authUser");
+                this.$router.push({ name: "Login" });
+            })
         },
     },
 });

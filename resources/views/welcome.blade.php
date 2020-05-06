@@ -8,6 +8,9 @@
         <title>Laravel Vue Router Message Example From Scratch - ItSolutionStuff.com</title>
         <link href="css/app.css" rel="stylesheet" type="text/css">
         <script src="https://kit.fontawesome.com/fb57c0e906.js" crossorigin="anonymous"></script>
+        <script>
+            window.sessionStorage.authUser = {!! json_encode($auth_user); !!};
+        </script>
     </head>
     <body>
         <div id="app">
