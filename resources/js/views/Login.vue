@@ -73,7 +73,7 @@ export default {
   },
   created() {
     if (window.sessionStorage.getItem("authUser"))
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "StudentZone" });
   },
   methods: {
     formSubmit(e) {
