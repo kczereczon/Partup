@@ -48,6 +48,7 @@ Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@upda
 
 Route::middleware('auth:web')->post('/group-invitations/accept', "{$NS}GroupInvitationController@accept");
 Route::middleware('api')->get('/group-invitations', "{$NS}GroupInvitationController@show");
+Route::middleware('api')->get('/users/current-logged', "{$NS}UserController@currentLogged");
 
 //courses
 Route::middleware('auth:web')->post('/homeworks', "{$NS}HomeworkController@store");

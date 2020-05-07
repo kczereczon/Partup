@@ -11,5 +11,8 @@ use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
-
+    public function currentLogged()
+    {
+        return response()->json(Auth::user(), 200);
+    }
 }
