@@ -20,7 +20,9 @@ import CourseInvite from "./views/CourseInvite";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import API from "./api";
-import moment from 'moment'
+import moment from 'moment';
+
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 Vue.use(VueRouter, VueAxios, axios);
 

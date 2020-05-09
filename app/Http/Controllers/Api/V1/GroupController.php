@@ -146,7 +146,7 @@ class GroupController extends Controller
 
     public function inviteUser($id, Request $request)
     {
-        $validated = $request->validate(['email' => 'required|email|unique:group_invitations,email']);
+        $validated = $request->validate(['email' => 'email|required']);
 
         /** @var Group|Builder $group */
         $group = new Group();

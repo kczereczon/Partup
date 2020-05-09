@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class CourseInvitationService
 {
@@ -57,7 +58,7 @@ class CourseInvitationService
     public function acceptInvite(CourseInvitation $courseInvitiation, User $user)
     {
         try {
-            $user->courses()->sync([$courseInvitiation->group->id]);
+            Course::where('id', $courseInvitiation->course_id)->update(['teacher_id' => Auth::user()->id]);
 
             $courseInvitiation->accepted = true;
             $courseInvitiation->save();
@@ -65,7 +66,7 @@ class CourseInvitationService
             return true;
         } catch (Exception $e) {
             Log::error($e);
-            return false;
+            return $e;
         }
     }
 }

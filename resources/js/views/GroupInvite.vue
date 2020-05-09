@@ -82,6 +82,7 @@ export default {
                 .get("/v1/group-invitations?hash=" + this.inviteHash)
                 .then((result) => {
                     this.data = result.data;
+                    this.isLoggedIn=window.sessionStorage.getItem("authUser");
                 })
                 .catch((err) => {
                     this.$router.push({ name: "Home" });
@@ -98,7 +99,7 @@ export default {
             this.$http
                 .post("/v1/group-invitations/accept?hash=" + this.inviteHash)
                 .then((result) => {
-                    this.$router.push({ name: "Home" });
+                    this.$router.push({ name: "StudentZone" });
                 })
                 .catch((err) => {
                     //TODO: write error handler

@@ -165,7 +165,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="groupInviteLabel">Course Invitations</h5>
+                        <h5 class="modal-title" id="groupInviteLabel">Course Invitation</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -202,6 +202,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 export default {
     props: ["id", "name", "groups", "group", "new"],
     created() {
@@ -259,12 +260,23 @@ export default {
                     email: this.invitationEmail
                 })
                 .then(results => {
-                    this.refresh();
+                    this.refreshCourses();
                     this.clearInviteModal();
-                    this.$refs['courseinvite'+this.id].modal('hide');
+                    Swal.fire({
+                            icon: 'success',
+                            title: 'Invitation send',
+                            text: 'User should receive e-mail with a link in short time!',
+                            timer: 4000,
+                        });
                 })
                 .catch(error => {
-                    this.error = error.response.data;
+                    // this.error = error.response.data.errors;
+                    Swal.fire({
+                            icon: 'error',
+                            title: "Error Occured",
+                            text: error,
+                            timer: 6000,
+                        });
                 });
         },
         clearInviteModal() {

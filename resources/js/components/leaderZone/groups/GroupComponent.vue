@@ -90,7 +90,6 @@
         <div
             class="modal fade text-center"
             :id="'groupInvitations'+id"
-            :ref="'groupInvitations'+id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="groupInvitationsLabel"
@@ -212,6 +211,7 @@
                             type="button"
                             class="btn btn-primary"
                             @click="groupInvite"
+                            data-dismiss="modal"
                         >Invite</button>
                     </div>
                 </div>
@@ -302,6 +302,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 export default {
     props: ["id", "name", "parent_id"],
     data() {
@@ -403,10 +404,21 @@ export default {
                 .then(results => {
                     this.refresh();
                     this.clearInviteModal();
-                    this.$refs['groupinvite'+this.id].modal('hide');
+                    Swal.fire({
+                            icon: 'success',
+                            title: 'Invitation send',
+                            text: 'User should receive e-mail with a link in short time!',
+                            timer: 4000,
+                        });
                 })
                 .catch(error => {
                     this.error = error.response.data.errors;
+                    Swal.fire({
+                            icon: 'error',
+                            title: "Error Occured",
+                            text: error,
+                            timer: 6000,
+                        });
                 });
         },
         remove(index) {

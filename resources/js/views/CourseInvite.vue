@@ -8,7 +8,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">
                             <b>{{ data.group.owner.name }}</b> ({{
                                 data.group.owner.email
-                            }}) has been invited you to group
+                            }}) has been invited you to be a teacher of <b>{{data.course.name}}</b> for
                             <b>{{ data.group.full_name }}</b
                             >.
                         </h6>
@@ -45,7 +45,7 @@
                         <div v-if="isLoggedIn">
                             <p class="card-text mb-1">
                                 You need to accept this message then you will be
-                                redirected to your home page, but group will be
+                                redirected to your home page, but course will be
                                 attached to your accout.
                             </p>
                             <a
@@ -81,6 +81,7 @@ export default {
                 .get("/v1/course-invitations?hash=" + this.inviteHash)
                 .then((result) => {
                     this.data = result.data;
+                    this.isLoggedIn=window.sessionStorage.getItem("authUser");
                 })
                 .catch((err) => {
                     this.$router.push({ name: "Home" });
@@ -90,14 +91,14 @@ export default {
             e.preventDefault();
             this.$router.push({
                 name: this.data.user_have_account ? "Login" : "Register",
-                query: { inviteHash: this.inviteHash },
+                query: { courseInviteHash: this.inviteHash },
             });
         },
         sendAccept() {
             this.$http
                 .post("/v1/course-invitations/accept?hash=" + this.inviteHash)
                 .then((result) => {
-                    this.$router.push({ name: "Home" });
+                    this.$router.push({ name: "TeacherZone" });
                 })
                 .catch((err) => {
                     //TODO: write error handler

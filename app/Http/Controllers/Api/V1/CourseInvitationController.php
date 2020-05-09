@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\CourseInvitation;
 use Illuminate\Http\Request;
 use App\Services\CourseInvitationService;
 use App\User;
+use App\Group;
+use App\Course;
 use Exception;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CourseInvitationController extends Controller
@@ -53,7 +56,17 @@ class CourseInvitationController extends Controller
         $validated = $request->validate(['hash' => 'required|string']);
 
         $courseInvitation = new CourseInvitation();
-        $courseInvitation = $courseInvitation->where('invite_hash', $validated['hash'])->with(['group', 'group.owner'])->firstOrFail();
+        $courseInvitation = $courseInvitation
+            // ->join('courses','courses.id','=','course_id')
+            // ->join('groups','groups.id','=','courses.group_id')
+            ->where('invite_hash', $validated['hash'])
+            // ->with(['group', 'group.owner'])
+            ->firstOrFail();
+
+        $course = new Course();
+        $course = $course->findOrFail($courseInvitation->course_id);
+        $group = new Group();
+        $group = $group->with(['owner'])->findOrFail($course->group_id);
 
         $invitedUser = new User();
         $invitedUser = $invitedUser->where('email', $courseInvitation->email)->first();
@@ -63,6 +76,9 @@ class CourseInvitationController extends Controller
         } else {
             $courseInvitation->user_have_account = false;
         }
+
+        $courseInvitation->course=$course;
+        $courseInvitation->group=$group;
 
         return response()->json($courseInvitation, 200);
     }
@@ -98,7 +114,6 @@ class CourseInvitationController extends Controller
      */
     public function destroy(Request $request)
     {
-
     }
 
     public function accept(Request $request)
@@ -107,11 +122,16 @@ class CourseInvitationController extends Controller
 
         $courseInvitation = new CourseInvitation();
         $courseInvitation = $courseInvitation->where('invite_hash', $validated['hash'])
-            ->leftJoin('courses', 'courses.course_id', '=', 'course_invitations.course_id')
-            ->leftJoin('groups', 'groups.group_id', '=', 'courses.group_id')
+            // ->leftJoin('courses', 'courses.course_id', '=', 'course_invitations.course_id')
+            // ->leftJoin('groups', 'groups.group_id', '=', 'courses.group_id')
             ->whereNull('accepted')
-            ->with(['course'])
+            // ->with(['groups'])
             ->firstOrFail();
+
+        $course = new Course();
+        $course = $course->findOrFail($courseInvitation->course_id);
+        $group = new Group();
+        $group = $group->with(['owner'])->findOrFail($course->group_id);
 
         $invitedUser = new User();
         $invitedUser = $invitedUser->where('email', $courseInvitation->email)->firstOrFail();
