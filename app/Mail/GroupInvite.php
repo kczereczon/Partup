@@ -15,7 +15,6 @@ class GroupInvite extends Mailable
 
     protected $link;
     protected $group;
-    protected $course;
 
     /**
      * Create a new message instance.

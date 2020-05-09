@@ -32,4 +32,8 @@ class Course extends Model
     {
         return $this->hasMany(Homework::class);
     }
+    public function courseInvitation()
+    {
+        return $this->hasOne(CourseInvitation::class);
+    }
 }

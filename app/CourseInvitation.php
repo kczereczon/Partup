@@ -6,13 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseInvitation extends Model
 {
-    public function group()
-    {
-        return $this->hasOne(Group::class);
-    }
+    protected $fillable = ['course_id', 'email', 'invite_hash'];
 
-    public function teacher()
+    public function course()
     {
-        return $this->hasOne(User::class, 'teacher_id');
+        return $this->belongsTo(Course::class);
     }
 }

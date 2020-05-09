@@ -167,12 +167,11 @@ export default {
         };
     },
     mounted() {
-        if (sessionStorage.getItem("authUser")) {
-            this.todos = JSON.parse(sessionStorage.getItem("authUser"));
-            if (this.news.teacher_id == this.todos.id) {
+        this.$http.get("/v1/users/current-logged").then(response => {
+            if (this.exam.teacher_id == response.data.id) {
                 this.canEdit = true;
             }
-        }
+        });
     },
     methods: {
         removeExam() {

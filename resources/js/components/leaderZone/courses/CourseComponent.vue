@@ -58,7 +58,7 @@
                             data-backdrop="static"
                             class="ml-1"
                         >
-                            <span class="fa fa-users"></span>
+                            <i class="fa fa-user"></i>
                         </a>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="col-12 py-1">
-                                <h3>Teachers</h3>
+                                <h3>Teacher</h3>
                             </div>
                             <div class="col-12 py-1">
                                 <div class="row">
@@ -103,14 +103,14 @@
                             </div>
                             <div
                                 class="col-12 py-1"
-                                v-for="invite in invites"
+                                v-if="invite"
                                 :key="invite.id"
                             >
                                 <div class="row text-center">
                                     <div class="col-8 col-lg-4">{{invite.email}}</div>
                                     <div
                                         class="d-md-none d-sm-none d-none d-lg-block col-sm-3"
-                                    >{{invite.created_at}}</div>
+                                    >{{invite.created_at | formatDate}}</div>
                                     <div class="col-4 col-lg-2" v-if="invite.accepted">
                                         <span class="fa fa-check" style="color:green"></span>
                                     </div>
@@ -120,7 +120,7 @@
                                     <div
                                         class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
                                         v-if="invite.accepted"
-                                    >{{invite.updated_at}}</div>
+                                    >{{invite.updated_at | formatDate}}</div>
                                     <div
                                         class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
                                         v-else
@@ -132,11 +132,19 @@
                             <div class="col-12 py-2">
                                 <button
                                     type="button"
+                                    v-if="!invite"
                                     class="btn btn-primary w-50"
                                     data-toggle="modal"
                                     :data-target="'#courseinvite'+id"
                                     data-dismiss="modal"
                                 >Invite Teacher</button>
+                                <button
+                                    type="button"
+                                    v-if="invite"
+                                    class="btn btn-primary w-50"
+                                    @click="removeTeacher"
+                                    data-dismiss="modal"
+                                >Remove Teacher</button>
                             </div>
                         </div>
                     </div>
@@ -148,6 +156,7 @@
         <div
             class="modal fade text-center"
             :id="'courseinvite'+id"
+            :ref="'courseinvite'+id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="groupInviteLabel"
@@ -246,15 +255,16 @@ export default {
         },
         courseInvite() {
             this.$http
-                .post("/v1/groups", {
+                .post("/v1/courses/"+this.id+"/invite", {
                     email: this.invitationEmail
                 })
                 .then(results => {
-                    this.refreshCourses();
+                    this.refresh();
                     this.clearInviteModal();
+                    this.$refs['courseinvite'+this.id].modal('hide');
                 })
                 .catch(error => {
-                    this.error = error.response.data.errors;
+                    this.error = error.response.data;
                 });
         },
         clearInviteModal() {
@@ -268,13 +278,28 @@ export default {
         },
         removeCourseFromArray() {
             this.$emit("removeCourseFromArray", this.id);
+        },
+        removeTeacher() {
+            this.refreshCourses();
+            this.$http
+                .post("/v1/groups", {
+                    email: this.invitationEmail
+                })
+                .then(results => {
+                    this.refreshCourses();
+                    this.clearInviteModal();
+                })
+                .catch(error => {
+                    this.error = error.response.data.errors;
+                });
         }
     },
     data() {
         return {
             editMode: this.new,
             newName: this.name,
-            newGroupId: this.group.id || ""
+            newGroupId: this.group.id || "",
+            invite: this.$attrs.invites,
         };
     }
 };

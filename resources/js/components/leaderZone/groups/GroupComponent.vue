@@ -133,7 +133,7 @@
                                     <div class="col-8 col-lg-4">{{invite.email}}</div>
                                     <div
                                         class="d-md-none d-sm-none d-none d-lg-block col-sm-3"
-                                    >{{invite.created_at}}</div>
+                                    >{{invite.created_at | formatDate}}</div>
                                     <div class="col-4 col-lg-2" v-if="invite.accepted">
                                         <span class="fa fa-check" style="color:green"></span>
                                     </div>
@@ -143,7 +143,7 @@
                                     <div
                                         class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
                                         v-if="invite.accepted"
-                                    >{{invite.updated_at}}</div>
+                                    >{{invite.updated_at | formatDate}}</div>
                                     <div
                                         class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
                                         v-else
@@ -157,7 +157,7 @@
                                     type="button"
                                     class="btn btn-primary w-50"
                                     data-toggle="modal"
-                                    :data-target="'#invite'+id"
+                                    :data-target="'#groupinvite'+id"
                                     data-dismiss="modal"
                                 >Invite Student</button>
                             </div>
@@ -170,8 +170,8 @@
         <!-- Invite  Modal -->
         <div
             class="modal fade text-center"
-            :id="'invite'+id"
-            :ref="'invite'+id"
+            :id="'groupinvite'+id"
+            :ref="'groupinvite'+id"
             tabindex="-1"
             role="dialog"
             aria-labelledby="groupInviteLabel"
@@ -403,7 +403,7 @@ export default {
                 .then(results => {
                     this.refresh();
                     this.clearInviteModal();
-                    this.$refs['invite'+this.id].modal('hide');
+                    this.$refs['groupinvite'+this.id].modal('hide');
                 })
                 .catch(error => {
                     this.error = error.response.data.errors;

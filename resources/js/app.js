@@ -16,11 +16,14 @@ import StudentZone from "./views/StudentZone";
 import TeacherZone from "./views/TeacherZone";
 import LeaderZone from "./views/LeaderZone";
 import GroupInvite from "./views/GroupInvite";
+import CourseInvite from "./views/CourseInvite";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import API from "./api";
+import moment from 'moment'
 
 Vue.use(VueRouter, VueAxios, axios);
+
 
 const routes = [
     { path: "/", name: "Home", meta: { requiresAuth: true, }, component: Home, },
@@ -30,7 +33,14 @@ const routes = [
     { path: "/teacher-zone", name: "TeacherZone", component: TeacherZone },
     { path: "/leader-zone", name: "LeaderZone", component: LeaderZone },
     { path: "/group-invite", name: "GroupInvite", component: GroupInvite },
+    { path: "/course-invite", name: "CourseInvite", component: CourseInvite },
 ];
+
+Vue.filter('formatDate', function(value) {
+    if (value) {
+        return moment(String(value)).format('MM/DD/YYYY hh:mm')
+    }
+});
 
 const routerObject = new VueRouter({
     routes,
@@ -66,13 +76,14 @@ files
 
 Vue.prototype.$http = API;
 
-API.interceptors.response.use(null, function (error) {
+API.interceptors.response.use(null, function(error) {
     if (error.response.status === 401) {
-        console.log('Failed to login')
-        routerObject.push('/login')
+        console.log('Failed to login');
+        routerObject.push({ name: "Login" });
+        // routerObject.push('/login')
     }
     return Promise.reject(error)
-    })
+})
 
 const app = new Vue({
     el: "#app",
@@ -85,11 +96,11 @@ const app = new Vue({
     methods: {
         logout() {
             this.$http
-            .post("/v1/logout").then(response => {
-                this.isLogged = false;
-                window.sessionStorage.removeItem("authUser");
-                this.$router.push({ name: "Login" });
-            })
+                .post("/v1/logout").then(response => {
+                    this.isLogged = false;
+                    window.sessionStorage.removeItem("authUser");
+                    this.$router.push({ name: "Login" });
+                })
         },
     },
 });

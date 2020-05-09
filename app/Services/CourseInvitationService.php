@@ -3,11 +3,14 @@
 namespace App\Services;
 
 use App\Course;
+use App\Group;
 use App\CourseInvitation;
 use App\Mail\CourseInvite;
 use App\User;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -36,7 +39,33 @@ class CourseInvitationService
 
     public function sendInvite(CourseInvitation $courseInvitiation)
     {
-        $link = Request::getHost() . "/api/v1/course_invite?hash=" . $courseInvitiation->invite_hash;
-        Mail::to($courseInvitiation)->send(new CourseInvite($link, $courseInvitiation->course->group, $courseInvitiation->course));
+        $link = env("APP_URL") . "/#/course-invite?hash=" . $courseInvitiation->invite_hash;
+        $course = new Course();
+        $course = $course->findOrFail($courseInvitiation->course_id);
+
+        $group = new Group();
+        $group = $group->findOrFail($course->group_id);
+        try {
+            Mail::to($courseInvitiation)->send(new CourseInvite($link, $group, $courseInvitiation->course));
+        } catch (Exception $e) {
+            Log::error($e);
+            return false;
+        }
+        return true;
+    }
+
+    public function acceptInvite(CourseInvitation $courseInvitiation, User $user)
+    {
+        try {
+            $user->courses()->sync([$courseInvitiation->group->id]);
+
+            $courseInvitiation->accepted = true;
+            $courseInvitiation->save();
+
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return false;
+        }
     }
 }

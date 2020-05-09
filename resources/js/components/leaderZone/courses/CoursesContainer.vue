@@ -22,6 +22,7 @@
                         :groups="groups"
                         :id="course.id"
                         :new="course.new"
+                        :invites="course.course_invitation"
                         @refresh="getCourses"
                         @removeCourseFromArray="removeCourseFromArray"
                     />

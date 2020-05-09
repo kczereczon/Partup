@@ -12,6 +12,8 @@ Route::middleware('auth:web')->delete('/groups/{group}', "{$NS}GroupController@d
 Route::middleware('auth:web')->patch('/groups/{group}', "{$NS}GroupController@update");
 Route::middleware('auth:web')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
 
+Route::middleware('auth:web')->post('/courses/{id}/invite', "{$NS}CourseController@inviteTeacher");
+
 //student view
 Route::middleware('auth:web')->get('/user/groups', "{$NS}GroupController@getForStudent");
 Route::middleware('auth:web')->get('/user/groups/{date}', "{$NS}GroupController@getForStudentDate");
@@ -48,6 +50,10 @@ Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@upda
 
 Route::middleware('auth:web')->post('/group-invitations/accept', "{$NS}GroupInvitationController@accept");
 Route::middleware('api')->get('/group-invitations', "{$NS}GroupInvitationController@show");
+Route::middleware('auth:web')->post('/course-invitations/accept', "{$NS}CourseInvitationController@accept");
+Route::middleware('api')->get('/course-invitations', "{$NS}CourseInvitationController@show");
+
+
 Route::middleware('api')->get('/users/current-logged', "{$NS}UserController@currentLogged");
 
 //courses

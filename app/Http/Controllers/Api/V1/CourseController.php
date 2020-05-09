@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Course;
+use App\CourseInvitation;
 use App\Exam;
 use App\Homework;
+use App\Group;
+use Exception;
 use App\Http\Controllers\Controller;
+use App\Services\CourseInvitationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
@@ -25,7 +29,7 @@ class CourseController extends Controller
         $courses = $courses
             ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
             ->where('groups.owner_id', '=', Auth::user()->id)
-            ->with(['group','exams','homeworks','newses'])
+            ->with(['group', 'exams', 'homeworks', 'newses','courseInvitation'])
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
 
@@ -39,9 +43,9 @@ class CourseController extends Controller
         $courses = new Course();
         /** @var Course|Builder|QueryBuilder $courses */
         $courses = $courses
-            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
-            ->where('groups.owner_id', '=', Auth::user()->id)
-            ->with(['group','exams','homeworks','newses'])
+            ->leftJoin('group_user', 'group_user.group_id', '=', 'courses.group_id')
+            ->where('group_user.user_id', '=', Auth::user()->id)
+            ->with(['group', 'exams', 'homeworks', 'newses'])
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
 
@@ -50,21 +54,23 @@ class CourseController extends Controller
     public function getForStudentDate($date)
     {
         $courses = new Course();
-        $date=str_replace("__","  ",$date);
+        $date = str_replace("__", "  ", $date);
         /** @var Course|Builder|QueryBuilder $courses */
         $courses = $courses
-            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
-            ->where('groups.owner_id', '=', Auth::user()->id)
-            ->with(['group',
-            'exams' => function ($query) use ($date){
-                $query->where('time','>', $date);
-            },
-            'homeworks' => function ($query) use ($date){
-                $query->where('deadline','>', $date);
-            },
-            'newses' => function ($query) use ($date){
-                $query->where('until_when_to_show','>', $date);
-            }])
+            ->leftJoin('group_user', 'group_user.group_id', '=', 'courses.group_id')
+            ->where('group_user.user_id', '=', Auth::user()->id)
+            ->with([
+                'group',
+                'exams' => function ($query) use ($date) {
+                    $query->where('time', '>', $date);
+                },
+                'homeworks' => function ($query) use ($date) {
+                    $query->where('deadline', '>', $date);
+                },
+                'newses' => function ($query) use ($date) {
+                    $query->where('until_when_to_show', '>', $date);
+                }
+            ])
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
 
@@ -72,36 +78,66 @@ class CourseController extends Controller
     }
     public function getForTeacher()
     {
-        $courses = new Course();
-        /** @var Course|Builder|QueryBuilder $courses */
-        $courses = $courses
+        $coursesTeacher = new Course();
+        $coursesTeacher = $coursesTeacher
             ->where('courses.teacher_id', '=', Auth::user()->id)
-            ->with(['group','exams','homeworks','newses'])
+            ->with(['group', 'exams', 'homeworks', 'newses'])
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
+
+        $coursesOwner = new Course();
+        $coursesOwner = $coursesOwner
+            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
+            ->where('group.owner_id', '=', Auth::user()->id)
+            ->with(['newses'])
+            ->orderBy('courses.id', 'desc')
+            ->get(['courses.*']);
+
+        $courses = $coursesTeacher->merge($coursesOwner);
 
         return response()->json($courses, 200);
     }
     public function getForTeacherDate($date)
     {
-        $courses = new Course();
-        $date=str_replace("__","  ",$date);
-        /** @var Course|Builder|QueryBuilder $courses */
-        $courses = $courses
+        $coursesTeacher = new Course();
+        $date = str_replace("__", "  ", $date);
+        $coursesTeacher = $coursesTeacher
             ->where('courses.teacher_id', '=', Auth::user()->id)
-            ->with(['group',
-            'exams' => function ($query) use ($date){
-                $query->where('time','>', $date);
-            },
-            'homeworks' => function ($query) use ($date){
-                $query->where('deadline','>', $date);
-            },
-            'newses' => function ($query) use ($date){
-                $query->where('until_when_to_show','>', $date);
-            }])
+            ->with([
+                'group',
+                'exams' => function ($query) use ($date) {
+                    $query->where('time', '>', $date);
+                },
+                'homeworks' => function ($query) use ($date) {
+                    $query->where('deadline', '>', $date);
+                },
+                'newses' => function ($query) use ($date) {
+                    $query->where('until_when_to_show', '>', $date);
+                }
+            ])
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
 
+        $coursesOwner = new Course();
+        $coursesOwner = $coursesOwner
+            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
+            ->where('groups.owner_id', '=', Auth::user()->id)
+            ->with([
+                'group',
+                'exams' => function ($query) use ($date) {
+                    $query->where('time', '>', $date);
+                },
+                'homeworks' => function ($query) use ($date) {
+                    $query->where('deadline', '>', $date);
+                },
+                'newses' => function ($query) use ($date) {
+                    $query->where('until_when_to_show', '>', $date);
+                }
+            ])
+            ->orderBy('courses.id', 'desc')
+            ->get(['courses.*']);
+
+        $courses = $coursesTeacher->merge($coursesOwner);
         return response()->json($courses, 200);
     }
 
@@ -177,21 +213,45 @@ class CourseController extends Controller
     public function getExamsList($id)
     {
         //check if user is in group
-        if(true)
-        {
-            $exams = Exam::where('course_id',$id)->get();
+        if (true) {
+            $exams = Exam::where('course_id', $id)->get();
 
-            return response()->json($exams,200);
+            return response()->json($exams, 200);
         }
     }
     public function getHomeworksList($id)
     {
         //check if user is in group
-        if(true)
-        {
-            $homework = Homework::where('course_id',$id)->get();
+        if (true) {
+            $homework = Homework::where('course_id', $id)->get();
 
-            return response()->json($homework,200);
+            return response()->json($homework, 200);
         }
+    }
+
+    public function inviteTeacher($id, Request $request)
+    {
+        $validated = $request->validate(['email' => 'required|email|unique:group_invitations,email']);
+
+        /** @var Group|Builder $group */
+        $course = new Course();
+        $course = $course->findOrFail($id);
+
+        /** @var GroupInvitation|Builder $groupInvitation */
+        $courseInvitation = new CourseInvitation();
+        $courseInvitation = $courseInvitation->where('email','=', $validated['email'])->first();
+
+        //checking that group is created by user
+        $group = new Group();
+        $group = $group->findOrFail($course->group_id);
+        if ($group->owner_id != Auth::user()->id)
+            throw new Exception("User tried to invite person, to group that he don't own.", 401);
+
+        $courseInvitationService = new CourseInvitationService();
+        $invitation = $courseInvitationService->createInvitation($validated['email'], $course);
+
+        $sent = $courseInvitationService->sendInvite($invitation);
+
+        return response()->json(["sent" => $sent], 200);
     }
 }
