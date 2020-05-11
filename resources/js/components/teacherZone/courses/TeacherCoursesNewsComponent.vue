@@ -120,6 +120,7 @@
 </template>
 <script>
 import moment from "moment";
+import Swal from "sweetalert2";
 import { Datetime } from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 Vue.use(Datetime);
@@ -128,20 +129,13 @@ export default {
     data() {
         return {
             shouldShowNews: false,
-            canEdit: false,
+            canEdit: this.news.owner,
             title: this.news.title,
             message: this.news.message,
             until_when_to_show: new Date(
                 this.news.until_when_to_show
-            ).toISOString()
+            ).toISOString(),
         };
-    },
-    mounted() {
-        this.$http.get("/v1/users/current-logged").then(response => {
-            if (this.news.teacher_id == response.data.id) {
-                this.canEdit = true;
-            }
-        });
     },
     methods: {
         removeNews() {
@@ -169,8 +163,26 @@ export default {
                 .then(result => {
                     this.clearModal();
                     this.refresh();
+                    Swal.fire({
+                        icon: "success",
+                        title: "Edited News",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
                 })
-                .catch(err => {});
+                .catch(error => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error Occured",
+                        text: error.response.data.error,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
+                });
         },
         clearModal() {
             this.title = this.news.title;

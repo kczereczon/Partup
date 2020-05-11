@@ -26,7 +26,7 @@
                     <student-groups-news-component
                         v-for="(news) in newses"
                         v-bind:news="news"
-                        :key="news.id"
+                        :key="news.id+'gnews'"
                     />
                 </div>
             </div>

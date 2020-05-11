@@ -405,11 +405,14 @@ export default {
                     this.refresh();
                     this.clearInviteModal();
                     Swal.fire({
-                            icon: 'success',
-                            title: 'Invitation send',
-                            text: 'User should receive e-mail with a link in short time!',
-                            timer: 4000,
-                        });
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Invitation send',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
                 })
                 .catch(error => {
                     this.error = error.response.data.errors;
@@ -417,7 +420,9 @@ export default {
                             icon: 'error',
                             title: "Error Occured",
                             text: error,
-                            timer: 6000,
+                            timer: 4000,
+                            timerProgressBar: true,
+                            scrollbarPadding:false,
                         });
                 });
         },

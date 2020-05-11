@@ -15,13 +15,14 @@ import Home from "./views/Home";
 import StudentZone from "./views/StudentZone";
 import TeacherZone from "./views/TeacherZone";
 import LeaderZone from "./views/LeaderZone";
+import LeaderZone2 from "./views/LeaderZone2";
 import GroupInvite from "./views/GroupInvite";
 import CourseInvite from "./views/CourseInvite";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import API from "./api";
 import moment from 'moment';
-
+import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 Vue.use(VueRouter, VueAxios, axios);
@@ -34,6 +35,7 @@ const routes = [
     { path: "/student-zone", name: "StudentZone", component: StudentZone },
     { path: "/teacher-zone", name: "TeacherZone", component: TeacherZone },
     { path: "/leader-zone", name: "LeaderZone", component: LeaderZone },
+    { path: "/leader-zone2", name: "LeaderZone2", component: LeaderZone2 },
     { path: "/group-invite", name: "GroupInvite", component: GroupInvite },
     { path: "/course-invite", name: "CourseInvite", component: CourseInvite },
 ];
@@ -77,10 +79,18 @@ files
     );
 
 Vue.prototype.$http = API;
-
 API.interceptors.response.use(null, function(error) {
     if (error.response.status === 401) {
         console.log('Failed to login');
+        window.sessionStorage.removeItem("authUser");
+        Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: "Unauthorized",
+            text: "You were redirected to login page",
+            showConfirmButton: false,
+            timer: 3000,
+        });
         routerObject.push({ name: "Login" });
         // routerObject.push('/login')
     }

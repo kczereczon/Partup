@@ -101,11 +101,7 @@
                             <div class="col-12">
                                 <hr />
                             </div>
-                            <div
-                                class="col-12 py-1"
-                                v-if="invite"
-                                :key="invite.id"
-                            >
+                            <div class="col-12 py-1" v-if="invite" :key="invite.id">
                                 <div class="row text-center">
                                     <div class="col-8 col-lg-4">{{invite.email}}</div>
                                     <div
@@ -132,7 +128,6 @@
                             <div class="col-12 py-2">
                                 <button
                                     type="button"
-                                    v-if="!invite"
                                     class="btn btn-primary w-50"
                                     data-toggle="modal"
                                     :data-target="'#courseinvite'+id"
@@ -140,7 +135,6 @@
                                 >Invite Teacher</button>
                                 <button
                                     type="button"
-                                    v-if="invite"
                                     class="btn btn-primary w-50"
                                     @click="removeTeacher"
                                     data-dismiss="modal"
@@ -202,7 +196,7 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 export default {
     props: ["id", "name", "groups", "group", "new"],
     created() {
@@ -256,27 +250,34 @@ export default {
         },
         courseInvite() {
             this.$http
-                .post("/v1/courses/"+this.id+"/invite", {
+                .post("/v1/courses/" + this.id + "/invite", {
                     email: this.invitationEmail
                 })
                 .then(results => {
                     this.refreshCourses();
                     this.clearInviteModal();
                     Swal.fire({
-                            icon: 'success',
-                            title: 'Invitation send',
-                            text: 'User should receive e-mail with a link in short time!',
-                            timer: 4000,
-                        });
+                        position: "top-end",
+                        icon: "success",
+                        title: "Invitation send",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
                 })
                 .catch(error => {
-                    // this.error = error.response.data.errors;
-                    Swal.fire({
-                            icon: 'error',
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
                             title: "Error Occured",
-                            text: error,
-                            timer: 6000,
+                            text: error.response.data.error,
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                            scrollbarPadding:false,
                         });
+                    // this.error = error.response.data.errors;
                 });
         },
         clearInviteModal() {
@@ -311,7 +312,7 @@ export default {
             editMode: this.new,
             newName: this.name,
             newGroupId: this.group.id || "",
-            invite: this.$attrs.invites,
+            invite: this.$attrs.invites
         };
     }
 };

@@ -65,7 +65,7 @@ class HomeworkController extends Controller
 
             return response()->json(['created' => true], 200);
         } else {
-            return response()->json('Unauthorized. Only course Teachers and Group Leaders can create Homeworks.', 401);
+            return response()->json(["error"=>'Unauthorized. Only course Leader and Teacher can create Homeworks.'], 422);
         }
     }
 
@@ -105,7 +105,7 @@ class HomeworkController extends Controller
             $homework = $homework->update($request->all());
             return response()->json(['updated' => $homework], 200);
         } else {
-            return response()->json('Unauthorized. Only course Teachers and Group Leaders can edit Homeworks.', 401);
+            return response()->json(["error"=>'Unauthorized. Only creator of Homework can edit it.'], 422);
         }
     }
 
@@ -122,7 +122,7 @@ class HomeworkController extends Controller
             $homework = $homework->delete();
             return response()->json(['deleted' => $homework], 200);
         } else {
-            return response()->json('Unauthorized. Only course Teachers and Group Leaders can delete Homeworks.', 401);
+            return response()->json(["error"=>'Unauthorized. Only creator of Homework can delete it.'], 422);
         }
     }
 }

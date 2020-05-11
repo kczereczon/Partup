@@ -3,7 +3,7 @@
         <teacher-courses-component
             v-for="(course) in courses"
             v-bind:course="course"
-            :key="course.id"
+            :key="'c'+course.id"
             @refresh="refresh"
         />
     </div>

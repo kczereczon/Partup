@@ -11,7 +11,7 @@
                                     :courses="courses"
                                     @refresh="getCourses"
                                 />
-                                <loader v-if="loading"/>
+                                <loader v-if="loading" />
                             </div>
                         </div>
                     </div>

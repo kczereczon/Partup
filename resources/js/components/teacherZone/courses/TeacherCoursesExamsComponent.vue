@@ -149,6 +149,7 @@
 </template>
 <script>
 import moment from "moment";
+import Swal from "sweetalert2";
 import { Datetime } from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 Vue.use(Datetime);
@@ -157,7 +158,7 @@ export default {
     data() {
         return {
             shouldShowExams: false,
-            canEdit: false,
+            canEdit: this.exam.owner,
             name: this.exam.name,
             range_of_knowlage: this.exam.range_of_knowlage,
             description: this.exam.description,
@@ -165,13 +166,6 @@ export default {
             time: new Date(this.exam.time).toISOString(),
             course_id: this.exam.course_id
         };
-    },
-    mounted() {
-        this.$http.get("/v1/users/current-logged").then(response => {
-            if (this.exam.teacher_id == response.data.id) {
-                this.canEdit = true;
-            }
-        });
     },
     methods: {
         removeExam() {
@@ -200,8 +194,26 @@ export default {
                 .then(result => {
                     this.clearModal();
                     this.$emit("refresh");
+                    Swal.fire({
+                        icon: "success",
+                        title: "Edited exam",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
                 })
-                .catch(err => {});
+                .catch(error => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error Occured",
+                        text: error.response.data.error,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
+                });
         },
         clearModal() {
             this.name = this.exam.name;

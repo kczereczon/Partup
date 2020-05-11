@@ -82,6 +82,7 @@
 </template>
 <script>
 import moment from 'moment'
+import Swal from "sweetalert2";
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 Vue.use(Datetime);
@@ -110,6 +111,14 @@ export default {
                 .then(result => {
                     this.refresh();
                     this.clearModal();
+                    Swal.fire({
+                        icon: "success",
+                        title: "Created Exam",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
                 })
                 .catch(err => {});
         },

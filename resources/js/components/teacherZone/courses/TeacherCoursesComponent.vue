@@ -43,19 +43,19 @@
                     <teacher-courses-exams-component
                         v-for="(exam) in exams"
                         v-bind:exam="exam"
-                        :key="exam.id"
+                        :key="'c'+course.id+exam.id+'exam'"
                         @refresh="refreshExams"
                     />
                     <teacher-courses-homework-component
                         v-for="(homework) in homeworks"
                         v-bind:homework="homework"
-                        :key="homework.id"
+                        :key="'c'+course.id+homework.id+'homework'"
                         @refresh="refreshHomeworks"
                     />
                     <teacher-courses-news-component
                         v-for="(news) in newses"
                         v-bind:news="news"
-                        :key="news.id"
+                        :key="'c'+course.id+news.id+'news'"
                         @refresh="refreshNews"
                     />
                 </div>
@@ -71,21 +71,21 @@ export default {
             shouldShowCourse: true,
             exams: this.course.exams,
             homeworks: this.course.homeworks,
-            newses: this.course.newses
+            newses: this.course.newses,
         };
     },
     methods: {
         refreshExams() {
             this.refresh();
-            this.exam.id+=1;
+            this.exam.id+='x';
         },
         refreshHomeworks() {
             this.refresh();
-            this.homework.id+=1;
+            this.homework.id+='x';
         },
         refreshNews() {
             this.refresh();
-            this.news.id+=1;
+            this.news.id+='x';
         },
         refresh(){
             this.$emit("refresh");

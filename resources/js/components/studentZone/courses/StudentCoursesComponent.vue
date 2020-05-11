@@ -26,17 +26,17 @@
                     <student-courses-exams-component
                         v-for="(exam) in exams"
                         v-bind:exam="exam"
-                        :key="exam.id"
+                        :key="exam.id+'cexam'"
                     />
                     <student-courses-homework-component
                         v-for="(homework) in homeworks"
                         v-bind:homework="homework"
-                        :key="homework.id"
+                        :key="homework.id+'chomework'"
                     />
                     <student-courses-news-component
                         v-for="(news) in newses"
                         v-bind:news="news"
-                        :key="news.id"
+                        :key="news.id+'cnews'"
                     />
                 </div>
             </div>

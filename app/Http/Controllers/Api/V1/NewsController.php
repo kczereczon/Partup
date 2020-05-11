@@ -53,7 +53,7 @@ class NewsController extends Controller
 
             return response()->json(['created' => true], 200);
         } else {
-            return response()->json('Unauthorized. Only Leaders can create News for group.', 401);
+            return response()->json(["error"=>'Unauthorized. Only Leaders can create News for group.'], 422);
         }
     }
     public function storeCourse(Request $request)
@@ -86,7 +86,7 @@ class NewsController extends Controller
 
             return response()->json(['created' => true], 200);
         } else {
-            return response()->json('Unauthorized. Only Leaders can create News for group.', 401);
+            return response()->json(["error"=>'Unauthorized. Only course Leader and Teacher can create News for course.'], 422);
         }
     }
     /**
@@ -123,7 +123,7 @@ class NewsController extends Controller
             $news = $news->update($request->all());
             return response()->json(['updated' => true], 200);
         } else {
-            return response()->json('Unauthorized. Only Leaders can edit News for group.', 401);
+            return response()->json(["error"=>'Unauthorized. Only creator of News can edit it.'], 422);
         }
     }
 
@@ -144,7 +144,7 @@ class NewsController extends Controller
             $news = $news->update($request->all());
             return response()->json(['created' => true], 200);
         } else {
-            return response()->json('Unauthorized. Only Leaders and Teachers can create News for course.', 401);
+            return response()->json(["error"=>'Unauthorized. Only creator of News can edit it.'], 422);
         }
     }
 
@@ -161,7 +161,7 @@ class NewsController extends Controller
             $news = $news->delete();
             return response()->json(['deleted' => true], 200);
         } else {
-            return response()->json('Unauthorized. Only Leaders can delete News for group.', 401);
+            return response()->json(["error"=>'Unauthorized. Only creator of News can delete it.'], 422);
         }
     }
 }

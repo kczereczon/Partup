@@ -117,7 +117,6 @@ class CourseController extends Controller
             ])
             ->orderBy('courses.id', 'desc')
             ->get(['courses.*']);
-
         $coursesOwner = new Course();
         $coursesOwner = $coursesOwner
             ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
@@ -138,6 +137,34 @@ class CourseController extends Controller
             ->get(['courses.*']);
 
         $courses = $coursesTeacher->merge($coursesOwner);
+
+        foreach ($courses as &$course) {
+            foreach($course["exams"] as &$courseExam)
+            {
+                $bolean=false;
+                if($courseExam["teacher_id"]==Auth::user()->id)
+                    $bolean=true;
+                $courseExam["owner"]=$bolean;
+            }
+            unset($courseExam);
+            foreach($course["homeworks"] as &$courseHomework)
+            {
+                $bolean=false;
+                if($courseHomework["teacher_id"]==Auth::user()->id)
+                    $bolean=true;
+                $courseHomework["owner"]=$bolean;
+            }
+            unset($courseHomework);
+            foreach($course["newses"] as &$courseNews)
+            {
+                $bolean=false;
+                if($courseNews["teacher_id"]==Auth::user()->id)
+                    $bolean=true;
+                $courseNews["owner"]=$bolean;
+            }
+            unset($courseNews);
+        }
+        unset($course);
         return response()->json($courses, 200);
     }
 
@@ -176,10 +203,10 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -188,12 +215,12 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $course = Course::find($id);
-        $course = $course->update($request->all());
-        return response()->json(['updated' => $course], 200);
-    }
+    // public function update(Request $request, $id)
+    // {
+    //     $course = Course::find($id);
+    //     $course = $course->update($request->all());
+    //     return response()->json(['updated' => $course], 200);
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -201,24 +228,24 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        /** @var Course|Builder|QueryBuilder $course */
-        $course = Course::find($id);
-        $course = $course->delete();
+    // public function destroy($id)
+    // {
+    //     /** @var Course|Builder|QueryBuilder $course */
+    //     $course = Course::find($id);
+    //     $course = $course->delete();
 
-        return response()->json(['deleted' => $course], 200);
-    }
+    //     return response()->json(['deleted' => $course], 200);
+    // }
 
-    public function getExamsList($id)
-    {
-        //check if user is in group
-        if (true) {
-            $exams = Exam::where('course_id', $id)->get();
+    // public function getExamsList($id)
+    // {
+    //     //check if user is in group
+    //     if (true) {
+    //         $exams = Exam::where('course_id', $id)->get();
 
-            return response()->json($exams, 200);
-        }
-    }
+    //         return response()->json($exams, 200);
+    //     }
+    // }
     public function getHomeworksList($id)
     {
         //check if user is in group
@@ -237,15 +264,22 @@ class CourseController extends Controller
         $course = new Course();
         $course = $course->findOrFail($id);
 
-        /** @var GroupInvitation|Builder $groupInvitation */
-        $courseInvitation = new CourseInvitation();
-        $courseInvitation = $courseInvitation->where('email','=', $validated['email'])->first();
-
-        //checking that group is created by user
         $group = new Group();
         $group = $group->findOrFail($course->group_id);
         if ($group->owner_id != Auth::user()->id)
-            throw new Exception("User tried to invite person, to group that he don't own.", 401);
+            return response()->json(["error" =>"You are not allowed to invite person, to group that you don't own."], 422);
+
+        $courseInvitation = new CourseInvitation();
+        $courseInvitation = $courseInvitation->where('email','=', $validated['email'])->where('course_id','=', $id)->first();
+        if($courseInvitation)
+            return response()->json(["error" =>"E-mail is already invited to this course."], 422);
+
+
+        $courseInvitation2 = new CourseInvitation();
+        $courseInvitation2 = $courseInvitation2->where('course_id','=', $id)->first();
+        if($courseInvitation2)
+            return response()->json(["error" =>"There is already a teacher assigned to this course."], 422);
+
 
         $courseInvitationService = new CourseInvitationService();
         $invitation = $courseInvitationService->createInvitation($validated['email'], $course);

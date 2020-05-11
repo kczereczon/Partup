@@ -142,6 +142,7 @@
 </template>
 <script>
 import moment from "moment";
+import Swal from "sweetalert2";
 import { Datetime } from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 Vue.use(Datetime);
@@ -150,20 +151,13 @@ export default {
     data() {
         return {
             shouldShowHomework: false,
-            canEdit: false,
+            canEdit: this.homework.owner,
             name: this.homework.name,
             description: this.homework.description,
             requirements: this.homework.requirements,
             where_send: this.homework.where_send,
             deadline: new Date(this.homework.deadline).toISOString()
         };
-    },
-    mounted() {
-        this.$http.get("/v1/users/current-logged").then(response => {
-            if (this.homework.teacher_id == response.data.id) {
-                this.canEdit = true;
-            }
-        });
     },
     methods: {
         removeHomework() {
@@ -194,8 +188,26 @@ export default {
                 .then(result => {
                     this.clearModal();
                     this.refresh();
+                    Swal.fire({
+                        icon: "success",
+                        title: "Edited Homework",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
                 })
-                .catch(err => {});
+                .catch(err => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error Occured",
+                        text: error.response.data.error,
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        scrollbarPadding:false,
+                    });
+                });
         },
         clearModal() {
             this.name = this.homework.name;
