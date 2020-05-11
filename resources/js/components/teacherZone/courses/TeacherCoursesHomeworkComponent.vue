@@ -161,16 +161,35 @@ export default {
     },
     methods: {
         removeHomework() {
-            if (confirm("Remove selected Homework?")) {
-                this.$http
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Homework "+this.homework.name+" will be gone forever!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true,
+                scrollbarPadding: false
+            }).then(result => {
+                if (result.value)
+                {
+                    this.$http
                     .delete("/v1/teacher/course/homework/" + this.homework.id, {
                         id: this.homework.id
                     })
                     .then(result => {
+                        Swal.fire({
+                                title: "Deleted!",
+                                text: "Homework has been deleted.",
+                                icon: "success",
+                                timer: 2000,
+                                timerProgressBar: true,
+                        });
                         this.refresh();
                     })
                     .catch(err => {});
-            }
+                }
+            });
         },
         editHomework() {
             this.$http

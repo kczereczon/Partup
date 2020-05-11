@@ -139,15 +139,35 @@ export default {
     },
     methods: {
         removeNews() {
-            if (confirm("Remove selected News ?" + this.news.id))
-                this.$http
+            Swal.fire({
+                title: "Are you sure?",
+                text: "News "+this.news.title+" will be gone forever!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true,
+                scrollbarPadding: false
+            }).then(result => {
+                if (result.value)
+                {
+                    this.$http
                     .delete("/v1/teacher/course/news/" + this.news.id, {
                         id: this.news.id
                     })
                     .then(result => {
+                        Swal.fire({
+                                title: "Deleted!",
+                                text: "News has been deleted.",
+                                icon: "success",
+                                timer: 2000,
+                                timerProgressBar: true,
+                        });
                         this.refresh();
                     })
                     .catch(err => {});
+                }
+            });
         },
         editNews() {
             this.$http

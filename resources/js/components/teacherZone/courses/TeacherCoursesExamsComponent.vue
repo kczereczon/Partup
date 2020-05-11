@@ -169,16 +169,35 @@ export default {
     },
     methods: {
         removeExam() {
-            if (confirm("Remove selected Exam?")) {
-                this.$http
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Exam "+this.exam.name+" will be gone forever!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true,
+                scrollbarPadding: false
+            }).then(result => {
+                if (result.value)
+                {
+                    this.$http
                     .delete("/v1/teacher/course/exam/" + this.exam.id, {
                         id: this.exam.id
                     })
                     .then(result => {
+                        Swal.fire({
+                                title: "Deleted!",
+                                text: "Exam has been deleted.",
+                                icon: "success",
+                                timer: 2000,
+                                timerProgressBar: true,
+                        });
                         this.refresh();
                     })
                     .catch(err => {});
-            }
+                }
+            });
         },
         editExam() {
             this.$http
@@ -200,7 +219,7 @@ export default {
                         showConfirmButton: false,
                         timer: 2000,
                         timerProgressBar: true,
-                        scrollbarPadding:false,
+                        scrollbarPadding: false
                     });
                 })
                 .catch(error => {
@@ -211,7 +230,7 @@ export default {
                         showConfirmButton: false,
                         timer: 4000,
                         timerProgressBar: true,
-                        scrollbarPadding:false,
+                        scrollbarPadding: false
                     });
                 });
         },
