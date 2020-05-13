@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class GroupInvitationController extends Controller
 {
@@ -55,7 +56,18 @@ class GroupInvitationController extends Controller
 
         /** @var GroupInvitation|Builder $groupInvitation */
         $groupInvitation = new GroupInvitation();
-        $groupInvitation = $groupInvitation->where('invite_hash', $validated['hash'])->with(['group', 'group.owner'])->firstOrFail();
+        $groupInvitation = $groupInvitation->where('invite_hash', $validated['hash']);
+
+        if(Auth::user()) {
+            $groupInvitation = $groupInvitation->where('email', '=', Auth::user()->email);
+        }
+
+        $groupInvitation = $groupInvitation->with(['group', 'group.owner'])->firstOrFail();
+
+        if(!$groupInvitation)
+        {
+            return Response::json(['error' => "Incorect invitation."], 404);
+        }
 
         /** @var User|Builder $invitedUser */
         $invitedUser = new User();

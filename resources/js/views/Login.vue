@@ -74,7 +74,7 @@ export default {
         };
     },
     created() {
-        if (window.sessionStorage.getItem("authUser"))
+        if (window.sessionStorage.getItem("authUser") && !this.$route.query.inviteHash)
             this.$router.push({ name: "StudentZone" });
     },
     methods: {
@@ -98,19 +98,19 @@ export default {
                                 currentObj.$root.isLogged = true;
                                 window.sessionStorage.authUser = response.data;
                             });
-                        if (currentObj.$route.query.inviteHash) {
+                        if (currentObj.$route.query.hash) {
                             currentObj.$router.push({
                                 name: "GroupInvite",
                                 query: {
-                                    hash: currentObj.$route.query.inviteHash
+                                    hash: currentObj.$route.query.hash
                                 }
                             });
-                        } else if (currentObj.$route.query.courseInviteHash) {
+                        } else if (currentObj.$route.query.hash) {
                             currentObj.$router.push({
                                 name: "CourseInvite",
                                 query: {
                                     hash:
-                                        currentObj.$route.query.courseInviteHash
+                                        currentObj.$route.query.hash
                                 }
                             });
                         } else currentObj.$router.push({ name: "StudentZone" });

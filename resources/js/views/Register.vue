@@ -14,6 +14,7 @@
                                         <Error :error="message" />
                                     </div>
                                     <form @submit="formSubmit">
+                                        <h4>Creating <b>{{query_email}}</b> user.</h4>
                                         <input-component
                                             label="Name"
                                             id="name"
@@ -23,7 +24,7 @@
                                             placeholder="John Snow"
                                             :error="errors['name']"
                                         />
-                                        <input-component
+                                        <input-component v-if="!query_email"
                                             label="Email"
                                             id="email"
                                             name="email"
@@ -81,12 +82,13 @@ export default {
     data() {
         return {
             name: "",
-            email: "",
+            email: this.$route.query.email,
             password: "",
             re_password: "",
             agreement: "",
             output: null,
-            errors: []
+            errors: [],
+            query_email: this.$route.query.email
         };
     },
     methods: {

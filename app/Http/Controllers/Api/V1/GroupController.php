@@ -157,6 +157,10 @@ class GroupController extends Controller
         $groupInvitation = new GroupInvitation();
         $groupInvitation = $groupInvitation->where('email','=', $validated['email'])->first();
 
+        if($groupInvitation) {
+            return response()->json(["error" => "This user is already invited."], 422);
+        }
+
         //checking that group is created by user
         if ($group->owner_id != Auth::user()->id)
             throw new Exception("User tried to invite person, to group that he don't own.", 401);
@@ -166,7 +170,12 @@ class GroupController extends Controller
 
         $sent = $groupInvitationService->sendInvite($invitation);
 
-        return response()->json(["sent" => $sent], 200);
+        if($sent) {
+            return response()->json(["sent" => $sent], 200);
+        } else {
+            $invitation->delete();
+            return response()->json(["error" => "During sending email error occures."], 500);
+        }
     }
     //returns array of news from group
     public function getNewsList($id)

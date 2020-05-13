@@ -92,7 +92,6 @@ API.interceptors.response.use(null, function(error) {
             timer: 3000,
         });
         routerObject.push({ name: "Login" });
-        // routerObject.push('/login')
     }
     return Promise.reject(error)
 })
@@ -101,9 +100,9 @@ const app = new Vue({
     el: "#app",
     router: routerObject,
     data: {
-        isLogged: window.sessionStorage.getItem("authUser"),
         loadingText: "Loading",
         loadingDots: "",
+        isLogged: window.sessionStorage.getItem("authUser"),
     },
     methods: {
         logout() {
