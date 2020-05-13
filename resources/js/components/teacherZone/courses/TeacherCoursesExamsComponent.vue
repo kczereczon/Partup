@@ -188,7 +188,7 @@ export default {
                     .then(result => {
                         Swal.fire({
                                 title: "Deleted!",
-                                text: "Exam has been deleted.",
+                                text: "Homework has been deleted.",
                                 icon: "success",
                                 timer: 2000,
                                 timerProgressBar: true,
