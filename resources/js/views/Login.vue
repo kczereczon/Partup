@@ -98,19 +98,19 @@ export default {
                                 currentObj.$root.isLogged = true;
                                 window.sessionStorage.authUser = response.data;
                             });
-                        if (currentObj.$route.query.hash) {
+                        if (currentObj.$route.query.groupHash) {
                             currentObj.$router.push({
                                 name: "GroupInvite",
                                 query: {
-                                    hash: currentObj.$route.query.hash
+                                    hash: currentObj.$route.query.groupHash
                                 }
                             });
-                        } else if (currentObj.$route.query.hash) {
+                        } else if (currentObj.$route.query.courseHash) {
                             currentObj.$router.push({
                                 name: "CourseInvite",
                                 query: {
                                     hash:
-                                        currentObj.$route.query.hash
+                                        currentObj.$route.query.courseHash
                                 }
                             });
                         } else currentObj.$router.push({ name: "StudentZone" });

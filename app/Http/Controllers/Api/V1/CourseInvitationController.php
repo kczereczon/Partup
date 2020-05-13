@@ -61,7 +61,13 @@ class CourseInvitationController extends Controller
             // ->join('groups','groups.id','=','courses.group_id')
             ->where('invite_hash', $validated['hash'])
             // ->with(['group', 'group.owner'])
-            ->firstOrFail();
+            ->where('accepted');
+
+        if(Auth::user()) {
+            $courseInvitation = $courseInvitation->where('email', '=', Auth::user()->email);
+        }
+
+        $courseInvitation = $courseInvitation->firstOrFail();
 
         $course = new Course();
         $course = $course->findOrFail($courseInvitation->course_id);

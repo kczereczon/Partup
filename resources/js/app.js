@@ -29,7 +29,7 @@ Vue.use(VueRouter, VueAxios, axios);
 
 
 const routes = [
-    { path: "/", name: "Home", meta: { requiresAuth: true, }, component: Home, },
+    { path: "/", name: "Home", meta: { requiresAuth: true, }, component: StudentZone, },
     { path: "/register", name: "Register", component: Register },
     { path: "/login", name: "Login", component: Login },
     { path: "/student-zone", name: "StudentZone", component: StudentZone },
@@ -102,7 +102,8 @@ const app = new Vue({
     data: {
         loadingText: "Loading",
         loadingDots: "",
-        isLogged: window.sessionStorage.getItem("authUser"),
+        isLogged: (window.sessionStorage.getItem("authUser") != null) ?
+            window.sessionStorage.getItem("authUser") : false,
     },
     methods: {
         logout() {

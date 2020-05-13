@@ -31,7 +31,7 @@ class CourseInvitationService
         $invitation = $invitation->create([
             'course_id' => $course->id,
             'email' => $email,
-            'invite_hash' => md5($email)
+            'invite_hash' => md5($email.rand(-100, 100))
         ]);
 
         return $invitation;

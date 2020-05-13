@@ -286,6 +286,11 @@ class CourseController extends Controller
 
         $sent = $courseInvitationService->sendInvite($invitation);
 
-        return response()->json(["sent" => $sent], 200);
+        if($sent) {
+            return response()->json(["sent" => $sent], 200);
+        } else {
+            $invitation->delete();
+            return response()->json(["error" => "During sending email error occures."], 500);
+        }
     }
 }

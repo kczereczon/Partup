@@ -91,7 +91,7 @@ export default {
             e.preventDefault();
             this.$router.push({
                 name: this.data.user_have_account ? "Login" : "Register",
-                query: { courseInviteHash: this.inviteHash },
+                query: { courseHash: this.inviteHash, email: this.data.email}
             });
         },
         sendAccept() {

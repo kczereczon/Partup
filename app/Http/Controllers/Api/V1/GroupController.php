@@ -158,12 +158,12 @@ class GroupController extends Controller
         $groupInvitation = $groupInvitation->where('email','=', $validated['email'])->first();
 
         if($groupInvitation) {
-            return response()->json(["error" => "This user is already invited."], 422);
+            return response()->json(["error" => "You are not allowed to invite person, to group that you don't own."], 422);
         }
 
         //checking that group is created by user
         if ($group->owner_id != Auth::user()->id)
-            throw new Exception("User tried to invite person, to group that he don't own.", 401);
+             return response()->json(["error" => "This user is already invited."], 422);
 
         $groupInvitationService = new GroupInvitationService();
         $invitation = $groupInvitationService->createInvitation($validated['email'], $group);

@@ -78,7 +78,7 @@ export default {
       e.preventDefault();
       this.$router.push({
         name: this.data.user_have_account ? "Login" : "Register",
-        query: { inviteHash: this.inviteHash, email: this.data.email}
+        query: { groupHash: this.inviteHash, email: this.data.email}
       });
     },
     sendAccept() {

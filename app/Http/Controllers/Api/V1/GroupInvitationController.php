@@ -56,7 +56,8 @@ class GroupInvitationController extends Controller
 
         /** @var GroupInvitation|Builder $groupInvitation */
         $groupInvitation = new GroupInvitation();
-        $groupInvitation = $groupInvitation->where('invite_hash', $validated['hash']);
+        $groupInvitation = $groupInvitation->where('invite_hash', $validated['hash'])
+        ->whereNull('accepted');
 
         if(Auth::user()) {
             $groupInvitation = $groupInvitation->where('email', '=', Auth::user()->email);
