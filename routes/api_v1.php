@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:web')->post('/groups', "{$NS}GroupController@store");
 Route::middleware('auth:web')->get('/groups', "{$NS}GroupController@getForUsers");
 Route::middleware('auth:web')->get('/groups/all', "{$NS}GroupController@getAllOwnedGroups");
+Route::middleware('auth:web')->get('/groups/all/total', "{$NS}GroupController@getAllOwnedWithSubgroupsGroups");
 Route::middleware('auth:web')->delete('/groups/{group}', "{$NS}GroupController@destroy");
 Route::middleware('auth:web')->patch('/groups/{group}', "{$NS}GroupController@update");
 Route::middleware('auth:web')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");

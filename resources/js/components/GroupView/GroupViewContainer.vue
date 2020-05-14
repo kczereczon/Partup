@@ -39,14 +39,10 @@ export default {
     },
     methods: {
         getGroup() {
-            this.$http
-                .get("/v1/group/"+this.$route.params.id)
-                .then(results => {
-                    this.group = results.data;
-                })
-                .catch(error => {
-                    console.log(error.response);
-                });
+            if(JSON.parse(window.sessionStorage.leaderGroups)[this.$route.params.id])
+                this.group = JSON.parse(window.sessionStorage.leaderGroups)[this.$route.params.id];
+            else
+                this.$router.push({name: 'LeaderZone'});
         },
         redirectToGroup(idGrupy){
             this.$router.push({name: 'GroupView', params: { id: idGrupy }});

@@ -130,6 +130,7 @@ class GroupController extends Controller
             ->get();
         return response()->json($groups, 200);
     }
+
     public function getAllOwnedGroups(Request $request)
     {
         /** @var Group|Builder $groups*/
@@ -141,6 +142,24 @@ class GroupController extends Controller
             ->with(['subgroups','courses'])
             ->orderBy('id', 'desc')
             ->get();
+
+        return response()->json($groups, 200);
+    }
+
+    public function getAllOwnedWithSubgroupsGroups(Request $request)
+    {
+        /** @var Group|Builder $groups*/
+        $groups = new Group();
+
+        $groups = $groups
+            ->where('owner_id', $request->user()->id)
+            ->with(['subgroups','courses'])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $groups = $groups->mapWithKeys(function($item) {
+            return [$item->id => $item];
+        });
 
         return response()->json($groups, 200);
     }
