@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <div class="card-header">
+        <div class="card-header p-0">
             <!-- <button
                 type="button"
                 class="btn my-2 mx-2 bg-primary"

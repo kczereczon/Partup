@@ -1,31 +1,35 @@
 <template>
-    <span>
-        <!-- <span v-if="!!group.group">
-            <group-view-header
-                v-for="(group2) in group.group"
-                :group="group2"
-                :key="'s'+group2.id"
-            />
-        </span> -->
-        <button type="button" class="btn bg-danger" v-on:click="redirectToGroup(group.group.id)">
-            {{group.name}} das
-        </button>
-    </span>
+  <nav aria-label="breadcrumb" class="h-100">
+    <ol class="breadcrumb h-100">
+       <li v-for="parent in flat" :key="parent.id" class="breadcrumb-item"><a @click="redirectToGroup(parent.id, $event)" href="#">{{parent.name}}</a></li>
+    </ol>
+  </nav>
 </template>
 <script>
 export default {
-    props: ["group"],
-    data() {
-        return {
-            group:[],
-        };
+  props: ["group"],
+  data() {
+      return {
+          flat: []
+      }
+  },
+  created() {
+    this.flatten(this.$props.group)
+    this.flat.reverse();
+  },
+  methods: {
+    redirectToGroup(idGrupy, event) {
+        event.preventDefault();
+      this.$router.push({ name: "GroupView", params: { id: idGrupy } });
+      this.$emit("refresh");
     },
-    methods: {
-        redirectToGroup(idGrupy){
-            this.$router.push({name: 'GroupView', params: { id: idGrupy }});
-            this.$emit("refresh");
-        }
+    flatten(el) {
+      this.flat.push(el);
+      if (el.group) {
+        this.flatten(el.group);
+      }
     }
+  }
 };
 </script>
 <style></style>
