@@ -43,6 +43,15 @@ Route::middleware('auth:web')->delete('/teacher/course/news/{id}', "{$NS}NewsCon
 //teacher view
 //
 
+//
+// leader view
+//
+Route::middleware('auth:web')->get('/group/{id}', "{$NS}GroupController@getGroupInfo");
+
+//
+// leader view
+//
+
 Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:web')->get('/course', "{$NS}CourseController@index");
 Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");

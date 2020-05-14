@@ -158,7 +158,7 @@ class GroupController extends Controller
         $groupInvitation = $groupInvitation->where('email','=', $validated['email'])->first();
 
         if($groupInvitation) {
-            return response()->json(["error" => "You are not allowed to invite person, to group that you don't own."], 422);
+            return response()->json(401);
         }
 
         //checking that group is created by user
@@ -186,6 +186,22 @@ class GroupController extends Controller
             $news = News::where('group_id',$id)->get();
 
             return response()->json($news,200);
+        }
+    }
+    public function getGroupInfo($id)
+    {
+        $group = new Group();
+
+        $group = $group
+            ->where('id', $id)
+            ->with(['subgroups','groupInvitation'])
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($group->owner_id == Auth::user()->id) {
+            return response()->json($group, 200);
+        } else {
+            return response()->json(401);
         }
     }
 }

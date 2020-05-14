@@ -14,9 +14,9 @@
                 </div>
                 <div class="card-body">
                     <leader-groups-component
-                        v-for="(group) in groups"
-                        :group="group"
-                        :key="group.id+'group'"
+                        v-for="(groups) in group"
+                        :group="groups"
+                        :key="groups.id+'group'"
                     />
                 </div>
             </div>
@@ -25,10 +25,10 @@
 </template>
 <script>
 export default {
-    props: ["groups"],
+    props: ["group"],
     data() {
         return {
-            groups: this.groups
+            group: this.group
         };
     }
 };

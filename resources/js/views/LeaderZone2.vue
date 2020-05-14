@@ -3,6 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-8 col-sm-12 pb-3 pt-3">
                 <leader-groups-container :groups="groups"/>
+                <br>
                 <groups-container/>
             </div>
         </div>

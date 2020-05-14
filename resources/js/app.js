@@ -18,6 +18,7 @@ import LeaderZone from "./views/LeaderZone";
 import LeaderZone2 from "./views/LeaderZone2";
 import GroupInvite from "./views/GroupInvite";
 import CourseInvite from "./views/CourseInvite";
+import GroupView from "./views/GroupView";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import API from "./api";
@@ -38,6 +39,7 @@ const routes = [
     { path: "/leader-zone2", name: "LeaderZone2", component: LeaderZone2 },
     { path: "/group-invite", name: "GroupInvite", component: GroupInvite },
     { path: "/course-invite", name: "CourseInvite", component: CourseInvite },
+    { path: "/leader-zone2/groups/:id", name: "GroupView", component: GroupView },
 ];
 
 Vue.filter('formatDate', function(value) {
