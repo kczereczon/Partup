@@ -1,7 +1,10 @@
 <template>
   <nav aria-label="breadcrumb" class="h-100">
     <ol class="breadcrumb h-100">
-       <li v-for="parent in flat" :key="parent.id" class="breadcrumb-item"><a @click="redirectToGroup(parent.id, $event)" href="#">{{parent.name}}</a></li>
+       <li v-for="parent in flat" :key="parent.id" :class="['breadcrumb-item', {'active': parent.active}]">
+           <a v-if="!parent.active" @click="redirectToGroup(parent.id, $event)" href="#">{{parent.name}}</a>
+           <span v-if="parent.active">{{parent.name}}</span>
+        </li>
     </ol>
   </nav>
 </template>
@@ -14,6 +17,7 @@ export default {
       }
   },
   created() {
+    this.group.active = true;
     this.flatten(this.$props.group)
     this.flat.reverse();
   },
