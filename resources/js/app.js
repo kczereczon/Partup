@@ -39,7 +39,7 @@ const routes = [
     { path: "/leader-zone2", name: "LeaderZone2", component: LeaderZone2 },
     { path: "/group-invite", name: "GroupInvite", component: GroupInvite },
     { path: "/course-invite", name: "CourseInvite", component: CourseInvite },
-    { path: "/leader-zone2/groups/:id", name: "GroupView", component: GroupView },
+    { path: "/leader-zone/groups/:id", name: "GroupView", component: GroupView },
 ];
 
 Vue.filter('formatDate', function(value) {

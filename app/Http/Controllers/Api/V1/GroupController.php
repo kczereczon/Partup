@@ -80,6 +80,22 @@ class GroupController extends Controller
             return response()->json(['message' => "Unautorized."], 401);
         }
     }
+    public function destroyIndex($id)
+    {
+        $group = new Group();
+
+        $group = $group
+            ->where('id', $id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($group->owner_id == Auth::user()->id) {
+            $group = $group->delete();
+            return response()->json(['destroyed' => $group], 200);
+        } else {
+            return response()->json(['message' => "Unautorized."], 401);
+        }
+    }
 
     /**
      * This is getting all groupes for current logged user.
@@ -221,6 +237,27 @@ class GroupController extends Controller
             return response()->json($group, 200);
         } else {
             return response()->json(401);
+        }
+    }
+    public function updateIndex(Request $request,$id)
+    {
+        $validated = $request->validate(
+            [
+                'name' => 'string|required',
+            ]
+        );
+
+        $group = new Group();
+
+        $group = $group
+            ->where('id', $id)
+            ->first();
+
+        if ($group->owner_id == Auth::user()->id) {
+            $group = $group->update($request->all());
+            return response()->json(['updated' => $group], 200);
+        } else {
+            return response()->json(['message' => "Unautorized."], 401);
         }
     }
 }

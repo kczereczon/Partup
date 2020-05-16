@@ -47,16 +47,23 @@ Route::middleware('auth:web')->delete('/teacher/course/news/{id}', "{$NS}NewsCon
 //
 // leader view
 //
-Route::middleware('auth:web')->get('/group/{id}', "{$NS}GroupController@getGroupInfo");
 
+Route::middleware('auth:web')->get('/group/{id}', "{$NS}GroupController@getGroupInfo");
+Route::middleware('auth:web')->delete('/group/{id}', "{$NS}GroupController@destroyIndex");
+Route::middleware('auth:web')->patch('/group/{id}', "{$NS}GroupController@updateIndex");
+Route::middleware('auth:web')->post('/group', "{$NS}GroupController@store");
+
+Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
+Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");
+Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@update");
 //
 // leader view
 //
 
-Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
+// Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:web')->get('/course', "{$NS}CourseController@index");
-Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");
-Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@update");
+
+
 
 Route::middleware('auth:web')->post('/group-invitations/accept', "{$NS}GroupInvitationController@accept");
 Route::middleware('api')->get('/group-invitations', "{$NS}GroupInvitationController@show");

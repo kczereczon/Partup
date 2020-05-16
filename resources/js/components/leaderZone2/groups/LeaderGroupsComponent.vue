@@ -1,30 +1,13 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col">
-                    <div class="row">
-                        <button type="button" class="btn">{{group.name}}</button>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="row text-right">
-                        <div class="col">
-                            <span class="fa fa-caret-down"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
+    <div class="row">
+        <div class="col">
             <button
                 type="button"
-                class="btn py-2 bg-primary"
-                v-for="(groups) in group.subgroups"
-                :key="'g'+groups.id"
-                v-on:click="redirectToGroup(groups.id)"
+                class="btn btn-link bg-light px-4 my-2 mx-3"
+                style="border:1px solid rgba(0, 0, 0, 0.125)"
+                v-on:click="redirectToGroup(group.id)"
             >
-            {{groups.name}}
+                <h5 class="my-0">{{group.name}}</h5>
             </button>
         </div>
     </div>
@@ -34,12 +17,16 @@ export default {
     props: ["group"],
     data() {
         return {
-            group: this.group
+            group: this.group,
+            showContent: true
         };
     },
-    methods:{
-        redirectToGroup(idGrupy){
-            this.$router.push({name: 'GroupView', params: { id: idGrupy }});
+    methods: {
+        redirectToGroup(idGrupy) {
+            this.$router.push({ name: "GroupView", params: { id: idGrupy } });
+        },
+        changeDisplayShowContent() {
+            this.showContent = !this.showContent;
         }
     }
 };
