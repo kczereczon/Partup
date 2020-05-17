@@ -169,7 +169,7 @@ class GroupController extends Controller
 
         $groups = $groups
             ->where('owner_id', $request->user()->id)
-            ->with(['subgroups','courses'])
+            ->with(['subgroups','courses','groupInvitation'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -188,17 +188,17 @@ class GroupController extends Controller
         $group = new Group();
         $group = $group->findOrFail($id);
 
-        /** @var GroupInvitation|Builder $groupInvitation */
-        $groupInvitation = new GroupInvitation();
-        $groupInvitation = $groupInvitation->where('email','=', $validated['email'])->first();
+        // /** @var GroupInvitation|Builder $groupInvitation */
+        // $groupInvitation = new GroupInvitation();
+        // $groupInvitation = $groupInvitation->where('email','=', $validated['email'])->first();
 
-        if($groupInvitation) {
-            return response()->json(401);
-        }
+        // if($groupInvitation) {
+        //     return response()->json('',401);
+        // }
 
         //checking that group is created by user
         if ($group->owner_id != Auth::user()->id)
-             return response()->json(["error" => "This user is already invited."], 422);
+             return response()->json(["error" => "You are not allowed to invite Students to this Group."], 422);
 
         $groupInvitationService = new GroupInvitationService();
         $invitation = $groupInvitationService->createInvitation($validated['email'], $group);

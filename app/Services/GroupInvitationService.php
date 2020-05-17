@@ -56,6 +56,8 @@ class GroupInvitationService
             $group=Group::find($groupInvitation->group->id);
             $groupuser = new GroupUser();
             $groupuser->create(['group_id' => $group->id,'user_id' => Auth::user()->id]);
+
+            // assigning users to group and its upper groups
             while(!is_null($group->group))
             {
                 $group=$group->group;
@@ -63,7 +65,7 @@ class GroupInvitationService
                 $groupuser->create(['group_id' => $group->id,'user_id' => Auth::user()->id]);
             }
 
-            // //asigning user only to one group
+            // asigning user only to one group
             // $user->groups()->sync([$groupInvitation->group->id]);
 
             $groupInvitation->accepted = true;

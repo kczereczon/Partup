@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\GroupInvitation;
+use App\Group;
+use App\GroupUser;
 use App\Http\Controllers\Controller;
 use App\Services\GroupInvitationService;
 use App\User;
@@ -112,9 +114,25 @@ class GroupInvitationController extends Controller
      * @param  \App\GroupInvitation  $groupInvitation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GroupInvitation $groupInvitation)
+    public function destroy($id)
     {
-        //
+        $groupInvitation = GroupInvitation::find($id);
+        $group = Group::find($groupInvitation->group->id);
+
+        $user = User::where('email',$groupInvitation->email);
+        if($group->owner_id==Auth::user()->id)
+        {
+            while(!is_null($group->group))
+            {
+                $group=$group->group;
+                $groupuser = GroupUser::where('group_id', $group->id)->where('user_id', $user->id);
+                $groupuser->delete();
+            }
+            $groupInvitation->delete();
+            return response()->json(['deleted' => true], 200);
+        } else {
+            return response()->json(["error"=>'Unauthorized. Only owners of group can remove invitation.'], 422);
+        }
     }
 
     /**
@@ -131,7 +149,7 @@ class GroupInvitationController extends Controller
         $groupInvitation = new GroupInvitation();
         $groupInvitation = $groupInvitation->where('invite_hash', $validated['hash'])
             ->whereNull('accepted')
-            ->with(['group', 'group.owner'])
+            // ->with(['group', 'group.owner'])
             ->firstOrFail();
 
         /** @var User|Builder $invitedUser */

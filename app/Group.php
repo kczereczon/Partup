@@ -22,7 +22,7 @@ class Group extends Model
 
     public function subgroups(): HasMany
     {
-        return $this->hasMany(Group::class)->with('subgroups');
+        return $this->hasMany(Group::class)->with(['subgroups','groupInvitation']);
     }
 
     public function group(): BelongsTo
@@ -54,7 +54,7 @@ class Group extends Model
     }
     public function groupInvitation()
     {
-        return $this->hasMany(GroupInvitation::class);
+        return $this->hasMany(GroupInvitation::class)->orderBy('accepted', 'desc');
     }
     public function courses()
     {

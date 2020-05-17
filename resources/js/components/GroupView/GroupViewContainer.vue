@@ -15,12 +15,16 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8">Groups</div>
+                                <div class="col-8">Subgroups</div>
                                 <div class="col-4 text-right">
                                     <a class="ml-1" @click="createGroup()">
                                         <span class="fa fa-plus"></span>
                                     </a>
-                                    <a @click="removeGroup()" class="ml-1">
+                                    <a
+                                        @click="removeGroup()"
+                                        v-if="this.group.subgroups.length!=0"
+                                        class="ml-1"
+                                    >
                                         <span class="fa fa-minus"></span>
                                     </a>
                                     <a class="ml-1" @click="changeShowSubgroups()">
@@ -37,7 +41,7 @@
                         <div class="card-body" v-if="shouldShowSubgroups">
                             <button
                                 type="button"
-                                class="btn btn-link bg-light px-4 w-25 my-2 mx-3"
+                                class="btn btn-link bg-light px-4 my-2 mx-3"
                                 style="border:1px solid rgba(0, 0, 0, 0.125)"
                                 v-for="(groups) in group.subgroups"
                                 :key="'g'+groups.id"
@@ -56,7 +60,11 @@
                                     <a class="ml-1" @click="createCourse()">
                                         <span class="fa fa-plus"></span>
                                     </a>
-                                    <a @click="removeCourses()" class="ml-1">
+                                    <a
+                                        @click="removeCourses()"
+                                        v-if="this.group.courses.length!=0"
+                                        class="ml-1"
+                                    >
                                         <span class="fa fa-minus"></span>
                                     </a>
                                     <a class="ml-1" @click="changeShowCurses()">
@@ -93,6 +101,63 @@
                             </div>
                         </div>
                     </div>
+                    <br />
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">Students</div>
+                                <div class="col-4 text-right">
+                                    <a class="ml-1" @click="inviteStudent()">
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                    <a
+                                        @click="removeStudent()"
+                                        v-if="this.group.group_invitation.length!=0"
+                                        class="ml-1"
+                                    >
+                                        <span class="fa fa-minus"></span>
+                                    </a>
+                                    <a class="ml-1" @click="changeShowStudents()">
+                                        <span
+                                            :class="{
+                                        'fa fa-caret-down': !shouldShowStudents,
+                                        'fa fa-caret-up': shouldShowStudents
+                                    }"
+                                        ></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="body" v-if="shouldShowStudents">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td scope="col">
+                                        <b>E-mail</b>
+                                    </td>
+                                    <td scope="col">
+                                        <b>Invited date</b>
+                                    </td>
+                                    <td scope="col">
+                                        <b>Joined date</b>
+                                    </td>
+                                </tr>
+                                <tr
+                                    v-for="(invites) in this.group.group_invitation"
+                                    :key="'i'+invites.id"
+                                >
+                                    <td>{{invites.email}}</td>
+                                    <td>{{invites.created_at | formatDate}}</td>
+                                    <td
+                                        v-if="invites.accepted==1"
+                                    >{{invites.updated_at | formatDate}}</td>
+                                    <td v-else>
+                                        <span class="fas fa-times" style="color:red"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br />
@@ -107,7 +172,8 @@ export default {
             group: [],
             shouldShowSubgroups: true,
             shouldShowCourses: true,
-            shouldShowGroupData: true
+            shouldShowGroupData: true,
+            shouldShowStudents: true
         };
     },
     mounted() {
@@ -137,6 +203,9 @@ export default {
         },
         changeShowGroupData() {
             this.shouldShowGroupData = !this.shouldShowGroupData;
+        },
+        changeShowStudents() {
+            this.shouldShowStudents = !this.shouldShowStudents;
         },
         createGroup() {
             Swal.fire({
@@ -378,6 +447,93 @@ export default {
                                 showConfirmButton: true
                             });
                         });
+            });
+        },
+        inviteStudent() {
+            Swal.fire({
+                title: "Group Invitation for " + this.group.name,
+                text: "E-mail of student",
+                input: "text",
+                showCancelButton: true,
+                confirmButtonText: "Invite Student",
+                showLoaderOnConfirm: true,
+                allowOutsideClick: false,
+                scrollbarPadding: false
+            }).then(result => {
+                if (!!result.value)
+                    this.$http
+                        .post("/v1/groups/" + this.group.id + "/invite", {
+                            email: result.value
+                        })
+                        .then(result => {
+                            this.refresh();
+                            Swal.fire({
+                                icon: "success",
+                                title: "Student Invited",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                scrollbarPadding: false
+                            });
+                        })
+                        .catch(err => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Something, went wrong.",
+                                showConfirmButton: true
+                            });
+                        });
+            });
+        },
+        removeStudent() {
+            var options = {};
+            $.map(this.group.group_invitation, function(o) {
+                options[o.id] = o.email;
+            });
+
+            Swal.fire({
+                title: "Select Student to Remove",
+                input: "select",
+                inputOptions: options,
+                showCancelButton: true
+            }).then(result => {
+                if (!!result.value)
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "Student will no longer have access to this group!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, remove him!",
+                        cancelButtonText: "No, cancel!",
+                        reverseButtons: true,
+                        allowOutsideClick: false,
+                        scrollbarPadding: false
+                    }).then(result2 => {
+                        if (result2.value) {
+                            this.$http
+                                .delete("/v1/group/"+result.value+"/invite")
+                                .then(result => {
+                                    this.refresh();
+                                    Swal.fire({
+                                        title: "Removed!",
+                                        text: "Student removed.",
+                                        icon: "success",
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        scrollbarPadding: false
+                                    });
+                                })
+                                .catch(err => {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        text: "Something, went wrong.",
+                                        showConfirmButton: true
+                                    });
+                                });
+                        }
+                    });
             });
         },
         refresh() {}

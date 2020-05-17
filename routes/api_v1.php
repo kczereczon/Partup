@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:web')->post('/groups', "{$NS}GroupController@store");
 Route::middleware('auth:web')->get('/groups', "{$NS}GroupController@getForUsers");
 Route::middleware('auth:web')->get('/groups/all', "{$NS}GroupController@getAllOwnedGroups");
-Route::middleware('auth:web')->get('/groups/all/total', "{$NS}GroupController@getAllOwnedWithSubgroupsGroups");
 Route::middleware('auth:web')->delete('/groups/{group}', "{$NS}GroupController@destroy");
 Route::middleware('auth:web')->patch('/groups/{group}', "{$NS}GroupController@update");
 Route::middleware('auth:web')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
@@ -47,6 +46,7 @@ Route::middleware('auth:web')->delete('/teacher/course/news/{id}', "{$NS}NewsCon
 //
 // leader view
 //
+Route::middleware('auth:web')->get('/groups/all/total', "{$NS}GroupController@getAllOwnedWithSubgroupsGroups");
 
 Route::middleware('auth:web')->get('/group/{id}', "{$NS}GroupController@getGroupInfo");
 Route::middleware('auth:web')->delete('/group/{id}', "{$NS}GroupController@destroyIndex");
@@ -56,6 +56,8 @@ Route::middleware('auth:web')->post('/group', "{$NS}GroupController@store");
 Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");
 Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@update");
+
+Route::middleware('auth:web')->delete('/group/{id}/invite', "{$NS}GroupController@destroy");
 //
 // leader view
 //
