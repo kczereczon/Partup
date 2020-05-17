@@ -116,17 +116,23 @@ class GroupInvitationController extends Controller
      */
     public function destroy($id)
     {
-        $groupInvitation = GroupInvitation::find($id);
-        $group = Group::find($groupInvitation->group->id);
 
-        $user = User::where('email',$groupInvitation->email);
+        $groupInvitation = GroupInvitation::find($id);
+        $group = Group::find($groupInvitation->group_id);
+
+        $user = User::where('email',$groupInvitation->email)->first();
         if($group->owner_id==Auth::user()->id)
         {
-            while(!is_null($group->group))
+            if(!is_null($user))
             {
-                $group=$group->group;
-                $groupuser = GroupUser::where('group_id', $group->id)->where('user_id', $user->id);
-                $groupuser->delete();
+                $groupUser = GroupUser::where('group_id', $group->id)->where('user_id', $user->id);
+                $groupUser->delete();
+                while(!is_null($group->group))
+                {
+                    $group=$group->group;
+                    $groupUser = GroupUser::where('group_id', $group->id)->where('user_id', $user->id);
+                    $groupUser->delete();
+                }
             }
             $groupInvitation->delete();
             return response()->json(['deleted' => true], 200);

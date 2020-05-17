@@ -57,7 +57,7 @@ Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");
 Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@update");
 
-Route::middleware('auth:web')->delete('/group/{id}/invite', "{$NS}GroupController@destroy");
+Route::middleware('auth:web')->delete('/group/{id}/invite', "{$NS}GroupInvitationController@destroy");
 //
 // leader view
 //

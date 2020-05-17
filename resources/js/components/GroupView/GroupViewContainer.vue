@@ -106,13 +106,13 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-8">Students</div>
+                                <div class="col-8">Students Invitations</div>
                                 <div class="col-4 text-right">
                                     <a class="ml-1" @click="inviteStudent()">
                                         <span class="fa fa-plus"></span>
                                     </a>
                                     <a
-                                        @click="removeStudent()"
+                                        @click="removeStudents()"
                                         v-if="this.group.group_invitation.length!=0"
                                         class="ml-1"
                                     >
@@ -129,33 +129,60 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="body" v-if="shouldShowStudents">
-                            <table class="table table-striped">
-                                <tr>
-                                    <td scope="col">
+                        <div class="body text-center" v-if="shouldShowStudents">
+                            <div class="container second mb-3">
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <b>
+                                            <u>Invitations Sended</u>
+                                            : {{this.group.group_invitation.length}}
+                                        </b>
+                                    </div>
+                                    <div class="col">
+                                        <b>
+                                            <u>Invitations Accepted</u>
+                                            : {{acceptedInvitations}}
+                                        </b>
+                                    </div>
+                                </div>
+                                <div class="row mt-3 mx-1">
+                                    <div class="col-6 col-sm-4 text-center">
                                         <b>E-mail</b>
-                                    </td>
-                                    <td scope="col">
+                                    </div>
+                                    <div class="d-none px d-sm-block col-sm-3 text-center">
                                         <b>Invited date</b>
-                                    </td>
-                                    <td scope="col">
+                                    </div>
+                                    <div class="col-6 col-sm-3 text-center">
                                         <b>Joined date</b>
-                                    </td>
-                                </tr>
-                                <tr
+                                    </div>
+                                    <div class="d-none d-sm-block col-sm-2 text-center">
+                                        <b>Remove</b>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div
+                                    class="row data mx-1"
                                     v-for="(invites) in this.group.group_invitation"
                                     :key="'i'+invites.id"
                                 >
-                                    <td>{{invites.email}}</td>
-                                    <td>{{invites.created_at | formatDate}}</td>
-                                    <td
+                                    <div class="col-6 col-sm-4 text-center">{{invites.email}}</div>
+                                    <div
+                                        class="d-none d-sm-block col-sm-3 text-center"
+                                    >{{invites.created_at | formatDate}}</div>
+                                    <div
+                                        class="col-6 col-sm-3 text-center"
                                         v-if="invites.accepted==1"
-                                    >{{invites.updated_at | formatDate}}</td>
-                                    <td v-else>
+                                    >{{invites.updated_at | formatDate}}</div>
+                                    <div class="col-6 px-0 col-sm-3 text-center" v-else>
                                         <span class="fas fa-times" style="color:red"></span>
-                                    </td>
-                                </tr>
-                            </table>
+                                    </div>
+                                    <div class="d-none d-sm-block col-sm-2 text-center">
+                                        <a @click="removeStudent(invites)" class="ml-1">
+                                            <span class="fa fa-minus"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -486,14 +513,14 @@ export default {
                         });
             });
         },
-        removeStudent() {
+        removeStudents() {
             var options = {};
             $.map(this.group.group_invitation, function(o) {
                 options[o.id] = o.email;
             });
 
             Swal.fire({
-                title: "Select Student to Remove",
+                title: "Select Student Invitation E-mail to Remove",
                 input: "select",
                 inputOptions: options,
                 showCancelButton: true
@@ -501,7 +528,8 @@ export default {
                 if (!!result.value)
                     Swal.fire({
                         title: "Are you sure?",
-                        text: "Student will no longer have access to this group!",
+                        text:
+                            "Student will no longer have access to this group and its upper groups!",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonText: "Yes, remove him!",
@@ -512,7 +540,7 @@ export default {
                     }).then(result2 => {
                         if (result2.value) {
                             this.$http
-                                .delete("/v1/group/"+result.value+"/invite")
+                                .delete("/v1/group/" + result.value + "/invite")
                                 .then(result => {
                                     this.refresh();
                                     Swal.fire({
@@ -536,8 +564,58 @@ export default {
                     });
             });
         },
+        removeStudent(invite) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Student will no longer have access to this group!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, remove him!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true,
+                allowOutsideClick: false,
+                scrollbarPadding: false
+            }).then(result2 => {
+                if (result2.value) {
+                    this.$http
+                        .delete("/v1/group/" + invite.id + "/invite")
+                        .then(result => {
+                            this.refresh();
+                            Swal.fire({
+                                title: "Removed!",
+                                text: "Student removed.",
+                                icon: "success",
+                                timer: 2000,
+                                timerProgressBar: true,
+                                scrollbarPadding: false
+                            });
+                        })
+                        .catch(err => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Something, went wrong.",
+                                showConfirmButton: true
+                            });
+                        });
+                }
+            });
+        },
         refresh() {}
+    },
+    computed: {
+        acceptedInvitations: function() {
+            let amount = 0;
+            for (let i = 0; i < this.group.group_invitation.length; i++) {
+                if (this.group.group_invitation[i].accepted != null) amount++;
+            }
+            return amount;
+        }
     }
 };
 </script>
-<style></style>
+<style>
+.second .data:nth-child(2n) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+</style>
