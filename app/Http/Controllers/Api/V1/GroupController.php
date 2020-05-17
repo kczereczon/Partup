@@ -229,7 +229,7 @@ class GroupController extends Controller
 
         $group = $group
             ->where('id', $id)
-            ->with(['students','subgroups','groupInvitation'])
+            ->with(['subgroups','groupInvitation','students'])
             ->orderBy('id', 'desc')
             ->first();
 

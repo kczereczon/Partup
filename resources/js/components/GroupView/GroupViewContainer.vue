@@ -67,7 +67,7 @@
                                     >
                                         <span class="fa fa-minus"></span>
                                     </a>
-                                    <a class="ml-1" @click="changeShowCurses()">
+                                    <a class="ml-1" @click="changeShowCurses()" v-if="this.group.courses.length!=0">
                                         <span
                                             :class="{
                                         'fa fa-caret-down': !shouldShowCourses,
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="body" v-if="shouldShowCourses">
+                        <div class="body" v-if="shouldShowCourses && this.group.courses.length!=0">
                             <div
                                 class="card my-3 mx-4"
                                 v-for="(course) in this.group.courses"
@@ -112,24 +112,24 @@
                                         <span class="fa fa-plus"></span>
                                     </a>
                                     <a
-                                        @click="removeStudents()"
+                                        @click="removeStudentsInvite()"
                                         v-if="this.group.group_invitation.length!=0"
                                         class="ml-1"
                                     >
                                         <span class="fa fa-minus"></span>
                                     </a>
-                                    <a class="ml-1" @click="changeShowStudents()">
+                                    <a class="ml-1" @click="changeShowStudentsInvites()" v-if="this.group.group_invitation.length!=0">
                                         <span
                                             :class="{
-                                        'fa fa-caret-down': !shouldShowStudents,
-                                        'fa fa-caret-up': shouldShowStudents
+                                        'fa fa-caret-down': !shouldShowStudentsInvites,
+                                        'fa fa-caret-up': shouldShowStudentsInvites
                                     }"
                                         ></span>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="body text-center" v-if="shouldShowStudents">
+                        <div class="body text-center" v-if="shouldShowStudentsInvites && this.group.group_invitation.length!=0">
                             <div class="container second mb-3">
                                 <div class="row mt-3">
                                     <div class="col">
@@ -177,7 +177,64 @@
                                         <span class="fas fa-times" style="color:red"></span>
                                     </div>
                                     <div class="d-none d-sm-block col-sm-2 text-center">
-                                        <a @click="removeStudent(invites)" class="ml-1">
+                                        <a @click="removeStudentInvite(invites)" class="ml-1">
+                                            <span class="fa fa-minus"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">Students</div>
+                                <div class="col-4 text-right">
+                                    <a
+                                        @click="removeStudents()"
+                                        class="ml-1"
+                                    >
+                                        <span class="fa fa-minus"></span>
+                                    </a>
+                                    <a class="ml-1" @click="changeShowStudents()">
+                                        <span
+                                            :class="{
+                                        'fa fa-caret-down': !shouldShowStudents,
+                                        'fa fa-caret-up': shouldShowStudents
+                                    }"
+                                        ></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="body text-center" v-if="shouldShowStudents">
+                            <div class="container second mb-3">
+                                <div class="row mt-3 mx-1">
+                                    <div class="col-5 col-sm-4 text-center">
+                                        <b>E-mail</b>
+                                    </div>
+                                    <div class="col-5 col-sm-5 text-center">
+                                        <b>Name</b>
+                                    </div>
+                                    <div class="d-none d-sm-block col-sm-3 text-center">
+                                        <b>Remove</b>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div
+                                    class="row data mx-1"
+                                    v-for="(student) in this.group.students"
+                                    :key="'s'+student.id"
+                                >
+                                    <div class="col-6 col-sm-4 text-center">{{student.user.email}}</div>
+
+                                    <div
+                                        class="d-none d-sm-block col-sm-3 text-center"
+                                    >{{student.user.name}}</div>
+
+                                    <div class="d-none d-sm-block col-sm-2 text-center">
+                                        <a @click="removeStudent(student)" class="ml-1">
                                             <span class="fa fa-minus"></span>
                                         </a>
                                     </div>
@@ -200,6 +257,7 @@ export default {
             shouldShowSubgroups: true,
             shouldShowCourses: true,
             shouldShowGroupData: true,
+            shouldShowStudentsInvites:true,
             shouldShowStudents: true
         };
     },
@@ -233,6 +291,10 @@ export default {
         },
         changeShowStudents() {
             this.shouldShowStudents = !this.shouldShowStudents;
+        },
+        changeShowStudentsInvites()
+        {
+            this.shouldShowStudentsInvites=!this.shouldShowStudentsInvites;
         },
         createGroup() {
             Swal.fire({
@@ -513,7 +575,7 @@ export default {
                         });
             });
         },
-        removeStudents() {
+        removeStudentsInvite() {
             var options = {};
             $.map(this.group.group_invitation, function(o) {
                 options[o.id] = o.email;
@@ -564,7 +626,7 @@ export default {
                     });
             });
         },
-        removeStudent(invite) {
+        removeStudentInvite(invite) {
             Swal.fire({
                 title: "Are you sure?",
                 text: "Student will no longer have access to this group!",
@@ -601,6 +663,8 @@ export default {
                 }
             });
         },
+        removeStudents(){},
+        removeStudent(student){},
         refresh() {}
     },
     computed: {

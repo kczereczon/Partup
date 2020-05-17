@@ -31,15 +31,6 @@
             <a class="ml-1" @click="editWebHooks()" v-if="shouldShowGroupData">
                 <span class="fa fa-gear"></span>
             </a>
-            <a
-                data-toggle="modal"
-                :data-target="'#groupInvitations'+group.id"
-                data-backdrop="static"
-                class="ml-1"
-                v-if="shouldShowGroupData"
-            >
-                <span class="fa fa-users"></span>
-            </a>
             <a class="ml-1" @click="changeShowGroupData()">
                 <span
                     :class="{
@@ -48,132 +39,6 @@
                 }"
                 ></span>
             </a>
-        </div>
-        <!-- Invite list Modal -->
-        <div
-            class="modal fade text-center"
-            :id="'groupInvitations'+group.id"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="groupInvitationsLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" style="max-width:750px" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="groupInvitationsLabel">Group Invitations</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="col-12 py-1">
-                                <h3>Students</h3>
-                            </div>
-                            <div class="col-12 py-1">
-                                <div class="row">
-                                    <div class="col-8 col-lg-4">E-mail</div>
-                                    <div
-                                        class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
-                                    >Invite date</div>
-                                    <div class="col-4 col-lg-2" style="overflow:visible">Joined</div>
-                                    <div
-                                        class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
-                                    >Joined date</div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <hr />
-                            </div>
-                            <div class="col-12 py-1" v-for="invite in invites" :key="invite.id">
-                                <div class="row text-center">
-                                    <div class="col-8 col-lg-4">{{invite.email}}</div>
-                                    <div
-                                        class="d-md-none d-sm-none d-none d-lg-block col-sm-3"
-                                    >{{invite.created_at | formatDate}}</div>
-                                    <div class="col-4 col-lg-2" v-if="invite.accepted">
-                                        <span class="fa fa-check" style="color:green"></span>
-                                    </div>
-                                    <div class="col-4 col-lg-2" v-else>
-                                        <span class="fa fa-times" style="color:red"></span>
-                                    </div>
-                                    <div
-                                        class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
-                                        v-if="invite.accepted"
-                                    >{{invite.updated_at | formatDate}}</div>
-                                    <div
-                                        class="d-md-none d-sm-none d-none d-lg-block col-lg-3"
-                                        v-else
-                                    >
-                                        <i class="fas fa-times" style="color:red"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 py-2">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary w-50"
-                                    data-toggle="modal"
-                                    :data-target="'#groupinvite'+group.id"
-                                    data-dismiss="modal"
-                                >Invite Student</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Invite  Modal -->
-        <div
-            class="modal fade text-center"
-            :id="'groupinvite'+group.id"
-            :ref="'groupinvite'+group.id"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="groupInviteLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="groupInviteLabel">Group Invitations</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="title">E-mail of Student</label>
-                            <!-- <div v-if="error.email" class="alert alert-danger"><p
-                                class="mb-2"
-                                v-for="(message, index) in error.email"
-                                :key="index"
-                            >{{ message }}</p></div>-->
-                            <input
-                                v-model="invitationEmail"
-                                name="title"
-                                type="text"
-                                class="form-control"
-                            />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            @click="clearInviteModal"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                        >Close</button>
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="groupInvite"
-                            data-dismiss="modal"
-                        >Invite</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -186,7 +51,6 @@ export default {
             flat: [],
             name: "",
             error: [],
-            invitationEmail: ""
         };
     },
     created() {
@@ -310,35 +174,6 @@ export default {
                             });
                         });
             });
-        },
-        groupInvite() {
-            this.$http
-                .post("/v1/groups/" + this.group.id + "/invite", {
-                    email: this.invitationEmail
-                })
-                .then(results => {
-                    this.refresh();
-                    this.clearInviteModal();
-                    Swal.fire({
-                        icon: "success",
-                        title: "Invitation send",
-                        showConfirmButton: true,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        scrollbarPadding: false
-                    });
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Something, went wrong.",
-                        showConfirmButton: true
-                    });
-                });
-        },
-        clearInviteModal() {
-            this.invitationEmail = "";
         },
         refresh() {
             //refresh data in memory
