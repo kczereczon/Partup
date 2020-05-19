@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-8 col-sm-12 pb-3 pt-3">
-                <leader-groups-container :groups="groups" @refresh="getGroups()"/>
+                <leader-groups-container :groups="groups" @refresh="getGroups()" />
             </div>
         </div>
     </div>
@@ -11,7 +11,7 @@
 export default {
     data() {
         return {
-            groups: [],
+            groups: []
         };
     },
     mounted() {
@@ -23,6 +23,7 @@ export default {
                 .get("/v1/groups/all")
                 .then(results => {
                     this.groups = results.data;
+                    window.sessionStorage.clear("leaderGroups");
                 })
                 .catch(error => {
                     console.log(error.response);

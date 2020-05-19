@@ -438,7 +438,6 @@ export default {
                 });
         },
         removeTeacher(course_invitation){
-
             Swal.fire({
                         title: "Are you sure?",
                         text: "Invitation will be deleted. Teacher will no longer have access to this group!",
