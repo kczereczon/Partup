@@ -195,7 +195,7 @@ export default {
             });
         },
         refresh() {
-            // this.loading = true;
+            this.loading = true;
             this.$http
                 .get("/v1/groups/all/total")
                 .then(results => {
@@ -203,7 +203,8 @@ export default {
                         "leaderGroups",
                         JSON.stringify(results.data)
                     );
-                    // this.loading = false;
+                    this.getGroup()
+                    this.loading = false;
                 })
                 .catch(error => {
                     console.log(error.response);
