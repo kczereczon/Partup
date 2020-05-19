@@ -120,9 +120,9 @@ class GroupInvitationController extends Controller
         $groupInvitation = GroupInvitation::find($id);
         $group = Group::find($groupInvitation->group_id);
 
-        $user = User::where('email',$groupInvitation->email)->first();
         if($group->owner_id==Auth::user()->id)
         {
+            $user = User::where('email',$groupInvitation->email)->first();
             if(!is_null($user))
             {
                 $groupUser = GroupUser::where('group_id', $group->id)->where('user_id', $user->id);

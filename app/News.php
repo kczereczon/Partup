@@ -19,6 +19,6 @@ class News extends Model
     }
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'teacher_id');
     }
 }

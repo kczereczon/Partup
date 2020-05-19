@@ -169,7 +169,7 @@ class GroupController extends Controller
 
         $groups = $groups
             ->where('owner_id', $request->user()->id)
-            ->with(['subgroups','courses','groupInvitation'])
+            ->with(['subgroups','courses','groupInvitation','students'])
             ->orderBy('id', 'desc')
             ->get();
 

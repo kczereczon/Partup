@@ -235,9 +235,11 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
+
         /** @var Course|Builder|QueryBuilder $course */
         $course = Course::find($id);
-        $group = Group::find($course->id);
+        $group = Group::find($course->group_id);
+
         if ($group->owner_id != Auth::user()->id)
             return response()->json(["error" => "You are not allowed to delete course that you don't own."], 422);
 
@@ -278,16 +280,9 @@ class CourseController extends Controller
             return response()->json(["error" => "You are not allowed to invite person, to group that you don't own."], 422);
 
         $courseInvitation = new CourseInvitation();
-        $courseInvitation = $courseInvitation->where('email', '=', $validated['email'])->where('course_id', '=', $id)->first();
+        $courseInvitation = $courseInvitation->where('course_id', '=', $id)->first();
         if ($courseInvitation)
-            return response()->json(["error" => "E-mail is already invited to this course."], 422);
-
-
-        $courseInvitation2 = new CourseInvitation();
-        $courseInvitation2 = $courseInvitation2->where('course_id', '=', $id)->first();
-        if ($courseInvitation2)
-            return response()->json(["error" => "There is already a teacher assigned to this course."], 422);
-
+            return response()->json(["error" => "There is a teacher already assigned to this course."], 422);
 
         $courseInvitationService = new CourseInvitationService();
         $invitation = $courseInvitationService->createInvitation($validated['email'], $course);

@@ -10,9 +10,7 @@ Route::middleware('auth:web')->get('/groups', "{$NS}GroupController@getForUsers"
 Route::middleware('auth:web')->get('/groups/all', "{$NS}GroupController@getAllOwnedGroups");
 Route::middleware('auth:web')->delete('/groups/{group}', "{$NS}GroupController@destroy");
 Route::middleware('auth:web')->patch('/groups/{group}', "{$NS}GroupController@update");
-Route::middleware('auth:web')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
 
-Route::middleware('auth:web')->post('/courses/{id}/invite', "{$NS}CourseController@inviteTeacher");
 
 //student view
 Route::middleware('auth:web')->get('/user/groups', "{$NS}GroupController@getForStudent");
@@ -57,7 +55,11 @@ Route::middleware('auth:web')->post('/course', "{$NS}CourseController@store");
 Route::middleware('auth:web')->delete('/course/{id}', "{$NS}CourseController@destroy");
 Route::middleware('auth:web')->patch('/course/{id}', "{$NS}CourseController@update");
 
+Route::middleware('auth:web')->post('/groups/{id}/invite', "{$NS}GroupController@inviteUser");
 Route::middleware('auth:web')->delete('/group/{id}/invite', "{$NS}GroupInvitationController@destroy");
+
+Route::middleware('auth:web')->post('/courses/{id}/invite', "{$NS}CourseController@inviteTeacher");
+Route::middleware('auth:web')->delete('/course/{id}/invite', "{$NS}CourseInvitationController@destroy");
 //
 // leader view
 //

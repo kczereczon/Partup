@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        <div class="col">
+        <div class="col text-center">
             <button
                 type="button"
-                class="btn btn-link bg-light px-4 my-2 mx-3"
+                class="btn btn-link bg-light px-4 my-2 mx-3 w-75"
                 style="border:1px solid rgba(0, 0, 0, 0.125)"
                 v-on:click="redirectToGroup(group.id)"
             >

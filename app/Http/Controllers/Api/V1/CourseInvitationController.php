@@ -118,8 +118,19 @@ class CourseInvitationController extends Controller
      * @param  \App\CourseInvitation  $courseInvitation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
+        $courseInvitation = CourseInvitation::find($id);
+        $course = Course::find($courseInvitation->course_id);
+        $group = Group::find($course->group_id);
+
+        if($group->owner_id!=Auth::user()->id)
+            return response()->json(["error" => "You are not allowed to edit course invitations."], 401);
+
+        $course->update(['teacher_id' => null]);
+        $courseInvitation->delete();
+
+        return response()->json(['deleted' => $courseInvitation], 200);
     }
 
     public function accept(Request $request)

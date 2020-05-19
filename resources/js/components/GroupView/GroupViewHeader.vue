@@ -50,7 +50,7 @@ export default {
         return {
             flat: [],
             name: "",
-            error: [],
+            error: []
         };
     },
     created() {
@@ -176,7 +176,17 @@ export default {
             });
         },
         refresh() {
-            //refresh data in memory
+            this.$http
+                .get("/v1/groups/all/total")
+                .then(results => {
+                    window.sessionStorage.setItem(
+                        "leaderGroups",
+                        JSON.stringify(results.data)
+                    );
+                })
+                .catch(error => {
+                    console.log(error.response);
+                });
         }
     }
 };
