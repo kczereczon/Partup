@@ -8,10 +8,18 @@
                             <div class="card-header">Courses</div>
                             <div class="card-body">
                                 <teacher-courses-container
-                                    :courses="courses"
+                                    :courses="courses.data"
                                     @refresh="getCourses"
                                 />
                                 <loader v-if="loading" />
+                                <paginator :path="courses.path"
+                                    :currentPage="courses.current_page"
+                                    :total="courses.total"
+                                    :firstPage="courses.first_page_url"
+                                    :lastPage="courses.last_page_url"
+                                    :perPage="courses.per_page"
+                                    @getPaginate="getCourses"
+                                    />
                             </div>
                         </div>
                     </div>
@@ -31,14 +39,14 @@ export default {
         };
     },
     created() {
-        this.getCourses();
+        this.getCourses(1);
     },
     methods: {
-        getCourses() {
+        getCourses(page) {
             this.loading = true;
             this.courses = null;
             this.$http
-                .get("/v1/teacher/course/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss'))
+                .get("/v1/teacher/course/"+moment(new Date().toString()).format('YYYY:MM:DD__HH:mm:ss')+'?page='+page)
                 .then(results => {
                     this.courses = results.data;
                 })

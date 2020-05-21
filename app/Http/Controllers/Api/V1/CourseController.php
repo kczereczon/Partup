@@ -101,42 +101,26 @@ class CourseController extends Controller
     {
         $coursesTeacher = new Course();
         $date = str_replace("__", "  ", $date);
-        $coursesTeacher = $coursesTeacher
-            ->where('courses.teacher_id', '=', Auth::user()->id)
-            ->with([
-                'group',
-                'exams' => function ($query) use ($date) {
-                    $query->where('time', '>', $date);
-                },
-                'homeworks' => function ($query) use ($date) {
-                    $query->where('deadline', '>', $date);
-                },
-                'newses' => function ($query) use ($date) {
-                    $query->where('until_when_to_show', '>', $date);
-                }
-            ])
-            ->orderBy('courses.id', 'desc')
-            ->get(['courses.*']);
-        $coursesOwner = new Course();
-        $coursesOwner = $coursesOwner
-            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
-            ->where('groups.owner_id', '=', Auth::user()->id)
-            ->with([
-                'group',
-                'exams' => function ($query) use ($date) {
-                    $query->where('time', '>', $date);
-                },
-                'homeworks' => function ($query) use ($date) {
-                    $query->where('deadline', '>', $date);
-                },
-                'newses' => function ($query) use ($date) {
-                    $query->where('until_when_to_show', '>', $date);
-                }
-            ])
-            ->orderBy('courses.id', 'desc')
-            ->get(['courses.*']);
 
-        $courses = $coursesTeacher->merge($coursesOwner);
+        $courses = $coursesTeacher
+            ->leftJoin('groups', 'groups.id', '=', 'courses.group_id')
+            ->where('courses.teacher_id', '=', Auth::user()->id)
+            ->orWhere('groups.owner_id', '=', Auth::user()->id)
+            ->with([
+                'group',
+                'exams' => function ($query) use ($date) {
+                    $query->where('time', '>', $date);
+                },
+                'homeworks' => function ($query) use ($date) {
+                    $query->where('deadline', '>', $date);
+                },
+                'newses' => function ($query) use ($date) {
+                    $query->where('until_when_to_show', '>', $date);
+                }
+            ])
+            ->orderBy('courses.id', 'desc')
+            ->select(['courses.*'])
+            ->paginate(5);
 
         foreach ($courses as &$course) {
             foreach ($course["exams"] as &$courseExam) {
