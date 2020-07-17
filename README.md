@@ -1,12 +1,12 @@
 # Spis treści
 
-1. Autorzy
-1. Opis projektu
-1. Cel projektu
-1. Technologie
-1. Diagram ERD bazy danych
-1. Przykładowy wygląd interfejsu
-1. Uruchomienie
+1. [Autorzy](https://github.com/kczereczon/Partup/blob/master/README.md#autorzy)
+1. [Opis projektu](https://github.com/kczereczon/Partup/blob/master/README.md#opis-projektu)
+1. [Cel projektu](https://github.com/kczereczon/Partup/blob/master/README.md#cel-projektu)
+1. [Technologie](https://github.com/kczereczon/Partup/blob/master/README.md#cel-projektu)
+1. [Diagram ERD bazy danych](https://github.com/kczereczon/Partup/blob/master/README.md#diagram-erd-bazy-danych)
+1. [Przykładowy wygląd interfejsu](https://github.com/kczereczon/Partup/blob/master/README.md#przyk%C5%82adowy-wygl%C4%85d-interfejsu)
+1. [Uruchomienie](https://github.com/kczereczon/Partup/blob/master/README.md#uruchomienie)
 
 ## Autorzy
 Krzysztof Czereczon, Długosz Piotr
