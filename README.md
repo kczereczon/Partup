@@ -1,59 +1,46 @@
-## Setting Up
+# Spis treści
 
-1. Run in cmd ```composer install```
-2. Run in cmd ```npm run production```
-3. Create database "Partup" on you database server.
-4. Create file .env 
-``` 
-APP_NAME=Partup
-APP_ENV=local
-APP_KEY=base64:vPOREvWxbSBnwwd6WpKMlGlEvMOJEw1chfkaG9CrH5Q=
-APP_DEBUG=true
-APP_URL=http://localhost/
+1. Autorzy
+1. Opis projektu
+1. Cel projektu
+1. Technologie
+1. Diagram ERD bazy danych
+1. Przykładowy wygląd interfejsu
+1. Uruchomienie
 
-LOG_CHANNEL=stack
+## Autorzy
+Krzysztof Czereczon, Długosz Piotr
+## Opis projektu
+Projekt został wykonany na potrzeby zaliczenia z przedmiotu “Aplikacje Internetowe” na 2 roku informatyki na Uniwersytecie Rzeszowskim.
 
-DB_CONNECTION=mysql
-DB_HOST={{}}
-DB_PORT={{}}
-DB_DATABASE={{}}
-DB_USERNAME={{}}
-DB_PASSWORD={{}}
+W projekcie stworzono API oparte na Laravelu, oraz interfejs użytkownika oparty na Vue.
 
-BROADCAST_DRIVER=log
-CACHE_DRIVER=file
-QUEUE_CONNECTION=sync
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
+## Cel projektu
+Stworzenie w pełni funkcjonalnego systemu z możliwością tworzenia grup, podgrup przez każdego użytkownika, tworzenia kursów do grup z możliwością zaproszenia ucznia do danej grupy, nauczyciela do kursu (zaproszenia wysyłane mailem). Grupę można połączyć z serwerem Discord aby na określonym kanale na serwerze wysyłała powiadomienia odnośnie nowych wiadomości, zadań, egzaminów. Właściciel grupy, nauczyciel kursu mogą tworzyć nowe wiadomości, zadania, egzaminy dla kursów. Uczniowie przypisani do danych grup mają podgląd do danych kursów w tym wiadomości, zadań, egzaminów przypisanych do nich.
 
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
+## Technologie
+Do stworzenia aplikacji zostały użyte technologie takie jak:
+1. [Vue](https://github.com/vuejs/vue)
+1. [Laravel](https://github.com/laravel/laravel)
 
-MAIL_MAILER=smtp
-MAIL_HOST={{}}
-MAIL_PORT={{}}
-MAIL_USERNAME={{}}
-MAIL_PASSWORD={{}}
-MAIL_ENCRYPTION=ssl
-MAIL_FROM_ADDRESS=
-MAIL_FROM_NAME="${APP_NAME}"
+## Diagram ERD bazy danych
+![Database diagram](https://i.imgur.com/jaeeNFj.png)
 
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
+## Przykładowy wygląd interfejsu
+![websiteView](https://i.imgur.com/CJe1EhC.png)
 
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
-PUSHER_APP_CLUSTER=mt1
-
-MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-
-```
-5. Change .env file ```{{}}``` with mail, database login data. 
-6. Run in cmd ```php artisan migrate```
-7. Run in cmd ```php artisan serve```
-
+## Uruchomienie
+1. Pierwsze Uruchomienie
+     * Sklonuj repozytorium.
+     * Instalacja bibliotek php ```composer install```
+     * Instalacja bibliotek js ```npm install```
+     * Skopiuj [```.env.example```](https://github.com/kczereczon/Partup/blob/master/.env.example) do ```.env``` w folderze głównym.
+     * Tworzymy bazę danych (pustą).
+     * Zedytuj plik ```.env```, zmień w nim konfigurację bazy danych, serwera pocztowego ```DB_* , MAIL_*```
+     * Migracja bazy danych (tworzenie tabel, połączeń pomiędzy tabelami) ```php artisan migrate```   
+     * Uruchomienie serwera Api ```php artisan serve```
+     * Uruchomienie serwera Js ```npm run production```
+        
+2. Ponowne uruchomienie
+     * Uruchomienie serwera Api ```php artisan serve```
+     * Uruchomienie serwera Js ```npm run production```
