@@ -1,4 +1,5 @@
-# Spis treści
+# PartUp
+## Spis treści
 
 1. [Autorzy](https://github.com/kczereczon/Partup/blob/master/README.md#autorzy)
 1. [Opis projektu](https://github.com/kczereczon/Partup/blob/master/README.md#opis-projektu)
